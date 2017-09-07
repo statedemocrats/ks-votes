@@ -1,0 +1,2 @@
+class ElectionFile < ApplicationRecord
+end

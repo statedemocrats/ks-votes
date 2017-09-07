@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907144849) do
+ActiveRecord::Schema.define(version: 20170907155732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,9 +21,17 @@ ActiveRecord::Schema.define(version: 20170907144849) do
     t.integer "office_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "election_file_id"
   end
 
   create_table "counties", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "election_file_id"
+  end
+
+  create_table "election_files", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -34,6 +42,7 @@ ActiveRecord::Schema.define(version: 20170907144849) do
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "election_file_id"
   end
 
   create_table "offices", force: :cascade do |t|
@@ -41,12 +50,14 @@ ActiveRecord::Schema.define(version: 20170907144849) do
     t.string "district"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "election_file_id"
   end
 
   create_table "parties", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "election_file_id"
   end
 
   create_table "precincts", force: :cascade do |t|
@@ -54,6 +65,7 @@ ActiveRecord::Schema.define(version: 20170907144849) do
     t.integer "county_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "election_file_id"
   end
 
   create_table "results", force: :cascade do |t|
@@ -64,6 +76,7 @@ ActiveRecord::Schema.define(version: 20170907144849) do
     t.integer "candidate_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "election_file_id"
   end
 
 end

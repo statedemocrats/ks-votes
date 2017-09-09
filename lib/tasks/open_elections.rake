@@ -1,4 +1,5 @@
 require 'csv'
+require 'digest'
 require 'pp'
 
 namespace :openelections do
@@ -6,15 +7,19 @@ namespace :openelections do
   desc 'load files for year'
   task load_files: :environment do
     year = ENV['YEAR']
-    dir = '../openelections-data-ks/' + year + '/'
-    puts "Loading files for #{year} from #{dir}"
-    if !Dir.exists?(dir)
-      raise "Can't find dir #{dir}"
-    end
+    oe_dir = ENV['OE_DIR'] or raise 'OE_DIR required'
 
-    Dir.glob(dir + '*.csv').each do |file|
-      puts "#{file}"
-      load_csv_file(file)
+    year.split(/\ *,\ */).each do |y|
+      dir = oe_dir + y + '/'
+      puts "Loading files for #{y} from #{dir}"
+      if !Dir.exists?(dir)
+        raise "Can't find dir #{dir}"
+      end
+
+      Dir.glob(dir + '*precinct.csv').each do |file|
+        puts "#{file}"
+        load_csv_file(file)
+      end
     end
   end
 
@@ -32,9 +37,23 @@ namespace :openelections do
     el_dt = DateTime.strptime("#{el_date}T000000", '%Y%m%dT%H%M%S')
     election = Election.find_or_create_by(date: el_dt.to_date, name: "#{el_dt.year} #{which}")
     election_file = ElectionFile.find_or_create_by(name: File.basename(file))
-    CSV.foreach(file, headers: true) do |row|
+    CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
       pp(row) if debug?
-      county = County.find_or_create_by(name: row['county']) do |c|
+      pp(row.headers()) if debug?
+      if !row['county']
+        puts "No county value in row: #{row.inspect}"
+        next
+      end
+      votes = row['votes'] || row['vote'] || row['poll'] || row['polls']
+
+      # these are often summary or informational rows,
+      # unhelpfully, interspersed with actual precinct totals.
+      if !row['precinct'] || !votes # && !row['office']
+        puts "Missing precinct or votes in row: #{row.inspect}"
+        next
+      end
+
+      county = County.find_or_create_by(name: row['county'].titlecase) do |c|
         c.election_file_id = election_file.id
       end
       precinct = Precinct.find_or_create_by(county_id: county.id, name: row['precinct']) do |p|
@@ -49,14 +68,17 @@ namespace :openelections do
       candidate = Candidate.find_or_create_by(name: row['candidate'], party_id: party.id, office_id: office.id) do |c|
         c.election_file_id = election_file.id
       end
-      results = Result.create(
-        votes: row['votes'], 
-        precinct: precinct,
-        office: office,
-        election: election,
-        candidate: candidate,
-        election_file: election_file,
+      checksum = Digest::SHA256.hexdigest(
+        [precinct.name, office.name, election.name, candidate.name, votes, election_file.name].join(':')
       )
+      result = Result.find_or_create_by(checksum: checksum) do |r|
+        r.votes = votes
+        r.precinct = precinct
+        r.office = office
+        r.election = election
+        r.candidate = candidate
+        r.election_file = election_file
+      end
       
     end
   end   

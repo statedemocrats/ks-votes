@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170908163828) do
+ActiveRecord::Schema.define(version: 20170911141249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.index ["name", "office_id", "party_id"], name: "index_candidates_on_name_and_office_id_and_party_id", unique: true
   end
 
   create_table "counties", force: :cascade do |t|
@@ -29,12 +30,14 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.index ["name"], name: "index_counties_on_name", unique: true
   end
 
   create_table "election_files", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_election_files_on_name", unique: true
   end
 
   create_table "elections", force: :cascade do |t|
@@ -43,6 +46,7 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.index ["name"], name: "index_elections_on_name", unique: true
   end
 
   create_table "offices", force: :cascade do |t|
@@ -51,6 +55,7 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.index ["name", "district"], name: "index_offices_on_name_and_district", unique: true
   end
 
   create_table "parties", force: :cascade do |t|
@@ -58,6 +63,7 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.index ["name"], name: "index_parties_on_name", unique: true
   end
 
   create_table "precincts", force: :cascade do |t|
@@ -66,6 +72,7 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.index ["name", "county_id"], name: "index_precincts_on_name_and_county_id", unique: true
   end
 
   create_table "results", force: :cascade do |t|
@@ -78,6 +85,21 @@ ActiveRecord::Schema.define(version: 20170908163828) do
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
     t.string "checksum"
+    t.index ["checksum"], name: "index_results_on_checksum", unique: true
   end
 
+  add_foreign_key "candidates", "election_files"
+  add_foreign_key "candidates", "offices"
+  add_foreign_key "candidates", "parties"
+  add_foreign_key "counties", "election_files"
+  add_foreign_key "elections", "election_files"
+  add_foreign_key "offices", "election_files"
+  add_foreign_key "parties", "election_files"
+  add_foreign_key "precincts", "counties"
+  add_foreign_key "precincts", "election_files"
+  add_foreign_key "results", "candidates"
+  add_foreign_key "results", "election_files"
+  add_foreign_key "results", "elections"
+  add_foreign_key "results", "offices"
+  add_foreign_key "results", "precincts"
 end

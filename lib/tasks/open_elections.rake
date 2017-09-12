@@ -18,18 +18,49 @@ namespace :openelections do
 
       Dir.glob(dir + '*precinct.csv').each do |file|
         puts "#{file}"
-        load_csv_file(file)
+        if clean?
+          clean_csv_file(file)
+        else
+          load_csv_file(file)
+        end
       end
     end
   end
 
   desc 'load single file'
   task load_file: :environment do
-    load_csv_file(ENV['FILE'])
+    if clean?
+      clean_csv_file(ENV['FILE'])
+    else
+      load_csv_file(ENV['FILE'])
+    end
   end
 
   def debug?
     ENV['DEBUG'] == '1'
+  end
+
+  def clean?
+    ENV['CLEAN'] == '1'
+  end
+
+  def clean_csv_file(file)
+    csv_has_headers = false
+    CSV.open("#{file}.clean", 'wb') do |csv|
+      CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
+        csv << row.headers unless csv_has_headers
+        csv_has_headers = true
+        votes = row['votes'] || row['vote'] || row['poll'] || row['total']
+        if !row['precinct'] || !votes
+          puts "Missing votes or precinct: #{row.inspect}"
+          next
+        end
+
+        csv << row
+      end # read
+    end # write
+    # strip trailing newline
+    system("truncate -s -1 #{file}.clean")
   end
 
   def load_csv_file(file)
@@ -44,7 +75,7 @@ namespace :openelections do
         puts "No county value in row: #{row.inspect}"
         next
       end
-      votes = row['votes'] || row['vote'] || row['poll'] || row['polls']
+      votes = row['votes'] || row['vote'] || row['poll'] || row['total']
 
       # these are often summary or informational rows,
       # unhelpfully, interspersed with actual precinct totals.

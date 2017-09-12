@@ -66,7 +66,9 @@ namespace :openelections do
   def load_csv_file(file)
     el_date, state, which, cty, prc = File.basename(file).split('__')
     el_dt = DateTime.strptime("#{el_date}T000000", '%Y%m%dT%H%M%S')
-    election = Election.find_or_create_by(date: el_dt.to_date, name: "#{el_dt.year} #{which}")
+    election = Election.find_or_create_by(name: "#{el_dt.year} #{which}") do |e|
+      e.date = el_dt.to_date
+    end
     election_file = ElectionFile.find_or_create_by(name: File.basename(file))
     CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
       pp(row) if debug?

@@ -1,24 +1,9 @@
-# README
+# KS votes
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a Rails 5 application for collecting and analyzing Kansas elections. We collect
 
-Things you may want to cover:
+* election results
+* SOS voter file data
+* census data
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+into a normalized database for further analysis.

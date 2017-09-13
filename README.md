@@ -10,10 +10,12 @@ into a normalized database for further analysis.
 
 ## Setup
 
+```bash
  % git clone git@github.com:statedemocrats/ks-votes.git
  % cd ks-votes
  % bundle install
  % rake db:setup
+```
 
 ## Loading data
 
@@ -21,10 +23,13 @@ into a normalized database for further analysis.
 
 To load election results from the OpenElections project, you must clone the relevant Github repo:
 
+```bash
  % git clone https://github.com/openelections/openelections-data-ks.git
+```
 
 and then run the relevant rake task to load the results:
 
+```bash
  % rake openelections:load_files OE_DIR=path/to/openelections-data-ks YEAR=2016,2014,2012
-
+```
 

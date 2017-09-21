@@ -70,7 +70,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
 <script>
   var map, counties, state_leg_lower, state_leg_upper, precincts;
   var lastCounty, lastSenate, lastHouse, lastPrecinct;
-  var style = { weight: 1, opacity: 1, fillOpacity: 0, color: '#aaa' };
+  var style = { weight: 1, opacity: 1, fillOpacity: 0 };
   var renderPolys = function(polys) {
     console.log('clicked on', polys);
     $.each(polys, function(idx, poly) {
@@ -79,7 +79,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
       if (props['LSAD'] && props['LSAD'] == 'County') {
         $('#county').html('<h3>County</h3>' + props['NAME'] + ' [' + props['COUNTY'] + ']');
         //map.fitBounds(poly.getBounds());
-        poly.setStyle({ weight: 3, color: '#666' });
+        poly.setStyle({ weight: 3, color: '#666', fillOpacity: 0.1 });
         if (lastCounty && lastCounty != poly) {
           counties.resetStyle(lastCounty);
         }
@@ -87,7 +87,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
       }
       if (props['SLDLST']) {
         $('#house').html('<h3>House District</h3>' + props['NAME']);
-        poly.setStyle({ weight: 3, color: 'green' });
+        poly.setStyle({ weight: 3, color: 'green', fillOpacity: 0.1 });
         if (lastHouse && lastHouse != poly) {
           state_leg_lower.resetStyle(lastHouse);
         }
@@ -95,7 +95,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
       }
       if (props['SLDUST']) {
         $('#senate').html('<h3>Senate District</h3>' + props['NAME']);
-        poly.setStyle({ weight: 3, color: '#ffc300' });
+        poly.setStyle({ weight: 3, color: '#ffc300', fillOpacity: 0.1 });
         if (lastSenate && lastSenate != poly) {
           state_leg_upper.resetStyle(lastSenate);
         }
@@ -103,7 +103,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
       }
       if (props['VTDNAME']) {
         $('#precinct').html('<h3>Precinct</h3>' + props['VTDNAME'] + ' [' + props['VTD_S'] + ']');
-        poly.setStyle({ weight: 3, color: '#222' });
+        poly.setStyle({ weight: 3, color: '#222', fillOpacity: 0.1 });
         if (lastPrecinct && lastPrecinct != poly) {
           precincts.resetStyle(lastPrecinct);
         }

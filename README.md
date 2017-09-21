@@ -33,3 +33,11 @@ and then run the relevant rake task to load the results:
  % rake openelections:load_files OE_DIR=path/to/openelections-data-ks YEAR=2016,2014,2012
 ```
 
+
+## Map
+
+### Setup the map artifacts
+
+```bash
+ % rake map:setup
+```

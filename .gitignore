@@ -21,3 +21,6 @@
 /yarn-error.log
 
 .byebug_history
+
+# map artifacts
+/public/kansas-state-voting-precincts-2012-min.geojson

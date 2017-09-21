@@ -117,7 +117,24 @@ ks_counties = [
 "KS,20,209,Wyandotte County,H6",
 ]
 
+cty_map = {}
 ks_counties.each do |line|
   state, state_fips, cty_fips, name, fips_class = line.split(',')
-  County.create(name: name.gsub(' County', ''), fips: cty_fips)
+  cty = County.create(name: name.gsub(' County', ''), fips: cty_fips)
+  cty_map[cty_fips] = cty.id
+end
+
+# load 2012 census.gov official precinct names
+precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv.gz')
+Zlib::GzipReader.open(precinct_names) do |gzip|
+  csv = CSV.new(gzip)
+  csv.each do |row|
+    name = row[0]
+    code = row[1]
+    matches = code.match(/^20(\d\d\d)(\w+)$/)
+    #puts "#{name} #{code} #{matches.to_a.inspect}"
+    cty_fips = matches[1]
+    precinct_code = matches[2]
+    CensusPrecinct.create(county_id: cty_map[cty_fips], code: precinct_code, name: name)
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170921161537) do
+ActiveRecord::Schema.define(version: 20170921171517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,12 +25,22 @@ ActiveRecord::Schema.define(version: 20170921161537) do
     t.index ["name", "office_id", "party_id"], name: "index_candidates_on_name_and_office_id_and_party_id", unique: true
   end
 
+  create_table "census_precincts", force: :cascade do |t|
+    t.integer "county_id"
+    t.string "name"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code", "county_id"], name: "index_census_precincts_on_code_and_county_id", unique: true
+  end
+
   create_table "counties", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
     t.string "fips"
+    t.index ["fips"], name: "index_counties_on_fips", unique: true
     t.index ["name"], name: "index_counties_on_name", unique: true
   end
 
@@ -92,6 +102,7 @@ ActiveRecord::Schema.define(version: 20170921161537) do
   add_foreign_key "candidates", "election_files"
   add_foreign_key "candidates", "offices"
   add_foreign_key "candidates", "parties"
+  add_foreign_key "census_precincts", "counties"
   add_foreign_key "counties", "election_files"
   add_foreign_key "elections", "election_files"
   add_foreign_key "offices", "election_files"

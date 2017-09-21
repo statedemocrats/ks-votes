@@ -56,6 +56,11 @@ namespace :openelections do
           next
         end
 
+        if row['precinct'] == 'TOTAL' || row['precinct'] == 'TOTALS'
+          puts "Summary row: #{row.inspect}"
+          next
+        end
+
         csv << row
       end # read
     end # write
@@ -86,9 +91,9 @@ namespace :openelections do
         next
       end
 
-      county = County.find_or_create_by(name: row['county'].titlecase) do |c|
-        c.election_file_id = election_file.id
-      end
+      county = County.where('lower(name) = ?', row['county'].downcase).first_or_create(
+        name: row['county'], election_file_id: election_file.id
+      )
       precinct = Precinct.find_or_create_by(county_id: county.id, name: row['precinct']) do |p|
         p.election_file_id = election_file.id
       end

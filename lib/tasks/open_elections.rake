@@ -68,6 +68,12 @@ namespace :openelections do
     system("truncate -s -1 #{file}.clean")
   end
 
+  def county_precincts
+    @_precincts ||= begin
+      County.all.map { |cty| [cty.name, cty.census_precincts.pluck(:name, :id).to_h ] }.to_h
+    end
+  end
+
   def load_csv_file(file)
     el_date, state, which, cty, prc = File.basename(file).split('__')
     el_dt = DateTime.strptime("#{el_date}T000000", '%Y%m%dT%H%M%S')
@@ -76,8 +82,8 @@ namespace :openelections do
     end
     election_file = ElectionFile.find_or_create_by(name: File.basename(file))
     CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
+      Rails.logger.debug('new row')
       pp(row) if debug?
-      pp(row.headers()) if debug?
       if !row['county']
         puts "No county value in row: #{row.inspect}"
         next
@@ -94,8 +100,28 @@ namespace :openelections do
       county = County.where('lower(name) = ?', row['county'].downcase).first_or_create(
         name: row['county'], election_file_id: election_file.id
       )
-      precinct = Precinct.find_or_create_by(county_id: county.id, name: row['precinct']) do |p|
+
+      # find a reasonable precinct name
+      precinct_name = row['precinct']
+      if !county_precincts.dig(county.name, precinct_name)
+        precinct_name += ' Township' if county_precincts.dig(county.name, "#{precinct_name} Township")
+        if precinct_name.match(/\w, \w/)
+          parts = precinct_name.split(', ')
+          maybe_precinct_name = parts[1] + ' ' + parts[0]
+          precinct_name = maybe_precinct_name if county_precincts.dig(county.name, maybe_precinct_name)
+        end
+        if precinct_name.match(/^[A-Z\d\ ]+$/)
+          maybe_precinct_name = precinct_name.titlecase
+          precinct_name = maybe_precinct_name if county_precincts.dig(county.name, maybe_precinct_name)
+        end
+      end
+
+      census_precinct_id = county_precincts.dig(county.name, precinct_name) || nil
+      puts "raw #{row['precinct']} baked #{precinct_name} census_precinct_id #{census_precinct_id.inspect}" if debug?
+
+      precinct = Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
         p.election_file_id = election_file.id
+        p.census_precinct_id = census_precinct_id if census_precinct_id
       end
       office = Office.find_or_create_by(name: row['office'], district: row['district']) do |o|
         o.election_file_id = election_file.id

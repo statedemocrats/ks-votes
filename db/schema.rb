@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170921171517) do
+ActiveRecord::Schema.define(version: 20170921213204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20170921171517) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
+    t.integer "census_precinct_id"
     t.index ["name", "county_id"], name: "index_precincts_on_name_and_county_id", unique: true
   end
 
@@ -107,6 +108,7 @@ ActiveRecord::Schema.define(version: 20170921171517) do
   add_foreign_key "elections", "election_files"
   add_foreign_key "offices", "election_files"
   add_foreign_key "parties", "election_files"
+  add_foreign_key "precincts", "census_precincts"
   add_foreign_key "precincts", "counties"
   add_foreign_key "precincts", "election_files"
   add_foreign_key "results", "candidates"

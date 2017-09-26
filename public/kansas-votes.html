@@ -50,6 +50,16 @@
     body {
       font-family: 'Open Sans', sans-serif;
     }
+    .info {
+      padding: 8px;
+      background: white;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 5px;
+    }
+    .info h4 {
+      margin: 0 0 5px;
+      color: #777;
+    }
   </style>
 
   
@@ -70,8 +80,8 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
 </div>
 
 <script>
-  var map, counties, state_leg_lower, state_leg_upper, precincts;
-  var lastCounty, lastSenate, lastHouse, lastPrecinct;
+  var map, counties, state_leg_lower, state_leg_upper, precincts, info;
+  var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly;
   var style = { weight: 1, opacity: 1, fillOpacity: 0 };
   var renderPolys = function(polys) {
     console.log('clicked on', polys);
@@ -86,6 +96,10 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
           counties.resetStyle(lastCounty);
         }
         lastCounty = poly;
+        if (lastPoly && lastPoly != poly) {
+          counties.resetStyle(lastPoly);
+        }
+        lastPoly = poly;
       }
       if (props['SLDLST']) {
         $('#house').html('<h3>House District</h3>' + props['NAME']);
@@ -135,14 +149,33 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
     }
     renderPolys(polys_clicked);
   };
-  var polyEach = function(p, layer) {
+  var onHover = function(e) {
+    var poly = e.target;
+    if (lastPoly != poly) {
+      poly.setStyle({ weight: 5, color: '#bbb', fillOpacity: 0.2 });
+    }
+    info.update(poly.feature.properties);
+  };
+  var offHover = function(e) {
+    var poly = e.target;
+    if (lastPoly != poly) {
+      counties.resetStyle(poly);
+    }
+    info.update();
+  };
+  var countyEach = function(p, layer) {
     layer.on({
+      mouseover: onHover,
+      mouseout: offHover,
       click: polyClick
     });
   };
+  var polyEach = function(p, layer) {
+    layer.on({click: polyClick});
+  };
   var opts = { style: style, onEachFeature: polyEach };
 
-  counties = L.geoJson.ajax('ks-counties.geojson', opts);
+  counties = L.geoJson.ajax('ks-counties.geojson', { style: style, onEachFeature: countyEach });
   state_leg_lower = L.geoJson.ajax('cb_2016_20_sldl_500k.geojson', opts);
   state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', opts);
   precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-min.geojson', opts);
@@ -174,6 +207,20 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   };
 
   L.control.layers(baseLayers, overlays).addTo(map);
+
+  // control that shows state info on hover
+  info = L.control();
+  info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info');
+    this.update();
+    return this._div;
+  };
+
+  info.update = function (props) {
+    this._div.innerHTML = (props ?  (props.NAME || props.PRECINCT || props.name) : 'Hover over a county');
+  };
+
+  info.addTo(map);
 </script>
 
 

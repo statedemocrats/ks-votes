@@ -1,5 +1,4 @@
 class CensusPrecinct < ApplicationRecord
-  belongs_to :county
-  has_many :precincts
-  has_many :precinct_aliases
+  belongs_to :precinct
+  belongs_to :census_tract
 end

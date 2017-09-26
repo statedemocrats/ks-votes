@@ -25,23 +25,22 @@ namespace :precincts do
 
       #puts "'#{name}' #{precinctid} #{subprecinctid}"
 
-      # find the authoritative census_precinct
-      cp = CensusPrecinct.find_by(name: name)
+      # find the authoritative census area
+      tract = CensusTract.find_by(name: name)
 
-      if !cp && precinctid.to_i < 10
-        cp = CensusPrecinct.find_by(name: name.gsub(/\d/, "0#{precinctid}"))
+      if !tract && precinctid.to_i < 10
+        tract = CensusTract.find_by(name: name.gsub(/\d/, "0#{precinctid}"))
       end
 
-      if !cp
+      if !tract
         # if we have census_names, that means this precinct is new since the last census (2010)
-        # so make sure we create a Precinct for it and map it to an existing CensusPrecinct
+        # so make sure we create a Precinct for it and map it to an existing CensusTract
         if census_names
           census_names.each do |n|
-            cp = CensusPrecinct.find_by!(name: n, county_id: douglas.id)
-            Precinct.find_or_create_by(county_id: douglas.id, name: name) do |p|
-              p.census_precinct_id = cp.id
-            end
-            make_precinct_aliases(precinctid, subprecinctid, cp)
+            c_tract = CensusTract.find_by!(name: n, county_id: douglas.id)
+            precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
+            cp = CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: c_tract.id)
+            make_precinct_aliases(precinctid, subprecinctid, precinct.id)
           end
         else
           puts "  ===>>>> no CensusPrecinct or census_names found <<<< '#{name}' #{precinctid} #{subprecinctid}"
@@ -49,19 +48,26 @@ namespace :precincts do
         next
 
       else
-        make_precinct_aliases(precinctid, subprecinctid, cp)
+        precinct = precinct_for_tract(tract)
+        make_precinct_aliases(precinctid, subprecinctid, precinct.id)
       end
     end
   end
 
-  def make_precinct_aliases(precinctid, subprecinctid, cp)
+  def precinct_for_tract(tract)
+    Precinct.find_by(name: tract.name, county_id: tract.county_id) ||
+      tract.precincts.first ||
+      Precinct.create(name: tract.name, county_id: tract.county_id)
+  end
+
+  def make_precinct_aliases(precinctid, subprecinctid, precinct_id)
     [
       "Precinct #{precinctid}-#{subprecinctid}",
       "Precinct #{precinctid} #{subprecinctid}",
       "Prec #{precinctid}-#{subprecinctid}",
       "Prec #{precinctid} #{subprecinctid}"
     ].each do |n|
-      PrecinctAlias.find_or_create_by(census_precinct_id: cp.id, name: n)
+      PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: n)
     end
   end
 end

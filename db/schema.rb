@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925204457) do
+ActiveRecord::Schema.define(version: 20170926211742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,12 +26,21 @@ ActiveRecord::Schema.define(version: 20170925204457) do
   end
 
   create_table "census_precincts", force: :cascade do |t|
-    t.integer "county_id"
-    t.string "name"
-    t.string "code"
+    t.bigint "precinct_id"
+    t.bigint "census_tract_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["code", "county_id"], name: "index_census_precincts_on_code_and_county_id", unique: true
+    t.index ["census_tract_id"], name: "index_census_precincts_on_census_tract_id"
+    t.index ["precinct_id"], name: "index_census_precincts_on_precinct_id"
+  end
+
+  create_table "census_tracts", force: :cascade do |t|
+    t.integer "county_id"
+    t.string "name"
+    t.string "vtd_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vtd_code", "county_id"], name: "index_census_tracts_on_vtd_code_and_county_id", unique: true
   end
 
   create_table "counties", force: :cascade do |t|
@@ -78,11 +87,11 @@ ActiveRecord::Schema.define(version: 20170925204457) do
   end
 
   create_table "precinct_aliases", force: :cascade do |t|
-    t.integer "census_precinct_id"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["census_precinct_id", "name"], name: "index_precinct_aliases_on_census_precinct_id_and_name", unique: true
+    t.integer "precinct_id"
+    t.index ["precinct_id"], name: "index_precinct_aliases_on_precinct_id"
   end
 
   create_table "precincts", force: :cascade do |t|
@@ -91,7 +100,6 @@ ActiveRecord::Schema.define(version: 20170925204457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
-    t.integer "census_precinct_id"
     t.index ["name", "county_id"], name: "index_precincts_on_name_and_county_id", unique: true
   end
 
@@ -111,13 +119,12 @@ ActiveRecord::Schema.define(version: 20170925204457) do
   add_foreign_key "candidates", "election_files"
   add_foreign_key "candidates", "offices"
   add_foreign_key "candidates", "parties"
-  add_foreign_key "census_precincts", "counties"
+  add_foreign_key "census_tracts", "counties"
   add_foreign_key "counties", "election_files"
   add_foreign_key "elections", "election_files"
   add_foreign_key "offices", "election_files"
   add_foreign_key "parties", "election_files"
-  add_foreign_key "precinct_aliases", "census_precincts"
-  add_foreign_key "precincts", "census_precincts"
+  add_foreign_key "precinct_aliases", "precincts"
   add_foreign_key "precincts", "counties"
   add_foreign_key "precincts", "election_files"
   add_foreign_key "results", "candidates"

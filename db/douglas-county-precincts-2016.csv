@@ -1,6 +1,6 @@
 name,precinctid,subprecinctid,census_names
 Lecompton Township Precinct 57 Part 3,57,3,Lecompton Township Precinct 57 S19
-Lawrence Precinct 41 Part 2,41,2
+Lawrence Precinct 41 Part 2,41,2,Lawrence Precinct 41 S3 H45|Lawrence Precinct 41 Exclave C|Lawrence Precinct 41 Exclave A
 Lawrence Precinct 42 Part 3,42,3
 Lawrence Precinct 42 Part 4,42,4
 Lawrence Precinct 42 Part 2,42,2
@@ -114,7 +114,7 @@ Lawrence Precinct 41 Part 4,41,4
 South Eudora Precinct 53 Part 5,53,5
 Lawrence Precinct 41 Part 3,41,3
 Lawrence Precinct 41 Part 1,41,1
-Lawrence Precinct 44 Part 2,44,2
+Lawrence Precinct 44 Part 2,44,2,Lawrence Precinct 44 H44
 Lawrence Precinct 46 Part 1,46,1,Lawrence Precinct 46 S3
 Grant Township Precinct 55 Part 3,55,3
 Lecompton Township Precinct 57 Part 4,57,4

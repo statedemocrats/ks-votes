@@ -41,22 +41,27 @@ namespace :precincts do
             Precinct.find_or_create_by(county_id: douglas.id, name: name) do |p|
               p.census_precinct_id = cp.id
             end
+            make_precinct_aliases(precinctid, subprecinctid, cp)
           end
         else
           puts "  ===>>>> no CensusPrecinct or census_names found <<<< '#{name}' #{precinctid} #{subprecinctid}"
-          next # can't do anything yet
         end
-      end
+        next
 
-      # name derivations
-      [
-        "Precinct #{precinctid}-#{subprecinctid}",
-        "Precinct #{precinctid} #{subprecinctid}",
-        "Prec #{precinctid}-#{subprecinctid}",
-        "Prec #{precinctid} #{subprecinctid}"
-      ].each do |n|
-        PrecinctAlias.find_or_create_by(census_precinct_id: cp.id, name: n)
+      else
+        make_precinct_aliases(precinctid, subprecinctid, cp)
       end
+    end
+  end
+
+  def make_precinct_aliases(precinctid, subprecinctid, cp)
+    [
+      "Precinct #{precinctid}-#{subprecinctid}",
+      "Precinct #{precinctid} #{subprecinctid}",
+      "Prec #{precinctid}-#{subprecinctid}",
+      "Prec #{precinctid} #{subprecinctid}"
+    ].each do |n|
+      PrecinctAlias.find_or_create_by(census_precinct_id: cp.id, name: n)
     end
   end
 end

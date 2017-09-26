@@ -122,7 +122,7 @@
   };
 
   info.update = function (props) {
-    this._div.innerHTML = '<h4>Precinct</h4>' +  (props ?  (props.NAME || props.PRECINCT) : 'Hover over a precinct');
+    this._div.innerHTML = '<h4>Precinct</h4>' +  (props ?  (props.NAME || props.PRECINCT || props.name) : 'Hover over a precinct');
   };
 
   info.addTo(map);

@@ -1,0 +1,2 @@
+class PrecinctAlias < ApplicationRecord
+end

@@ -129,8 +129,8 @@ precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv.gz')
 Zlib::GzipReader.open(precinct_names) do |gzip|
   csv = CSV.new(gzip)
   csv.each do |row|
-    name = row[0]
-    code = row[1]
+    name = row[0] # NAME
+    code = row[1] # VTD
     matches = code.match(/^20(\d\d\d)(\w+)$/)
     #puts "#{name} #{code} #{matches.to_a.inspect}"
     cty_fips = matches[1]
@@ -138,3 +138,4 @@ Zlib::GzipReader.open(precinct_names) do |gzip|
     CensusPrecinct.create(county_id: cty_map[cty_fips], code: precinct_code, name: name)
   end
 end
+

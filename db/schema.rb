@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170921213204) do
+ActiveRecord::Schema.define(version: 20170925204457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,14 @@ ActiveRecord::Schema.define(version: 20170921213204) do
     t.index ["name"], name: "index_parties_on_name", unique: true
   end
 
+  create_table "precinct_aliases", force: :cascade do |t|
+    t.integer "census_precinct_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["census_precinct_id", "name"], name: "index_precinct_aliases_on_census_precinct_id_and_name", unique: true
+  end
+
   create_table "precincts", force: :cascade do |t|
     t.string "name"
     t.integer "county_id"
@@ -108,6 +116,7 @@ ActiveRecord::Schema.define(version: 20170921213204) do
   add_foreign_key "elections", "election_files"
   add_foreign_key "offices", "election_files"
   add_foreign_key "parties", "election_files"
+  add_foreign_key "precinct_aliases", "census_precincts"
   add_foreign_key "precincts", "census_precincts"
   add_foreign_key "precincts", "counties"
   add_foreign_key "precincts", "election_files"

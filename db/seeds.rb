@@ -135,7 +135,9 @@ Zlib::GzipReader.open(precinct_names) do |gzip|
     #puts "#{name} #{code} #{matches.to_a.inspect}"
     cty_fips = matches[1]
     precinct_code = matches[2]
-    CensusTract.create(county_id: cty_map[cty_fips], vtd_code: precinct_code, name: name)
+    c = CensusTract.create(county_id: cty_map[cty_fips], vtd_code: precinct_code, name: name)
+    p = Precinct.create(county_id: cty_map[cty_fips], name: name, census_tract_id: c.id)
+    CensusPrecinct.create(census_tract_id: c.id, precinct_id: p.id)
   end
 end
 

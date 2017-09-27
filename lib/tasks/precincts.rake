@@ -26,10 +26,11 @@ namespace :precincts do
       #puts "'#{name}' #{precinctid} #{subprecinctid}"
 
       # find the authoritative census area
-      tract = CensusTract.find_by(name: name)
+      tract = CensusTract.find_by(name: name, county_id: douglas.id)
 
       if !tract && precinctid.to_i < 10
-        tract = CensusTract.find_by(name: name.gsub(/\d/, "0#{precinctid}"))
+        prefixed_name = name.gsub(/Precinct \d/, "Precinct 0#{precinctid}")
+        tract = CensusTract.find_by(name: prefixed_name, county_id: douglas.id)
       end
 
       if !tract
@@ -40,7 +41,7 @@ namespace :precincts do
             c_tract = CensusTract.find_by!(name: n, county_id: douglas.id)
             precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
             cp = CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: c_tract.id)
-            make_precinct_aliases(precinctid, subprecinctid, precinct.id)
+            make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
           end
         else
           puts "  ===>>>> no CensusPrecinct or census_names found <<<< '#{name}' #{precinctid} #{subprecinctid}"
@@ -49,24 +50,34 @@ namespace :precincts do
 
       else
         precinct = precinct_for_tract(tract)
-        make_precinct_aliases(precinctid, subprecinctid, precinct.id)
+        make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
       end
     end
   end
 
   def precinct_for_tract(tract)
-    Precinct.find_by(name: tract.name, county_id: tract.county_id) ||
+    tract.precinct ||
+      Precinct.find_by(name: tract.name, county_id: tract.county_id) ||
       tract.precincts.first ||
       Precinct.create(name: tract.name, county_id: tract.county_id)
   end
 
-  def make_precinct_aliases(precinctid, subprecinctid, precinct_id)
-    [
+  def make_precinct_aliases(name, precinctid, subprecinctid, precinct_id)
+    aliases = [
+      name.gsub(/^.+? Precinct/, 'Precinct'),
       "Precinct #{precinctid}-#{subprecinctid}",
       "Precinct #{precinctid} #{subprecinctid}",
       "Prec #{precinctid}-#{subprecinctid}",
       "Prec #{precinctid} #{subprecinctid}"
-    ].each do |n|
+    ]
+    if precinctid.to_i < 10 && precinctid.match(/^\d$/)
+      aliases << "Precinct 0#{precinctid}-#{subprecinctid}"
+      aliases << "Precinct 0#{precinctid} #{subprecinctid}"
+      aliases << "Prec 0#{precinctid}-#{subprecinctid}"
+      aliases << "Prec 0#{precinctid} #{subprecinctid}"
+    end
+
+    aliases.each do |n|
       PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: n)
     end
   end

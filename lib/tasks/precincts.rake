@@ -70,11 +70,17 @@ namespace :precincts do
       "Prec #{precinctid}-#{subprecinctid}",
       "Prec #{precinctid} #{subprecinctid}"
     ]
+    if subprecinctid.to_i == 1
+      aliases << "Precinct #{precinctid}"
+      aliases << "Prec #{precinctid}"
+    end
     if precinctid.to_i < 10 && precinctid.match(/^\d$/)
       aliases << "Precinct 0#{precinctid}-#{subprecinctid}"
       aliases << "Precinct 0#{precinctid} #{subprecinctid}"
+      aliases << "Precinct 0#{precinctid}" if subprecinctid.to_i == 1
       aliases << "Prec 0#{precinctid}-#{subprecinctid}"
       aliases << "Prec 0#{precinctid} #{subprecinctid}"
+      aliases << "Prec 0#{precinctid}" if subprecinctid.to_i == 1
     end
 
     aliases.each do |n|

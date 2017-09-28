@@ -1,7 +1,13 @@
 namespace :precincts do
   desc 'load precinct aliasese'
   task aliases: :environment do
-
+    my_tasks = [
+      'riley',
+      'douglas',
+    ]
+    my_tasks.each do |t|
+      Rake::Task["precincts:#{t}"].invoke
+    end
   end
 
   def read_csv_gz(filename, &block)
@@ -9,6 +15,20 @@ namespace :precincts do
       csv = CSV.new(gzip, headers: true)
       csv.each do |row|
         yield(row)
+      end
+    end
+  end
+
+  desc 'alias Riley county'
+  task riley: :environment do
+    riley = County.find_by(name: 'Riley')
+    riley.precincts.each do |p|
+      if m = p.name.match(/Ward (\d+) Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('W%02dP%02d', m[1], m[2]))
+      end
+      if m = p.name.match(/Manhattan Township Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan Township %s', m[1]))
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan twp %s', m[1]))
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170927173213) do
+ActiveRecord::Schema.define(version: 20170928214243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20170927173213) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "precinct_id"
+    t.index ["name", "precinct_id"], name: "index_precinct_aliases_on_name_and_precinct_id", unique: true
     t.index ["precinct_id"], name: "index_precinct_aliases_on_precinct_id"
   end
 

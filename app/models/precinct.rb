@@ -4,4 +4,8 @@ class Precinct < ApplicationRecord
   has_many :census_precincts
   has_many :census_tracts, through: :census_precincts
   has_many :precinct_aliases
+
+  def has_alias?(name)
+    precinct_aliases.pluck(:name).any? { |n| n == name }
+  end
 end

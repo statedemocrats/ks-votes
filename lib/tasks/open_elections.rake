@@ -136,7 +136,7 @@ namespace :openelections do
         p.election_file_id = election_file.id
       end
       if orig_precinct_name != precinct_name && !precinct.has_alias?(orig_precinct_name)
-        puts "Aliasing #{precinct_name} -> #{orig_precinct_name}"
+        puts "Aliasing #{orig_precinct_name} -> #{precinct_name}"
         PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id)
       end
       return precinct
@@ -165,6 +165,8 @@ namespace :openelections do
         next
       end
       votes = row['votes'] || row['vote'] || row['poll'] || row['total']
+
+      next if candidate.match(/^(Ballots Cast|Registered)$/)
 
       # these are often summary or informational rows,
       # unhelpfully, interspersed with actual precinct totals.

@@ -4,6 +4,10 @@ namespace :precincts do
     my_tasks = [
       'riley',
       'douglas',
+      'shawnee',
+      'sedgwick',
+      'johnson',
+      'wyandotte',
     ]
     my_tasks.each do |t|
       Rake::Task["precincts:#{t}"].invoke
@@ -31,6 +35,114 @@ namespace :precincts do
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan twp %s', m[1]))
       end
     end
+  end
+
+  desc 'alias Shawnee county'
+  task shawnee: :environment do
+    shawnee = County.find_by(name: 'Shawnee')
+    shawnee.precincts.each do |p|
+      if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
+      end
+    end
+    csv_file = File.join(Rails.root, 'db/shawnee-county-precincts-2016.csv')
+    CSV.foreach(csv_file, headers: true) do |row|
+      reported_name = row['reported']
+      vtd2010 = row['vtd']
+      bare_name = reported_name.gsub(/^\d+ /, '')
+      p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
+      unless p
+        puts "Not found: #{vtd2010 || bare_name} [#{reported_name}]"
+        next
+      end
+    end
+  end
+
+  desc 'Sedgwick'
+  task sedgwick: :environment do
+    sedgwick = County.find_by(name: 'Sedgwick')
+    sedgwick.precincts.each do |p|
+      if p.name == 'Afton'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AF")
+      elsif m = p.name.match(/^Attica Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AT#{m[1]}")
+      elsif m = p.name.match(/^Bel Aire Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "BA#{m[1]}")
+      elsif m = p.name.match(/^Delano Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "DL#{m[1]}")
+      elsif m = p.name.match(/^Derby Ward (\d+) Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "DB#{m[1].to_i}#{m[2].to_i}")
+      elsif p.name == 'Eagle'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "EA")
+      elsif p.name == 'Erie'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "ER")
+      elsif p.name == 'Garden Plain'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GA")
+      elsif p.name == 'Grand River'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GD")
+      elsif m = p.name.match(/^Grant Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GN#{m[1]}")
+      elsif p.name == 'Greeley'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GR")
+      elsif m = p.name.match(/^Gypsum Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GY#{m[1]}")
+      elsif m = p.name.match(/^Haysville Ward (\d+) Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "HA#{m[1].to_i}#{m[2].to_i}")
+      elsif m = p.name.match(/^Illinois Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "IL#{m[1]}")
+      elsif m = p.name.match(/^Kechi Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "KE#{m[1]}")
+      elsif p.name == 'Lincoln'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "LI")
+      elsif m = p.name.match(/^Minneha Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MI#{m[1]}")
+      elsif p.name == 'Morton'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MO")
+      elsif m = p.name.match(/^Mulvane City Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MV#{m[1]}")
+      elsif m = p.name.match(/^Ninnescah Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "NI")
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "NI#{m[1]}")
+      elsif m = p.name.match(/^Ohio Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "OH#{m[1]}")
+      elsif m = p.name.match(/^Park City Ward (\d+) Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "PC#{m[1].to_i}#{m[2].to_i}")
+      elsif m = p.name.match(/^Park Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "PA#{m[1]}")
+      elsif m = p.name.match(/^Payne Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "PY#{m[1]}")
+      elsif m = p.name.match(/^Riverside Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "RI#{m[1]}")
+      elsif m = p.name.match(/^Rockford Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "RO#{m[1]}")
+      elsif m = p.name.match(/^Salem Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "SA#{m[1]}")
+      elsif p.name == 'Sherman'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "SH")
+      elsif m = p.name.match(/^Union Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "UN#{m[1]}")
+      elsif m = p.name.match(/^Valley Center City Ward (\d+) Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VC#{m[1].to_i}#{m[2].to_i}")
+      elsif m = p.name.match(/^Valley Center Township/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VA")
+      elsif p.name == 'Viola'
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VI")
+      elsif m = p.name.match(/^Waco Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "WA#{m[1]}")
+      elsif m = p.name.match(/^Wichita Precinct (\d+)/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
+      end
+    end
+  end
+
+  desc 'Johnson'
+  task johnson: :environment do
+  end
+
+  desc 'Wyandotte'
+  task wyandotte: :environment do
   end
 
   desc 'load Douglas county'

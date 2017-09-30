@@ -166,7 +166,7 @@ namespace :openelections do
       end
       votes = row['votes'] || row['vote'] || row['poll'] || row['total']
 
-      next if candidate.match(/^(Ballots Cast|Registered)$/)
+      next if row['candidate'].match(/^(Ballots Cast|Registered)$/)
 
       # these are often summary or informational rows,
       # unhelpfully, interspersed with actual precinct totals.

@@ -54,7 +54,7 @@ namespace :precincts do
       bare_name = reported_name.gsub(/^\d+ /, '')
       p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
       unless p
-        puts "Not found: #{vtd2010 || bare_name} [#{reported_name}]"
+        puts "Shawnee precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"
         next
       end
     end

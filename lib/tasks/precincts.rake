@@ -40,13 +40,6 @@ namespace :precincts do
   desc 'alias Shawnee county'
   task shawnee: :environment do
     shawnee = County.find_by(name: 'Shawnee')
-    shawnee.precincts.each do |p|
-      if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
-      end
-    end
     csv_file = File.join(Rails.root, 'db/shawnee-county-precincts-2016.csv')
     CSV.foreach(csv_file, headers: true) do |row|
       reported_name = row['reported']
@@ -56,6 +49,14 @@ namespace :precincts do
       unless p
         puts "Shawnee precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"
         next
+      end
+      PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+    end
+    shawnee.precincts.each do |p|
+      if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
       end
     end
   end

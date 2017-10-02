@@ -35,6 +35,12 @@
       min-width: 50px;
       max-width: 30%;
     }
+    #find {
+    }
+    #iprecinct {
+      font-size: 14px;
+      padding: 4px;
+    }
     #county {
       color: #666;
     }
@@ -71,6 +77,10 @@
 Use the controls in the upper right corner of the map to toggle map layers on/off.
 </div>
 
+<div id='find'>
+ <input id='iprecinct' placeholder='Precinct Name'></input>
+ <button id='search'>Search</button>
+</div>
 <div id='map'></div>
 <div id='details'>
  <div id="county"></div>
@@ -84,10 +94,10 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly;
   var style = { weight: 1, opacity: 1, fillOpacity: 0 };
   var renderPolys = function(polys) {
-    console.log('clicked on', polys);
+    //console.log('clicked on', polys);
     $.each(polys, function(idx, poly) {
       var props = poly.feature.properties;
-      console.log(props);
+      //console.log(props);
       if (props['LSAD'] && props['LSAD'] == 'County') {
         $('#county').html('<h3>County</h3>' + props['NAME'] + ' [' + props['COUNTY'] + ']');
         //map.fitBounds(poly.getBounds());
@@ -221,6 +231,38 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   };
 
   info.addTo(map);
+
+  // search by precinct name
+  $('#search').on('click', function(e) {
+    var $str = $('#iprecinct').val();
+    if ($str.length == 0) return;
+
+    if (!map.hasLayer(precincts)) {
+      alert("You must select a Precinct layer from the control box in the upper right corner");
+      return;
+    }
+
+    //console.log($str);
+    var found = false;
+    precincts.eachLayer(function(layer) {
+      if (found) return;
+      var props = layer.feature.properties;
+      var name = (props.VTDNAME || props.NAME || props.PRECINCT || props.name);
+      if (name.match($str)) {
+        //console.log(layer);
+        renderPolys([layer]);
+        //layer.fireEvent('click');
+        map.fitBounds(layer.getLatLngs());
+        found = true;
+      }
+    });
+  });
+  // enter key listener
+  $("#iprecinct").keyup( function(e) {
+    if (e.keyCode == 13) {
+      $('#search').click();
+    }
+  });
 </script>
 
 

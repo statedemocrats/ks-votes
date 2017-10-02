@@ -35,6 +35,13 @@
       min-width: 50px;
       max-width: 30%;
     }
+    #find {
+      margin-left: 2em;
+    }
+    #precinct {
+      font-size: 14px;
+      padding: 4px;
+    }
     body {
       font-family: 'Open Sans', sans-serif;
     }
@@ -58,6 +65,10 @@
 <h1>Kansas Map</h1>
 </div>
 
+<div id='find'>
+ <input id='precinct'></input>
+ <button id='search'>Search</button>
+</div>
 <div id='map'></div>
 <div id='details'></div>
 
@@ -126,6 +137,32 @@
   };
 
   info.addTo(map);
+
+  // search by precinct name
+  $('#search').on('click', function(e) {
+    var $str = $('#precinct').val();
+    if ($str.length == 0) return;
+
+    //console.log($str);
+    var found = false;
+    geojson.eachLayer(function(layer) {
+      if (found) return;
+      var props = layer.feature.properties;
+      var name = (props.NAME || props.PRECINCT || props.name);
+      if (name.match($str)) {
+        //console.log(layer);
+        layer.fireEvent('click');
+        map.fitBounds(layer.getLatLngs());
+        found = true;
+      }
+    });
+  });
+  // enter key listener
+  $("#precinct").keyup( function(e) {
+    if (e.keyCode == 13) {
+      $('#search').click();
+    }
+  });
 </script>
 
 </body>

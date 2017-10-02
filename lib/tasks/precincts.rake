@@ -43,7 +43,7 @@ namespace :precincts do
     csv_file = File.join(Rails.root, 'db/shawnee-county-precincts-2016.csv')
     CSV.foreach(csv_file, headers: true) do |row|
       reported_name = row['reported']
-      vtd2010 = row['vtd']
+      vtd2010 = row['vtd_2010']
       bare_name = reported_name.gsub(/^\d+ /, '')
       p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
       unless p
@@ -57,6 +57,13 @@ namespace :precincts do
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
+      end
+      p.precinct_aliases.each do |pa|
+        if m = pa.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)
+          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
+          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
+          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
+        end
       end
     end
   end
@@ -140,6 +147,27 @@ namespace :precincts do
 
   desc 'Johnson'
   task johnson: :environment do
+    johnson = County.find_by(name: 'Johnson')
+    csv_file = File.join(Rails.root, 'db/johnson-county-precincts-2016.csv')
+    CSV.foreach(csv_file, headers: true) do |row|
+      reported_name = row['reported']
+      precinct = row['precinct'] or next
+      census_tract = row['census_tract'] or next
+      r = Precinct.find_by(name: reported_name, county_id: johnson.id)
+      p = Precinct.find_by(name: precinct, county_id: johnson.id)
+      c = CensusTract.find_by(name: census_tract, county_id: johnson.id)
+      if r
+        # precinct with the reported name already exists (yes JoCo is crazy for re-using names)
+        # when we see a result for this precinct, we want to use the precinct-as-reported
+      elsif p
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+      elsif c
+        p = Precinct.create(name: precinct, county_id: johnson.id)
+        CensusPrecinct.find_or_create_by(census_tract_id: c.id, precinct_id: p.id)
+      else
+        $stderr.puts "Failed to find Johnson County precinct or census_tract for #{reported_name}"
+      end
+    end
   end
 
   desc 'Wyandotte'

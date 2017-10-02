@@ -81,7 +81,7 @@ namespace :openelections do
     precinct_name = precinct_name.strip
       .gsub(/\ \ +/, ' ')
       .gsub(' / ', '/')
-      .gsub(/\btwp\b/, 'Township')
+      .gsub(/\btwp\b/i, 'Township')
 
     #puts "Orig precinct '#{orig_precinct_name}' cleaned '#{precinct_name}'"
 
@@ -100,13 +100,13 @@ namespace :openelections do
       # no alias? look for common permutations
       elsif county_tracts.dig(county.name, "#{precinct_name} Township")
         precinct_name += ' Township'
-      elsif county_tracts.dig(county.name, precinct_name.gsub(/\btwp\b/, 'Township'))
-        precinct_name.gsub!(/\btwp\b/, 'Township')
-      elsif precinct_name.match(/twp$/)
-        maybe_precinct_name = precinct_name.sub(/twp$/, 'Township')
+      elsif county_tracts.dig(county.name, precinct_name.gsub(/\btwp\b/i, 'Township'))
+        precinct_name.gsub!(/\btwp\b/i, 'Township')
+      elsif precinct_name.match(/twp$/i)
+        maybe_precinct_name = precinct_name.sub(/twp$/i, 'Township')
         precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-      elsif precinct_name.match(/twp \d+$/)
-        maybe_precinct_name = precinct_name.sub(/tmp (\d+)$/, 'Township Precinct \1')
+      elsif precinct_name.match(/twp [\-\d]+$/)
+        maybe_precinct_name = precinct_name.sub(/twp ([\d\-]+)$/i, 'Township Precinct \1')
         precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
       elsif precinct_name.match(/\w, \w/)
         parts = precinct_name.split(', ')

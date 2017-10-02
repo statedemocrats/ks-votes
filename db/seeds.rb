@@ -126,7 +126,7 @@ end
 
 # load 2012 census.gov official precinct names
 precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv')
-CSV.foreac(precinct_names) do |row|
+CSV.foreach(precinct_names) do |row|
   name = row[0] # NAME
   code = row[1] # VTD
   matches = code.match(/^20(\d\d\d)(\w+)$/)

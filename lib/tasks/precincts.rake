@@ -47,7 +47,7 @@ namespace :precincts do
       bare_name = reported_name.gsub(/^\d+ /, '')
       p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
       unless p
-        puts "Shawnee precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"
+        puts "[Shawnee] precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"
         next
       end
       PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
@@ -162,22 +162,50 @@ namespace :precincts do
         # precinct with the reported name already exists (yes JoCo is crazy for re-using names)
         # when we see a result for this precinct, we want to use the precinct-as-reported
         # TODO
-        puts "Found existing JoCo precinct for #{reported_name}"
+        puts "[Johnson] Found existing precinct for #{reported_name}"
       elsif p
         pa = PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
-        puts "Created JoCo PrecinctAlias #{pa.id} for #{reported_name} -> #{precinct}"
+        puts "[Johnson] Created PrecinctAlias #{pa.id} for #{reported_name} -> #{precinct}"
       elsif c
         p = Precinct.create(name: reported_name, county_id: johnson.id)
         cp = CensusPrecinct.find_or_create_by(census_tract_id: c.id, precinct_id: p.id)
-        puts "Created JoCo Precinct #{reported_name} and CensusPrecinct #{c.id} for Tract #{census_tract}"
+        puts "[Johnson] Created Precinct #{reported_name} and CensusPrecinct #{c.id} for Tract #{census_tract}"
       else
-        $stderr.puts "Failed to find Johnson County precinct or census_tract for #{reported_name}"
+        $stderr.puts "[Johnson] Failed to find Precinct or CensusTract for #{reported_name}"
       end
     end
   end
 
   desc 'Wyandotte'
   task wyandotte: :environment do
+    csv_file = File.join(Rails.root, 'db/wyandotte-county-precincts-2016.csv')
+    wyandotte = County.find_by(name: 'Wyandotte')
+    city_abbrs = {
+      'Kansas City' => 'KC',
+      'Lake Quivira' => 'QC',
+      'Delaware Township' => 'DE',
+      'Edwardsville' => 'ED',
+      'Bonner Springs' => 'BS',
+    }
+    CSV.foreach(csv_file, headers: true) do |row|
+      vtd_code = row['VTD_S']
+      ward = row['WARD']
+      precinct = row['PRECINCT']
+      city = row['CITY']
+      abbr = city_abbrs[city] or fail "Wyandotte - no city abbreviation for #{city}"
+      short = sprintf("%s %s-%s", abbr, ward, precinct)
+      name = sprintf("%s Ward %d Precinct %02d", city, ward.to_i, precinct.to_i)
+      if p = Precinct.find_by(name: name, county_id: wyandotte.id)
+        pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
+        puts "[Wyandotte] Alias #{short} -> #{name}"
+      elsif ct = CensusTract.find_by(vtd_code: vtd_code, county_id: wyandotte.id)
+        p = ct.precinct
+        pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
+        puts "[Wyandotte] Alias #{short} -> #{p.name} (via CensusTract #{vtd_code})"
+      else
+        puts "[Wyandotte] cannot locate Precinct #{name} or CensusTract #{vtd_code} for #{row.inspect}"
+      end
+    end
   end
 
   desc 'load Douglas county'

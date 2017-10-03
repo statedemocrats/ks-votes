@@ -168,6 +168,8 @@ namespace :openelections do
       e.date = el_dt.to_date
     end
     election_file = ElectionFile.find_or_create_by(name: File.basename(file))
+    county = nil # will be the same for entire file, find it once below.
+
     CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
       Rails.logger.debug('new row')
       pp(row) if debug?
@@ -187,7 +189,7 @@ namespace :openelections do
         next
       end
 
-      county = County.where('lower(name) = ?', row['county'].downcase).first_or_create(
+      county ||= County.where('lower(name) = ?', row['county'].downcase).first_or_create(
         name: row['county'], election_file_id: election_file.id
       )
 

@@ -16,7 +16,7 @@
  <li><a href="kansas-votes.html">Combined 2012 County, Legislative, Precinct</a></li>
 
 <?php
-$files = scandir($_SERVER['DOCUMENT_ROOT']);
+$files = scandir(dirname($_SERVER['SCRIPT_FILENAME']));
 $geojson_files = preg_grep('/^.+-county-precincts-.+\.geojson$/', $files);
 //print_r($geojson_files);
 foreach ($geojson_files as $f) {

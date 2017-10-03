@@ -26,7 +26,6 @@
 <nav class="menu">
  <ul>
   <li><a href="./">Home</a></li>
-  <li><a href="maps.php">All Maps</a></li>
  </ul>
 </nav>
 

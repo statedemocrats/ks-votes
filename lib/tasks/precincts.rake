@@ -151,19 +151,25 @@ namespace :precincts do
     csv_file = File.join(Rails.root, 'db/johnson-county-precincts-2016.csv')
     CSV.foreach(csv_file, headers: true) do |row|
       reported_name = row['reported']
-      precinct = row['precinct'] or next
-      census_tract = row['census_tract'] or next
+      precinct = row['precinct']
+      census_tract = row['census_tract']
+      next unless (precinct || census_tract)
+      #puts row.inspect
       r = Precinct.find_by(name: reported_name, county_id: johnson.id)
       p = Precinct.find_by(name: precinct, county_id: johnson.id)
       c = CensusTract.find_by(name: census_tract, county_id: johnson.id)
       if r
         # precinct with the reported name already exists (yes JoCo is crazy for re-using names)
         # when we see a result for this precinct, we want to use the precinct-as-reported
+        # TODO
+        puts "Found existing JoCo precinct for #{reported_name}"
       elsif p
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+        pa = PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+        puts "Created JoCo PrecinctAlias #{pa.id} for #{reported_name} -> #{precinct}"
       elsif c
-        p = Precinct.create(name: precinct, county_id: johnson.id)
-        CensusPrecinct.find_or_create_by(census_tract_id: c.id, precinct_id: p.id)
+        p = Precinct.create(name: reported_name, county_id: johnson.id)
+        cp = CensusPrecinct.find_or_create_by(census_tract_id: c.id, precinct_id: p.id)
+        puts "Created JoCo Precinct #{reported_name} and CensusPrecinct #{c.id} for Tract #{census_tract}"
       else
         $stderr.puts "Failed to find Johnson County precinct or census_tract for #{reported_name}"
       end

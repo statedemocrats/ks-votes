@@ -167,10 +167,11 @@ namespace :openelections do
       votes = row['votes'] || row['vote'] || row['poll'] || row['total']
 
       next if row['candidate'].match(/^(Ballots Cast|Registered)$/)
+      next if row['candidate'].match(/^(Blank Votes|Over Votes)$/)
 
       # these are often summary or informational rows,
       # unhelpfully, interspersed with actual precinct totals.
-      if !row['precinct'] || !votes # && !row['office']
+      if !row['precinct'] || !votes || votes.match(/\D/) # && !row['office']
         puts "Missing precinct or votes in row: #{row.inspect}"
         next
       end
@@ -182,6 +183,17 @@ namespace :openelections do
       # find a reasonable precinct name
       precinct_name = row['precinct']
       precinct = precinct_for_county(county, precinct_name, election_file)
+
+      # FIXME ugly hack for what seems to be a JoCo re-use of name for different precincts
+      if county.name == 'Johnson'
+        if el_dt.year.to_i >= 2016
+          if precinct_name == 'Leawood 2-07'
+            precinct = Precinct.find_by!(name: 'Leawood 3-01', county_id: county.id)
+          elsif precinct_name == 'Leawood 3-01'
+            precinct = Precinct.find_by!(name: 'Leawood 3-04 H20', county_id: county.id)
+          end
+        end
+      end 
 
       puts "raw #{row['precinct']} baked #{precinct_name} precinct_id #{precinct.id}" if debug?
 

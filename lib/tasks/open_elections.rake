@@ -51,7 +51,7 @@ namespace :openelections do
         csv << row.headers unless csv_has_headers
         csv_has_headers = true
         votes = row['votes'] || row['vote'] || row['poll'] || row['total']
-        if !row['precinct'] || !votes
+        if !row['precinct'] || !votes || votes.match(/\D/)
           puts "Missing votes or precinct: #{row.inspect}"
           next
         end
@@ -88,6 +88,9 @@ namespace :openelections do
     # check cache of tract names
     census_tract_id = county_tracts.dig(county.name, precinct_name)
 
+    # we might find it along the way
+    precinct = nil
+
     # if we can't find an exact name match on precinct and census_tract,
     # we'll start to permutate the name to try and find a match.
     if !census_tract_id
@@ -96,6 +99,14 @@ namespace :openelections do
       if pa && pa.precinct.county_id == county.id
         precinct_name = pa.precinct.name
         census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
+        precinct = pa.precinct
+
+      elsif pa = PrecinctAlias.find_by(name: precinct_name)
+        #puts "Found PrecinctAlias for #{precinct_name}"
+        if pa.precinct.county_id == county.id
+          census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
+          precinct = pa.precinct
+        end
       
       # no alias? look for common permutations
       elsif county_tracts.dig(county.name, "#{precinct_name} Township")
@@ -132,7 +143,7 @@ namespace :openelections do
 
     # finally, create a Precinct if we must.
     if !census_tract_id
-      precinct = Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
+      precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
         p.election_file_id = election_file.id
       end
       if orig_precinct_name != precinct_name && !precinct.has_alias?(orig_precinct_name)
@@ -144,7 +155,7 @@ namespace :openelections do
       # census_tract.name == precinct_name but Precinct might not yet exist.
       # NOTE we do NOT pass in census_precinct_id to create a new Precinct since we trust it is
       # *NOT* the primary precinct for the census tract (in which case we would have found it above).
-      precinct = Precinct.find_or_create_by(county_id: county.id, name: precinct_name)
+      precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name)
       CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: census_tract_id)
       return precinct
     end
@@ -171,7 +182,7 @@ namespace :openelections do
 
       # these are often summary or informational rows,
       # unhelpfully, interspersed with actual precinct totals.
-      if !row['precinct'] || !votes || votes.match(/\D/) # && !row['office']
+      if !row['precinct'] || !votes # && !row['office']
         puts "Missing precinct or votes in row: #{row.inspect}"
         next
       end

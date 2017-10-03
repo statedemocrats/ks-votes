@@ -239,7 +239,7 @@ namespace :precincts do
             make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
           end
         else
-          puts "  ===>>>> no CensusPrecinct or census_names found <<<< '#{name}' #{precinctid} #{subprecinctid}"
+          puts "[Douglas] no CensusPrecinct or census_names found for #{row.inspect}"
         end
         next
 

@@ -161,6 +161,11 @@ namespace :openelections do
     end
   end
 
+  def find_county(name)
+    @_counties ||= {}
+    @_counties[name.downcase] ||= County.where('lower(name) = ?', name.downcase).first
+  end
+
   def load_csv_file(file)
     el_date, state, which, cty, prc = File.basename(file).split('__')
     el_dt = DateTime.strptime("#{el_date}T000000", '%Y%m%dT%H%M%S')
@@ -168,7 +173,6 @@ namespace :openelections do
       e.date = el_dt.to_date
     end
     election_file = ElectionFile.find_or_create_by(name: File.basename(file))
-    county = nil # will be the same for entire file, find it once below.
 
     CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
       Rails.logger.debug('new row')
@@ -189,9 +193,7 @@ namespace :openelections do
         next
       end
 
-      county ||= County.where('lower(name) = ?', row['county'].downcase).first_or_create(
-        name: row['county'], election_file_id: election_file.id
-      )
+      county = find_county(row['county'].downcase)
 
       # find a reasonable precinct name
       precinct_name = row['precinct']

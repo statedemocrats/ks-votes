@@ -14,7 +14,7 @@ into a normalized database for further analysis.
  % git clone git@github.com:statedemocrats/ks-votes.git
  % cd ks-votes
  % bundle install
- % rake db:setup
+ % rake db:setup map:setup
 ```
 
 ## Loading data

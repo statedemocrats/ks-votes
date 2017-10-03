@@ -23,8 +23,15 @@
 </head>
 <body>
 
+<nav class="menu">
+ <ul>
+  <li><a href="./">Home</a></li>
+  <li><a href="maps.php">All Maps</a></li>
+ </ul>
+</nav>
+
 <div id='about'>
-<h1>Kansas Map</h1>
+<h1>Kansas Map <?php echo htmlspecialchars($_GET['f']) ?></h1>
 </div>
 
 <div id='find'>

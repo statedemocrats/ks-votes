@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20171004023214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "precinct_id"
+    t.index "lower((name)::text)", name: "precinct_aliases_lower_name_idx"
     t.index ["name", "precinct_id"], name: "index_precinct_aliases_on_name_and_precinct_id", unique: true
     t.index ["precinct_id"], name: "index_precinct_aliases_on_precinct_id"
   end

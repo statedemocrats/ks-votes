@@ -54,16 +54,24 @@ namespace :precincts do
     end
     shawnee.precincts.each do |p|
       if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.upcase)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
-      end
-      p.precinct_aliases.each do |pa|
-        if m = pa.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)
-          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
-          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
-          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
+        aliases = [
+          p.name.upcase,
+          "Ward #{m[1]} Precinct #{m[2]}",
+          "Ward #{m[1].to_i} Precinct #{m[2].to_i}",
+          sprintf("W %d P %d", m[1].to_i, m[2].to_i),
+          sprintf("W %d P %02d", m[1].to_i, m[2].to_i),
+          sprintf("W %02d P %d", m[1].to_i, m[2].to_i),
+          sprintf("W %02d P %02d", m[1].to_i, m[2].to_i),
+        ]
+        if m[1].to_i < 10 || m[2].to_i < 10
+          aliases << sprintf("Topeka Ward %02d Precinct %02d", m[1].to_i, m[2].to_i)
+          aliases << sprintf("Topeka Ward %d Precinct %02d", m[1].to_i, m[2].to_i)
+          aliases << sprintf("Topeka Ward %02d Precinct %d", m[1].to_i, m[2].to_i)
+          aliases << sprintf("Topeka Ward %d Precinct %d", m[1].to_i, m[2].to_i)
+        end
+        aliases.each do |n|
+          next if n == p.name
+          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: n)
         end
       end
     end

@@ -54,6 +54,7 @@ namespace :precincts do
     end
     shawnee.precincts.each do |p|
       if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.upcase)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1]} Precinct #{m[2]}")
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "Ward #{m[1].to_i} Precinct #{m[2].to_i}")
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("W %02d P %02d", m[1].to_i, m[2].to_i))
@@ -72,6 +73,7 @@ namespace :precincts do
   task sedgwick: :environment do
     sedgwick = County.find_by(name: 'Sedgwick')
     sedgwick.precincts.each do |p|
+      PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.upcase)
       if p.name == 'Afton'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AF")
       elsif m = p.name.match(/^Attica Precinct (\d+)/)
@@ -195,13 +197,22 @@ namespace :precincts do
       abbr = city_abbrs[city] or fail "Wyandotte - no city abbreviation for #{city}"
       short = sprintf("%s %s-%s", abbr, ward, precinct)
       name = sprintf("%s Ward %d Precinct %02d", city, ward.to_i, precinct.to_i)
-      if p = Precinct.find_by(name: name, county_id: wyandotte.id)
+      alt_name = sprintf("%s Ward %02d Precinct %02d", city, ward.to_i, precinct.to_i)
+      if p = Precinct.find_by(name: [name, alt_name], county_id: wyandotte.id)
         pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
         puts "[Wyandotte] Alias #{short} -> #{name}"
+        if p.name != name
+          pa = PrecinctAlias.find_or_create_by(name: alt_name, precinct_id: p.id)
+          puts "[Wyandotte] Alias #{alt_name} -> #{name}"
+        end
       elsif ct = CensusTract.find_by(vtd_code: vtd_code, county_id: wyandotte.id)
         p = ct.precinct
         pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
         puts "[Wyandotte] Alias #{short} -> #{p.name} (via CensusTract #{vtd_code})"
+        if alt_name != name
+          pa = PrecinctAlias.find_or_create_by(name: alt_name, precinct_id: p.id)
+          puts "[Wyandotte] Alias #{alt_name} -> #{name}"
+        end
       else
         puts "[Wyandotte] cannot locate Precinct #{name} or CensusTract #{vtd_code} for #{row.inspect}"
       end

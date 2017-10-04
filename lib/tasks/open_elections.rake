@@ -69,96 +69,11 @@ namespace :openelections do
   end
 
   def county_tracts
-    @_tracts ||= begin
-      County.all.map { |cty| [cty.name, cty.census_tracts.pluck(:name, :id).to_h ] }.to_h
-    end
+    @_tracts ||= precinct_finder.county_tracts
   end
 
-  def precinct_for_county(county, precinct_name, election_file)
-    orig_precinct_name = precinct_name
-
-    # common clean up first since we'll create from this string
-    precinct_name = precinct_name.strip
-      .gsub(/\ \ +/, ' ')
-      .gsub(' / ', '/')
-      .gsub(/\btwp\b/i, 'Township')
-
-    #puts "Orig precinct '#{orig_precinct_name}' cleaned '#{precinct_name}'"
-
-    # check cache of tract names
-    census_tract_id = county_tracts.dig(county.name, precinct_name)
-
-    # we might find it along the way
-    precinct = nil
-
-    # if we can't find an exact name match on precinct and census_tract,
-    # we'll start to permutate the name to try and find a match.
-    if !census_tract_id
-      # first, look in the known aliases
-      pa = PrecinctAlias.find_by(name: orig_precinct_name)
-      if pa && pa.precinct.county_id == county.id
-        precinct_name = pa.precinct.name
-        census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
-        precinct = pa.precinct
-
-      elsif pa = PrecinctAlias.find_by(name: precinct_name)
-        #puts "Found PrecinctAlias for #{precinct_name}"
-        if pa.precinct.county_id == county.id
-          census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
-          precinct = pa.precinct
-        end
-      
-      # no alias? look for common permutations
-      elsif county_tracts.dig(county.name, "#{precinct_name} Township")
-        precinct_name += ' Township'
-      elsif county_tracts.dig(county.name, precinct_name.gsub(/\btwp\b/i, 'Township'))
-        precinct_name.gsub!(/\btwp\b/i, 'Township')
-      elsif precinct_name.match(/twp$/i)
-        maybe_precinct_name = precinct_name.sub(/twp$/i, 'Township')
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-      elsif precinct_name.match(/twp [\-\d]+$/)
-        maybe_precinct_name = precinct_name.sub(/twp ([\d\-]+)$/i, 'Township Precinct \1')
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-      elsif precinct_name.match(/\w, \w/)
-        parts = precinct_name.split(', ')
-        maybe_precinct_name = parts[1] + ' ' + parts[0]
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-      elsif precinct_name.match(/^[A-Z\d\ ]+$/)
-        maybe_precinct_name = precinct_name.titlecase
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-      elsif precinct_name.match(/\ 0(\d)/)
-        # strip leading zero
-        maybe_precinct_name = precinct_name.gsub(/\ 0(\d)/, ' \1')
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-
-      # MUST be last
-      elsif precinct_name.match(/Precinct/)
-        maybe_precinct_name = precinct_name.sub(/^.+?Precinct/, 'Precinct')
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-      end 
-    end 
-
-    # if we still don't have a census_tract, try again with the altered name.
-    census_tract_id ||= county_tracts.dig(county.name, precinct_name) || nil
-
-    # finally, create a Precinct if we must.
-    if !census_tract_id
-      precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
-        p.election_file_id = election_file.id
-      end
-      if orig_precinct_name != precinct_name && !precinct.has_alias?(orig_precinct_name)
-        puts "Aliasing #{orig_precinct_name} -> #{precinct_name}"
-        PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id)
-      end
-      return precinct
-    else
-      # census_tract.name == precinct_name but Precinct might not yet exist.
-      # NOTE we do NOT pass in census_precinct_id to create a new Precinct since we trust it is
-      # *NOT* the primary precinct for the census tract (in which case we would have found it above).
-      precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name)
-      CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: census_tract_id)
-      return precinct
-    end
+  def precinct_finder
+    @_finder ||= PrecinctFinder.new
   end
 
   def find_county(name)
@@ -197,7 +112,7 @@ namespace :openelections do
 
       # find a reasonable precinct name
       precinct_name = row['precinct']
-      precinct = precinct_for_county(county, precinct_name, election_file)
+      precinct = precinct_finder.precinct_for_county(county, precinct_name, election_file)
 
       # FIXME ugly hack for what seems to be a JoCo re-use of name for different precincts
       if county.name == 'Johnson'

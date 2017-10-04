@@ -51,6 +51,7 @@ namespace :precincts do
         next
       end
       PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+      PrecinctAlias.find_or_create_by(precinct_id: p.id, name: bare_name) if bare_name != reported_name
     end
     shawnee.precincts.each do |p|
       if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)

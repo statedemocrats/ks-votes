@@ -66,18 +66,13 @@ class PrecinctFinder
     # we'll start to permutate the name to try and find a match.
     if !census_tract_id
       # first, look in the known aliases
-      pa = PrecinctAlias.find_by(name: orig_precinct_name)
-      if pa && pa.precinct.county_id == county.id
+      pa = PrecinctAlias.includes(:precinct) \
+        .where(precincts: { county_id: county.id }) \
+        .find_by(name: [precinct_name, orig_precinct_name])
+      if pa
         precinct_name = pa.precinct.name
         census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
         precinct = pa.precinct
-
-      elsif pa = PrecinctAlias.find_by(name: precinct_name)
-        #puts "Found PrecinctAlias for #{precinct_name}"
-        if pa.precinct.county_id == county.id
-          census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
-          precinct = pa.precinct
-        end
 
       # no alias? look for common permutations
       else

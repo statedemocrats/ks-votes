@@ -73,8 +73,29 @@ namespace :precincts do
         aliases.each do |n|
           next if n == p.name
           PrecinctAlias.find_or_create_by(precinct_id: p.id, name: n)
+          puts "[Shawnee] Alias #{n} -> #{p.name}"
         end
       end
+    end
+  end
+
+  def sedgwick_palias_formatted(precinct_id, name, abbr, matches)
+    aliases = []
+    if matches[2]
+      w = matches[1].to_i
+      p = matches[2].to_i
+      aliases << sprintf("#{abbr}%02d%02d", w, p)
+      aliases << sprintf("#{abbr}%d%d", w, p)
+      aliases << name.gsub("Ward #{w} Precinct #{p}", sprintf("Ward %02d Precinct %02d", w, p))
+    else
+      p = matches[1].to_i
+      aliases << sprintf("#{abbr}%02d", p)
+      aliases << sprintf("#{abbr}%d", p)
+      aliases << name.gsub(matches[1], sprintf("%02d", p))
+    end
+    aliases.each do |n|
+      PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: n)
+      puts "[Sedgwick] Alias #{n} -> #{name}"
     end
   end
 
@@ -86,13 +107,13 @@ namespace :precincts do
       if p.name == 'Afton'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AF")
       elsif m = p.name.match(/^Attica Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AT#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'AT', m)
       elsif m = p.name.match(/^Bel Aire Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "BA#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'BA', m)
       elsif m = p.name.match(/^Delano Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "DL#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'DL', m)
       elsif m = p.name.match(/^Derby Ward (\d+) Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "DB#{m[1].to_i}#{m[2].to_i}")
+        sedgwick_palias_formatted(p.id, p.name, 'DB', m)
       elsif p.name == 'Eagle'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "EA")
       elsif p.name == 'Erie'
@@ -102,54 +123,54 @@ namespace :precincts do
       elsif p.name == 'Grand River'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GD")
       elsif m = p.name.match(/^Grant Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GN#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'GN', m)
       elsif p.name == 'Greeley'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GR")
       elsif m = p.name.match(/^Gypsum Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GY#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'GY', m)
       elsif m = p.name.match(/^Haysville Ward (\d+) Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "HA#{m[1].to_i}#{m[2].to_i}")
+        sedgwick_palias_formatted(p.id, p.name, 'HA', m)
       elsif m = p.name.match(/^Illinois Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "IL#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'IL', m)
       elsif m = p.name.match(/^Kechi Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "KE#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'KE', m)
       elsif p.name == 'Lincoln'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "LI")
       elsif m = p.name.match(/^Minneha Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MI#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'MI', m)
       elsif p.name == 'Morton'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MO")
       elsif m = p.name.match(/^Mulvane City Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MV#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'MV', m)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("Mulvane Precinct %02f", m[1].to_i))
       elsif m = p.name.match(/^Ninnescah Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "NI")
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "NI#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'NI', m)
       elsif m = p.name.match(/^Ohio Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "OH#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'OH', m)
       elsif m = p.name.match(/^Park City Ward (\d+) Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "PC#{m[1].to_i}#{m[2].to_i}")
+        sedgwick_palias_formatted(p.id, p.name, 'PC', m)
       elsif m = p.name.match(/^Park Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "PA#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'PA', m)
       elsif m = p.name.match(/^Payne Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "PY#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'PY', m)
       elsif m = p.name.match(/^Riverside Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "RI#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'RI', m)
       elsif m = p.name.match(/^Rockford Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "RO#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'RO', m)
       elsif m = p.name.match(/^Salem Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "SA#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'SA', m)
       elsif p.name == 'Sherman'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "SH")
       elsif m = p.name.match(/^Union Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "UN#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'UN', m)
       elsif m = p.name.match(/^Valley Center City Ward (\d+) Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VC#{m[1].to_i}#{m[2].to_i}")
+        sedgwick_palias_formatted(p.id, p.name, 'VC', m)
       elsif m = p.name.match(/^Valley Center Township/)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VA")
       elsif p.name == 'Viola'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VI")
       elsif m = p.name.match(/^Waco Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "WA#{m[1]}")
+        sedgwick_palias_formatted(p.id, p.name, 'WA', m)
       elsif m = p.name.match(/^Wichita Precinct (\d+)/)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
       end
@@ -226,6 +247,12 @@ namespace :precincts do
         puts "[Wyandotte] cannot locate Precinct #{name} or CensusTract #{vtd_code} for #{row.inspect}"
       end
     end
+
+    # odds and ends
+    qc = Precinct.find_by!(name: 'Lake Quivira City 1', county_id: wyandotte.id)
+    PrecinctAlias.find_or_create_by(name: 'Lake Quivira City Precinct 1', precinct_id: qc.id)
+    PrecinctAlias.find_or_create_by(name: 'Lake Quivira City Precinct 01', precinct_id: qc.id)
+
   end
 
   desc 'load Douglas county'

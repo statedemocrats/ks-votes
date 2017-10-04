@@ -201,7 +201,7 @@ namespace :precincts do
       if p = Precinct.find_by(name: [name, alt_name], county_id: wyandotte.id)
         pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
         puts "[Wyandotte] Alias #{short} -> #{name}"
-        if p.name != name
+        if p.name != alt_name
           pa = PrecinctAlias.find_or_create_by(name: alt_name, precinct_id: p.id)
           puts "[Wyandotte] Alias #{alt_name} -> #{name}"
         end

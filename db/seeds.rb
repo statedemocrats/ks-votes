@@ -117,6 +117,7 @@ ks_counties = [
 "KS,20,209,Wyandotte County,H6",
 ]
 
+puts "Loading Counties"
 cty_map = {}
 ks_counties.each do |line|
   state, state_fips, cty_fips, name, fips_class = line.split(',')
@@ -124,17 +125,24 @@ ks_counties.each do |line|
   cty_map[cty_fips] = cty.id
 end
 
-# load 2012 census.gov official precinct names
-precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv')
-CSV.foreach(precinct_names) do |row|
-  name = row[0] # NAME
-  code = row[1] # VTD
-  matches = code.match(/^20(\d\d\d)(\w+)$/)
-  #puts "#{name} #{code} #{matches.to_a.inspect}"
-  cty_fips = matches[1]
-  precinct_code = matches[2]
-  c = CensusTract.create(county_id: cty_map[cty_fips], vtd_code: precinct_code, name: name)
-  p = Precinct.create(county_id: cty_map[cty_fips], name: name, census_tract_id: c.id)
-  CensusPrecinct.create(census_tract_id: c.id, precinct_id: p.id)
+puts "Loading 2012 Census tracts"
+# run in a single transaction for speed.
+CensusTract.transaction do
+  precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv')
+  CSV.foreach(precinct_names) do |row|
+    name = row[0] # NAME
+    code = row[1] # VTD
+    matches = code.match(/^20(\d\d\d)(\w+)$/)
+    #puts "#{name} #{code} #{matches.to_a.inspect}"
+    cty_fips = matches[1]
+    precinct_code = matches[2]
+    cty_id = cty_map[cty_fips]
+    # not .create() because we want to skip validations for speed.
+    c = CensusTract.new(county_id: cty_id, vtd_code: precinct_code, name: name)
+    c.save!(validate: false)
+    p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
+    p.save!(validate: false)
+    #CensusPrecinct.create(census_tract_id: c.id, precinct_id: p.id)
+  end
 end
 

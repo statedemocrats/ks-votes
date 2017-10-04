@@ -7,6 +7,10 @@ class Precinct < ApplicationRecord
   has_many :results
 
   def has_alias?(name)
-    precinct_aliases.pluck(:name).any? { |n| n == name }
+    alias_names.any? { |n| n == name }
+  end
+
+  def alias_names
+    precinct_aliases.pluck(:name)
   end
 end

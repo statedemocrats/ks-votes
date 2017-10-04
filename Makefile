@@ -12,4 +12,7 @@ clean:
 joco2016:
 	rake openelections:load_file FILE=../openelections-data-ks/2016/20161108__ks__general__johnson__precinct.csv
 
+wyandotte2016:
+	rake openelections:load_file FILE=../openelections-data-ks/2016/20161108__ks__general__wyandotte__precinct.csv
+
 .PHONY: 2012

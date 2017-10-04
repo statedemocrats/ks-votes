@@ -68,7 +68,7 @@ class PrecinctFinder
       # first, look in the known aliases
       pa = PrecinctAlias.includes(:precinct) \
         .where(precincts: { county_id: county.id }) \
-        .where('lower(precinct_aliases.name) IN (?)', [precinct_name, orig_precinct_name]).first
+        .where('lower(precinct_aliases.name) IN (?)', [precinct_name.downcase, orig_precinct_name.downcase]).first
       if pa
         precinct_name = pa.precinct.name
         census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.

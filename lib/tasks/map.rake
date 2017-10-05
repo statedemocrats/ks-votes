@@ -6,4 +6,13 @@ namespace :map do
     precincts_plain = precincts_geojson.gsub('.gz', '')
     system("gunzip -c #{precincts_geojson} > #{precincts_plain}")
   end
+
+  desc 'Apply Geosha tagging to a geojson file'
+  task geosha: :environment do
+    in_file = ENV['IN_FILE'] or fail "IN_FILE required"
+    out_file = ENV['OUT_FILE'] or fail "OUT_FILE required"
+    geosha = Geosha.new(geojson: in_file)
+    geosha.create_digests
+    geosha.write(out_file)
+  end
 end

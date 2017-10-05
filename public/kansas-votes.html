@@ -86,6 +86,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
       }
       if (props['VTDNAME']) {
         $('#precinct').html('<h3>Precinct</h3>' + props['VTDNAME'] + ' [' + props['VTD_S'] + ']');
+        $('#precinct').append(JSON.stringify(props, null, '<br/>'));
         poly.setStyle({ weight: 3, color: '#222', fillOpacity: 0.1 });
         if (lastPrecinct && lastPrecinct != poly) {
           precincts.resetStyle(lastPrecinct);
@@ -145,7 +146,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   counties = L.geoJson.ajax('ks-counties.geojson', { style: style, onEachFeature: countyEach });
   state_leg_lower = L.geoJson.ajax('cb_2016_20_sldl_500k.geojson', opts);
   state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', opts);
-  precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-min.geojson', opts);
+  precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson', opts);
 
   var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +

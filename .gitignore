@@ -23,4 +23,4 @@
 .byebug_history
 
 # map artifacts
-/public/kansas-state-voting-precincts-2012-min.geojson
+/public/kansas-state-voting-precincts-2012*.geojson

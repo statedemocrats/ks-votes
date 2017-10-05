@@ -17,6 +17,8 @@ gem 'jsonapi-resources'
 gem "font-awesome-rails"
 gem 'jquery-rails'
 
+gem 'rgeo-geojson'
+
 group :development, :test do
   gem 'capybara', '~> 2.13'
 end

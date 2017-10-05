@@ -20,7 +20,7 @@ class Geosha
       outline = feature.geometry.envelope.as_text.gsub(/\.(\d\d)\d+/, '.\1')
       sha = Digest::SHA256.hexdigest(outline)
       props = feature.instance_variable_get(:@properties)
-      props['_digest'] = sha
+      props['geosha'] = sha
     end
     features.length
   end
@@ -35,7 +35,7 @@ class Geosha
   end
 
   def feature_for_sha(sha)
-    features_for_property('_digest', sha).first
+    features_for_property('geosha', sha).first
   end
 
   def features_for_property(propname, propval)

@@ -35,7 +35,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
 </div>
 
 <div id='find'>
- <input id='iprecinct' placeholder='Precinct Name'></input>
+ <input id='iprecinct' placeholder='Precinct Name' size='64'></input>
  <button id='search'>Search</button>
 </div>
 <div id='map'></div>
@@ -205,8 +205,9 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
     precincts.eachLayer(function(layer) {
       if (found) return;
       var props = layer.feature.properties;
-      var name = (props.VTDNAME || props.NAME || props.PRECINCT || props.name);
-      if (name.match($str)) {
+      var name = (props.VTDNAME || props.NAME || props.PRECINCT || props.name || props.geosha);
+      var sha = props.geosha || '';
+      if (name.match($str) || sha.match($str)) {
         //console.log(layer);
         renderPolys([layer]);
         //layer.fireEvent('click');

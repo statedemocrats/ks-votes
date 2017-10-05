@@ -48,7 +48,7 @@ class PrecinctFinder
     precinct_name
   end
 
-  def precinct_for_county(county, precinct_name, election_file)
+  def precinct_for_county!(county, precinct_name, election_file)
     orig_precinct_name = precinct_name
 
     # common clean up first since we'll create from this string

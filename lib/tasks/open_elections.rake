@@ -112,7 +112,7 @@ namespace :openelections do
 
       # find a reasonable precinct name
       precinct_name = row['precinct']
-      precinct = precinct_finder.precinct_for_county(county, precinct_name, election_file)
+      precinct = precinct_finder.precinct_for_county!(county, precinct_name, election_file)
 
       # FIXME ugly hack for what seems to be a JoCo re-use of name for different precincts
       if county.name == 'Johnson'

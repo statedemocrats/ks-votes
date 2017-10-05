@@ -34,7 +34,7 @@
 </div>
 
 <div id='find'>
- <input id='precinct'></input>
+ <input id='precinct' placeholder='Precinct Name' size='64'></input>
  <button id='search'>Search</button>
 </div>
 <div id='map'></div>
@@ -117,7 +117,8 @@
       if (found) return;
       var props = layer.feature.properties;
       var name = (props.NAME || props.PRECINCT || props.name);
-      if (name.match($str)) {
+      var sha = props.geosha || '';
+      if (name.match($str) || sha.match($str)) {
         //console.log(layer);
         layer.fireEvent('click');
         map.fitBounds(layer.getLatLngs());

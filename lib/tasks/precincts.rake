@@ -102,6 +102,48 @@ namespace :precincts do
   desc 'Sedgwick'
   task sedgwick: :environment do
     sedgwick = County.find_by(name: 'Sedgwick')
+
+    sedgwick_create_aliases(sedgwick)
+    sedgwick_map_2016_precincts(sedgwick)
+  end
+
+  desc 'Sedgwick Geosha lookup'
+  task sedgwick_geosha: :environment do
+    sedgwick = County.find_by(name: 'Sedgwick')
+    sedgwick_geosha_lookup(sedgwick)
+  end
+
+  def sedgwick_geosha_lookup(sedgwick)
+    # load all of Kansas into hash for easy lookup by sha
+    kansas2012 = {}
+    CSV.foreach(File.join(Rails.root, 'db/kansas-2012-vtd-shas.csv'), headers: true) do |row|
+      kansas2012[row['sha']] = row['vtd_2012']
+    end
+
+    csv_file = File.join(Rails.root, 'db/sedgwick-county-precincts-2016-shas.csv')
+    CSV.foreach(csv_file, headers: true) do |row|
+      precinct_name_2016 = row['precinct']
+      sha = row['geosha']
+      if kansas2012[sha]
+        vtd_2012 = kansas2012[sha]
+        puts "[Sedgwick] Found geosha match #{precinct_name_2016} -> #{kansas2012[sha]} #{sha.truncate(12)}"
+        # data oddity has a precinct switching counties between 2012 and 2016
+        # thanks to geosha we see the collision, and must get the county from the FIPS code.
+        m = vtd_2012.match(/^20(\d\d\d)(\w+)$/)
+        county_fips = m[1]
+        vtd_code = m[2]
+        cty = County.find_by!(fips: county_fips)
+        c = CensusTract.find_by!(vtd_code: vtd_code, county_id: cty.id)
+        p = c.precinct
+        unless p.has_alias?(precinct_name_2016)
+          pa = PrecinctAlias.find_or_create_by(name: precinct_name_2016, precinct_id: p.id)
+          puts "[Sedgwick] Created PrecinctAlias #{precinct_name_2016} -> #{p.name}"
+        end
+      end
+    end
+  end
+
+  def sedgwick_create_aliases(sedgwick)
     sedgwick.precincts.each do |p|
       PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.upcase)
       if p.name == 'Afton'
@@ -173,6 +215,34 @@ namespace :precincts do
         sedgwick_palias_formatted(p.id, p.name, 'WA', m)
       elsif m = p.name.match(/^Wichita Precinct (\d+)/)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
+      end
+    end
+  end
+
+  def sedgwick_map_2016_precincts(sedgwick)
+    csv_file = File.join(Rails.root, 'db/sedgwick-county-precincts-2016.csv')
+    CSV.foreach(csv_file, headers: true) do |row|
+      reported_name = row['reported_name'] # the alias
+      precinct_name = row['precinct']      # primary 1:1 precinct
+      census_tracts = (row['census_tracts'] || '').split('|') # secondary overlapping tracts
+      if precinct_name
+        p = Precinct.find_by!(name: precinct_name, county_id: sedgwick.id)
+        pa = PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+        puts "[Sedgwick] Alias #{reported_name} -> #{precinct_name}"
+      elsif census_tracts.any?
+        p = Precinct.find_by_any_name(reported_name).select {|p| p.county_id == sedgwick.id }.first
+        if !p
+          # last gasp - create the precinct
+          p = Precinct.create!(name: reported_name, county_id: sedgwick.id)
+          puts "[Sedgwick] Created Precinct #{reported_name}"
+        end
+        census_tracts.each do |ct|
+          c = CensusTract.find_by!(name: ct, county_id: sedgwick.id)
+          cp = CensusPrecinct.find_or_create_by(precinct_id: p.id, census_tract_id: c.id)
+          puts "[Sedgwick] CensusPrecinct #{ct} <-> #{reported_name}"
+        end
+      else
+        puts "[Sedgwick] Skipping incomplete row for #{reported_name}"
       end
     end
   end

@@ -50,14 +50,15 @@ class Geosha
 
   def contains_dupe_shas?
     shas = {}
+    dupes = []
     features.each do |f|
       sha = f['geosha']
       if shas[sha]
-        return features_for_property('geosha', sha)
+        dupes << features_for_property('geosha', sha)
       end
       shas[sha] = true
     end
-    false
+    dupes ? dupes : false
   end
 
   def feature_for_sha(sha)

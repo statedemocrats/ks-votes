@@ -103,41 +103,62 @@ namespace :precincts do
   task sedgwick: :environment do
     sedgwick = County.find_by(name: 'Sedgwick')
 
-    sedgwick_create_aliases(sedgwick)
+    county_2016_geosha_lookup('Sedgwick') # MUST call before sedgwick_map_2016_precincts
     sedgwick_map_2016_precincts(sedgwick)
+    sedgwick_create_aliases(sedgwick) # MUST call last
   end
 
   desc 'Sedgwick Geosha lookup'
   task sedgwick_geosha: :environment do
-    sedgwick = County.find_by(name: 'Sedgwick')
-    sedgwick_geosha_lookup(sedgwick)
+    county_2016_geosha_lookup('Sedgwick')
   end
 
-  def sedgwick_geosha_lookup(sedgwick)
+  def kansas2012_geosha
     # load all of Kansas into hash for easy lookup by sha
-    kansas2012 = {}
-    CSV.foreach(File.join(Rails.root, 'db/kansas-2012-vtd-shas.csv'), headers: true) do |row|
-      kansas2012[row['sha']] = row['vtd_2012']
+    @_kansas2012 ||= begin
+      buf = {}
+      seen = {}
+      CSV.foreach(File.join(Rails.root, 'db/kansas-2012-vtd-shas.csv'), headers: true) do |row|
+        s = row['sha']
+        seen[s] ||= 0
+        seen[s] += 1
+        buf[s] = row['vtd_2012']
+      end
+      # prune out any duplicates
+      seen.each do |s, count|
+        if count > 1
+          buf.delete(s)
+          puts "Removing duplicate sha #{s} from KS 2012 list"
+        end
+      end
+      buf
     end
+  end
 
-    csv_file = File.join(Rails.root, 'db/sedgwick-county-precincts-2016-shas.csv')
+  def county_by_fips(county_fips)
+    @_cbyfips ||= {}
+    @_cbyfips[county_fips] ||= County.find_by!(fips: county_fips)
+  end
+
+  def county_2016_geosha_lookup(county_name)
+    csv_file = File.join(Rails.root, "db/#{county_name.downcase}-county-precincts-2016-shas.csv")
     CSV.foreach(csv_file, headers: true) do |row|
       precinct_name_2016 = row['precinct']
       sha = row['geosha']
-      if kansas2012[sha]
-        vtd_2012 = kansas2012[sha]
-        puts "[Sedgwick] Found geosha match #{precinct_name_2016} -> #{kansas2012[sha]} #{sha.truncate(12)}"
+      if kansas2012_geosha[sha]
+        vtd_2012 = kansas2012_geosha[sha]
+        puts "[#{county_name}] Found geosha match #{precinct_name_2016} -> #{vtd_2012} #{sha.truncate(12)}"
         # data oddity has a precinct switching counties between 2012 and 2016
         # thanks to geosha we see the collision, and must get the county from the FIPS code.
         m = vtd_2012.match(/^20(\d\d\d)(\w+)$/)
         county_fips = m[1]
         vtd_code = m[2]
-        cty = County.find_by!(fips: county_fips)
+        cty = county_by_fips(county_fips)
         c = CensusTract.find_by!(vtd_code: vtd_code, county_id: cty.id)
         p = c.precinct
         unless p.has_alias?(precinct_name_2016)
           pa = PrecinctAlias.find_or_create_by(name: precinct_name_2016, precinct_id: p.id)
-          puts "[Sedgwick] Created PrecinctAlias #{precinct_name_2016} -> #{p.name}"
+          puts "[#{county_name}] Created PrecinctAlias #{precinct_name_2016} -> #{p.name}"
         end
       end
     end
@@ -148,13 +169,13 @@ namespace :precincts do
       PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.upcase)
       if p.name == 'Afton'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AF")
-      elsif m = p.name.match(/^Attica Precinct (\d+)/)
+      elsif m = p.name.match(/^Attica Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'AT', m)
-      elsif m = p.name.match(/^Bel Aire Precinct (\d+)/)
+      elsif m = p.name.match(/^Bel Aire Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'BA', m)
-      elsif m = p.name.match(/^Delano Precinct (\d+)/)
+      elsif m = p.name.match(/^Delano Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'DL', m)
-      elsif m = p.name.match(/^Derby Ward (\d+) Precinct (\d+)/)
+      elsif m = p.name.match(/^Derby Ward (\d+) Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'DB', m)
       elsif p.name == 'Eagle'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "EA")
@@ -164,56 +185,56 @@ namespace :precincts do
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GA")
       elsif p.name == 'Grand River'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GD")
-      elsif m = p.name.match(/^Grant Precinct (\d+)/)
+      elsif m = p.name.match(/^Grant Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'GN', m)
       elsif p.name == 'Greeley'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GR")
-      elsif m = p.name.match(/^Gypsum Precinct (\d+)/)
+      elsif m = p.name.match(/^Gypsum Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'GY', m)
-      elsif m = p.name.match(/^Haysville Ward (\d+) Precinct (\d+)/)
+      elsif m = p.name.match(/^Haysville Ward (\d+) Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'HA', m)
-      elsif m = p.name.match(/^Illinois Precinct (\d+)/)
+      elsif m = p.name.match(/^Illinois Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'IL', m)
-      elsif m = p.name.match(/^Kechi Precinct (\d+)/)
+      elsif m = p.name.match(/^Kechi Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'KE', m)
       elsif p.name == 'Lincoln'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "LI")
-      elsif m = p.name.match(/^Minneha Precinct (\d+)/)
+      elsif m = p.name.match(/^Minneha Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'MI', m)
       elsif p.name == 'Morton'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MO")
-      elsif m = p.name.match(/^Mulvane City Precinct (\d+)/)
+      elsif m = p.name.match(/^Mulvane City Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'MV', m)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("Mulvane Precinct %02f", m[1].to_i))
-      elsif m = p.name.match(/^Ninnescah Precinct (\d+)/)
+      elsif m = p.name.match(/^Ninnescah Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'NI', m)
-      elsif m = p.name.match(/^Ohio Precinct (\d+)/)
+      elsif m = p.name.match(/^Ohio Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'OH', m)
-      elsif m = p.name.match(/^Park City Ward (\d+) Precinct (\d+)/)
+      elsif m = p.name.match(/^Park City Ward (\d+) Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'PC', m)
-      elsif m = p.name.match(/^Park Precinct (\d+)/)
+      elsif m = p.name.match(/^Park Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'PA', m)
-      elsif m = p.name.match(/^Payne Precinct (\d+)/)
+      elsif m = p.name.match(/^Payne Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'PY', m)
-      elsif m = p.name.match(/^Riverside Precinct (\d+)/)
+      elsif m = p.name.match(/^Riverside Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'RI', m)
-      elsif m = p.name.match(/^Rockford Precinct (\d+)/)
+      elsif m = p.name.match(/^Rockford Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'RO', m)
-      elsif m = p.name.match(/^Salem Precinct (\d+)/)
+      elsif m = p.name.match(/^Salem Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'SA', m)
       elsif p.name == 'Sherman'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "SH")
-      elsif m = p.name.match(/^Union Precinct (\d+)/)
+      elsif m = p.name.match(/^Union Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'UN', m)
-      elsif m = p.name.match(/^Valley Center City Ward (\d+) Precinct (\d+)/)
+      elsif m = p.name.match(/^Valley Center City Ward (\d+) Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'VC', m)
       elsif m = p.name.match(/^Valley Center Township/)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VA")
       elsif p.name == 'Viola'
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VI")
-      elsif m = p.name.match(/^Waco Precinct (\d+)/)
+      elsif m = p.name.match(/^Waco Precinct (\d+)$/)
         sedgwick_palias_formatted(p.id, p.name, 'WA', m)
-      elsif m = p.name.match(/^Wichita Precinct (\d+)/)
+      elsif m = p.name.match(/^Wichita Precinct (\d+)$/)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
       end
     end
@@ -240,6 +261,12 @@ namespace :precincts do
           c = CensusTract.find_by!(name: ct, county_id: sedgwick.id)
           cp = CensusPrecinct.find_or_create_by(precinct_id: p.id, census_tract_id: c.id)
           puts "[Sedgwick] CensusPrecinct #{ct} <-> #{reported_name}"
+        end
+      elsif m = reported_name.match(/^WICHITA PRECINCT (\d+)$/)
+        p = Precinct.find_by_any_name(m[1]).select {|p| p.county_id == sedgwick.id }.first
+        if p
+          pa = PrecinctAlias.find_or_create_by(name: reported_name, precinct_id: p.id)
+          puts "[Sedgwick] Alias #{reported_name} -> #{p.name}"
         end
       else
         puts "[Sedgwick] Skipping incomplete row for #{reported_name}"

@@ -303,6 +303,8 @@ namespace :precincts do
         $stderr.puts "[Johnson] Failed to find Precinct or CensusTract for #{reported_name}"
       end
     end
+
+    county_2016_geosha_lookup('Johnson')
   end
 
   desc 'Wyandotte'
@@ -346,10 +348,15 @@ namespace :precincts do
     end
 
     # odds and ends
-    qc = Precinct.find_by!(name: 'Lake Quivira City 1', county_id: wyandotte.id)
-    PrecinctAlias.find_or_create_by(name: 'Lake Quivira City Precinct 1', precinct_id: qc.id)
-    PrecinctAlias.find_or_create_by(name: 'Lake Quivira City Precinct 01', precinct_id: qc.id)
-
+    CSV.foreach(File.join(Rails.root, 'db/wyandotte-county-precincts-2016-mappings.csv'), headers: true) do |row|
+      precinct_name = row['precinct']
+      alias_names = row['aliases'].split('|')
+      p = Precinct.find_by!(name: precinct_name, county_id: wyandotte.id)
+      alias_names.each do |n|
+        PrecinctAlias.find_or_create_by(name: n, precinct_id: p.id)
+        puts "[Wyandotte] Alias #{n} -> #{precinct_name}"
+      end
+    end
   end
 
   desc 'load Douglas county'

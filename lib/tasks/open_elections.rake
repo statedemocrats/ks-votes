@@ -16,7 +16,8 @@ namespace :openelections do
         raise "Can't find dir #{dir}"
       end
 
-      Dir.glob(dir + '*precinct.csv').each do |file|
+      Dir.glob(dir + '*precinct.csv').sort.each do |file|
+        next if file.match(/(president|general)__precinct/) # 2012 e.g.
         puts "#{file}"
         if clean?
           clean_csv_file(file)
@@ -110,9 +111,21 @@ namespace :openelections do
 
       county = find_county(row['county'].downcase)
 
+      # if VTD is present, trust it to determine precinct
+      precinct = nil
+      if row['vtd']
+        census_tract = CensusTract.find_by(vtd_code: row['vtd'])
+        precinct = census_tract.precinct if census_tract
+      end
+
       # find a reasonable precinct name
       precinct_name = row['precinct']
-      precinct = precinct_finder.precinct_for_county!(county, precinct_name, election_file)
+      precinct ||= precinct_finder.precinct_for_county!(county, precinct_name, election_file)
+
+      # create a PrecinctAlias if the name we were given is not the normalized name
+      if precinct.name != precinct_name
+        PrecinctAlias.find_or_create_by(name: precinct_name, precinct_id: precinct.id)
+      end
 
       # FIXME ugly hack for what seems to be a JoCo re-use of name for different precincts
       if county.name == 'Johnson'

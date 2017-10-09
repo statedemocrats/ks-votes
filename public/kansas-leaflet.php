@@ -118,7 +118,7 @@
       var props = layer.feature.properties;
       var name = (props.NAME || props.PRECINCT || props.name);
       var sha = props.geosha || '';
-      if (name.match($str) || sha.match($str)) {
+      if (name.match($str) || $str == sha) {
         //console.log(layer);
         layer.fireEvent('click');
         map.fitBounds(layer.getLatLngs());

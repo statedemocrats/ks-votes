@@ -1,6 +1,7 @@
 # common tasks too simple for Rakefile
 
 clean:
+	rm -f log/development.log
 	rake db:reset precincts:aliases
 
 deploy:

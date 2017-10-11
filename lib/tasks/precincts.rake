@@ -94,6 +94,7 @@ namespace :precincts do
       aliases << name.gsub(matches[1], sprintf("%02d", p))
     end
     aliases.each do |n|
+      next if n == name
       PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: n)
       puts "[Sedgwick] Alias #{n} -> #{name}"
     end
@@ -103,6 +104,7 @@ namespace :precincts do
   task sedgwick: :environment do
     sedgwick = County.find_by(name: 'Sedgwick')
 
+    sedgwick_create_aliases(sedgwick) # call before geosha lookup, and again at end
     county_2016_geosha_lookup('Sedgwick') # MUST call before sedgwick_map_2016_precincts
     sedgwick_map_2016_precincts(sedgwick)
     sedgwick_create_aliases(sedgwick) # MUST call last
@@ -164,78 +166,91 @@ namespace :precincts do
     end
   end
 
+  def sedgwick_precinct_abbrs
+    @_sedgwick ||= {
+      'Afton' => 'AF',
+      'Attica' => 'AT',
+      'Bel Aire' => 'BA',
+      'Delano' => 'DL',
+      'Derby' => 'DB',
+      'Eagle' => 'EA',
+      'Erie' => 'ER',
+      'Garden Plain' => 'GA',
+      'Grand River' => 'GD',
+      'Grant' => 'GN',
+      'Greeley' => 'GR',
+      'Gypsum' => 'GY',
+      'Haysville' => 'HA',
+      'Illinois' => 'IL',
+      'Kechi' => 'KE',
+      'Lincoln' => 'LI',
+      'Minneha' => 'MI',
+      'Morton' => 'MO',
+      'Mulvane' => 'MV',
+      'Mulvane City' => 'MV',
+      'Ninnescah' => 'NI',
+      'Ohio' => 'OH',
+      'Park City' => 'PC',
+      'Park' => 'PA',
+      'Payne' => 'PY',
+      'Riverside' => 'RI',
+      'Rockford' => 'RO',
+      'Salem' => 'SA',
+      'Sherman' => 'SH',
+      'Union' => 'UN',
+      'Valley Center City' => 'VC',
+      'Valley Center Township' => 'VA',
+      'Viola' => 'VI',
+      'Waco' => 'WA',
+      'Wichita' => '',
+    }
+  end
+
   def sedgwick_create_aliases(sedgwick)
     sedgwick.precincts.each do |p|
-      PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.upcase)
-      if p.name == 'Afton'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "AF")
-      elsif m = p.name.match(/^Attica Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'AT', m)
-      elsif m = p.name.match(/^Bel Aire Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'BA', m)
-      elsif m = p.name.match(/^Delano Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'DL', m)
-      elsif m = p.name.match(/^Derby Ward (\d+) Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'DB', m)
-      elsif p.name == 'Eagle'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "EA")
-      elsif p.name == 'Erie'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "ER")
-      elsif p.name == 'Garden Plain'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GA")
-      elsif p.name == 'Grand River'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GD")
-      elsif m = p.name.match(/^Grant Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'GN', m)
-      elsif p.name == 'Greeley'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "GR")
-      elsif m = p.name.match(/^Gypsum Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'GY', m)
-      elsif m = p.name.match(/^Haysville Ward (\d+) Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'HA', m)
-      elsif m = p.name.match(/^Illinois Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'IL', m)
-      elsif m = p.name.match(/^Kechi Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'KE', m)
-      elsif p.name == 'Lincoln'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "LI")
-      elsif m = p.name.match(/^Minneha Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'MI', m)
-      elsif p.name == 'Morton'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "MO")
-      elsif m = p.name.match(/^Mulvane City Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'MV', m)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("Mulvane Precinct %02f", m[1].to_i))
-      elsif m = p.name.match(/^Ninnescah Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'NI', m)
-      elsif m = p.name.match(/^Ohio Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'OH', m)
-      elsif m = p.name.match(/^Park City Ward (\d+) Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'PC', m)
-      elsif m = p.name.match(/^Park Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'PA', m)
-      elsif m = p.name.match(/^Payne Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'PY', m)
-      elsif m = p.name.match(/^Riverside Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'RI', m)
-      elsif m = p.name.match(/^Rockford Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'RO', m)
-      elsif m = p.name.match(/^Salem Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'SA', m)
-      elsif p.name == 'Sherman'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "SH")
-      elsif m = p.name.match(/^Union Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'UN', m)
-      elsif m = p.name.match(/^Valley Center City Ward (\d+) Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'VC', m)
-      elsif m = p.name.match(/^Valley Center Township/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VA")
-      elsif p.name == 'Viola'
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: "VI")
-      elsif m = p.name.match(/^Waco Precinct (\d+)$/)
-        sedgwick_palias_formatted(p.id, p.name, 'WA', m)
-      elsif m = p.name.match(/^Wichita Precinct (\d+)$/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
+      p_name = p.name
+      if abbr = sedgwick_precinct_abbrs[p_name]
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: abbr)
+      elsif n = p_name.match(/^([\ A-Za-z]+?) (Ward|Precinct) (\d+)/)
+        long_name = n[1]
+        abbr = sedgwick_precinct_abbrs[long_name] or fail "No Sedgwick abbreviation for #{p_name} [#{long_name}]"
+        if abbr == '' # i.e. Wichita
+          if m = p_name.match(/^Wichita Precinct (\d+)$/)
+            PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
+          elsif m = p.name.match(/^Wichita Precinct (\d+)/) # might have leg district suffix
+            p_id = m[1]
+            if p.alias_names.include? "WICHITA PRECINCT #{p_id}"
+              PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p_id)
+            end
+          end
+        elsif long_name == 'Mulvane City'
+          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("Mulvane Precinct %02d", n[3].to_i))
+
+        # Ward + Precinct patterns
+        elsif m = p_name.match(/ Ward (\d+) Precinct (\d+)$/)
+          sedgwick_palias_formatted(p.id, p_name, abbr, m) if abbr.length > 0
+        elsif m = p_name.match(/ Precinct (\d+)$/)
+          #puts "p_name: #{p_name} abbr:#{abbr} m: #{m.inspect}"
+          sedgwick_palias_formatted(p.id, p_name, abbr, m) if abbr.length > 0
+        elsif m = p_name.match(/ Ward (\d+) Precinct (\d+) (.+)$/)
+          # if it has an alias already for the abbr+precinct, assume it is the "main" precinct
+          pa = "#{abbr}#{m[1].to_i}#{m[2].to_i}"
+          long_pa = "#{long_name} Ward #{m[1]} Precinct #{m[2]}"
+          if p.has_alias?(pa) && !p.has_alias?(long_pa)
+            PrecinctAlias.find_or_create_by(name: long_pa, precinct_id: p.id)
+          end
+        elsif m = p_name.match(/ Precinct (\d+) (.+)$/)
+          pa = "#{abbr}#{sprintf("%02d", m[1].to_i)}"
+          long_pa = "#{long_name} Precinct #{m[1]}"
+          if p.has_alias?(pa) && !p.has_alias?(long_pa)
+            PrecinctAlias.find_or_create_by(name: long_pa, precinct_id: p.id)
+          end
+        end
+      # odd
+      elsif p_name.match(/^Valley Center Township/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sedgwick_precinct_abbrs['Valley Center Township'])
+      else
+        fail "Unexpected Sedgwick precinct name #{p_name}"
       end
     end
   end

@@ -82,6 +82,11 @@ namespace :openelections do
     @_counties[name.downcase] ||= County.where('lower(name) = ?', name.downcase).first
   end
 
+  def find_tract_by_vtd(vtd_code)
+    @_tracts_by_vtd ||= {}
+    @_tracts_by_vtd[vtd_code] ||= CensusTract.find_by(vtd_code: vtd_code)
+  end
+
   def load_csv_file(file)
     el_date, state, which, cty, prc = File.basename(file).split('__')
     el_dt = DateTime.strptime("#{el_date}T000000", '%Y%m%dT%H%M%S')
@@ -114,7 +119,7 @@ namespace :openelections do
       # if VTD is present, trust it to determine precinct
       precinct = nil
       if row['vtd']
-        census_tract = CensusTract.find_by(vtd_code: row['vtd'])
+        census_tract = find_tract_by_vtd(row['vtd'])
         precinct = census_tract.precinct if census_tract
       end
 
@@ -140,12 +145,8 @@ namespace :openelections do
 
       puts "raw #{row['precinct']} baked #{precinct_name} precinct_id #{precinct.id}" if debug?
 
-      office = Office.find_or_create_by(name: row['office'], district: row['district']) do |o|
-        o.election_file_id = election_file.id
-      end
-      party = Party.find_or_create_by(name: (row['party'] || '').downcase) do |p|
-        p.election_file_id = election_file.id
-      end
+      office = find_office(row['office'], row['district'], election_file.id)
+      party = find_party((row['party'] || '').downcase, election_file.id)
       candidate = Candidate.find_or_create_by(name: row['candidate'], party_id: party.id, office_id: office.id) do |c|
         c.election_file_id = election_file.id
       end
@@ -161,6 +162,21 @@ namespace :openelections do
         r.election_file = election_file
       end
       
+    end
+  end
+
+  def find_office(office_name, district_name, election_file_id)
+    @_offices ||= {}
+    k = "#{office_name},#{district_name}"
+    @_offices[k] ||= Office.find_or_create_by(name: office_name, district: district_name) do |o|
+      o.election_file_id = election_file_id
+    end
+  end
+
+  def find_party(party_name, election_file_id)
+    @_parties ||= {}
+    @_parties[party_name] ||= Party.find_or_create_by(name: party_name) do |p|
+      p.election_file_id = election_file_id
     end
   end
 end

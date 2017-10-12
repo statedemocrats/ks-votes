@@ -115,28 +115,6 @@ namespace :precincts do
     county_2016_geosha_lookup('Sedgwick')
   end
 
-  def kansas2012_geosha
-    # load all of Kansas into hash for easy lookup by sha
-    @_kansas2012 ||= begin
-      buf = {}
-      seen = {}
-      CSV.foreach(File.join(Rails.root, 'db/kansas-2012-vtd-shas.csv'), headers: true) do |row|
-        s = row['sha']
-        seen[s] ||= 0
-        seen[s] += 1
-        buf[s] = row['vtd_2012']
-      end
-      # prune out any duplicates
-      seen.each do |s, count|
-        if count > 1
-          buf.delete(s)
-          puts "Removing duplicate sha #{s} from KS 2012 list"
-        end
-      end
-      buf
-    end
-  end
-
   def county_by_fips(county_fips)
     @_cbyfips ||= {}
     @_cbyfips[county_fips] ||= County.find_by!(fips: county_fips)
@@ -144,11 +122,15 @@ namespace :precincts do
 
   def county_2016_geosha_lookup(county_name)
     csv_file = File.join(Rails.root, "db/#{county_name.downcase}-county-precincts-2016-shas.csv")
+    geo_finder = GeoFinder.new
     CSV.foreach(csv_file, headers: true) do |row|
       precinct_name_2016 = row['precinct']
       sha = row['geosha']
-      if kansas2012_geosha[sha]
-        vtd_2012 = kansas2012_geosha[sha]
+      if geo_finder.vtd_for(sha)
+        vtd_2012 = geo_finder.vtd_for(sha)
+
+        next if vtd_2012.is_a?(Array) # ambiguous match
+
         puts "[#{county_name}] Found geosha match #{precinct_name_2016} -> #{vtd_2012} #{sha.truncate(12)}"
         # data oddity has a precinct switching counties between 2012 and 2016
         # thanks to geosha we see the collision, and must get the county from the FIPS code.
@@ -198,6 +180,7 @@ namespace :precincts do
       'Salem' => 'SA',
       'Sherman' => 'SH',
       'Union' => 'UN',
+      'Valley Center' => 'VC',
       'Valley Center City' => 'VC',
       'Valley Center Township' => 'VA',
       'Viola' => 'VI',
@@ -223,8 +206,8 @@ namespace :precincts do
               PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p_id)
             end
           end
-        elsif long_name == 'Mulvane City'
-          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf("Mulvane Precinct %02d", n[3].to_i))
+        elsif long_name.match(/^(Mulvane|Valley Center) City /)
+          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.sub(' City', ''))
 
         # Ward + Precinct patterns
         elsif m = p_name.match(/ Ward (\d+) Precinct (\d+)$/)

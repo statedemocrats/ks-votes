@@ -44,16 +44,20 @@ namespace :match do
 
     if vtd = @geo_finder.vtd_for(sha2016)
       puts " > vtd: #{vtd.inspect}"
+      vtds = []
       if vtd.is_a?(Array)
-        vtd.each do |v|
-          m = v.match(/^20(\d\d\d)(\w+)$/)
-          county_fips = m[1]
-          vtd_code = m[2]
-          county = County.find_by!(fips: county_fips)
-          c = CensusTract.find_by!(vtd_code: vtd_code, county_id: county.id)
-          p = c.precinct
-          puts " > #{vtd_code} -> #{p.name} [#{p.alias_names.join(',')}]"
-        end
+        vtds = vtd
+      else
+        vtds = [vtd]
+      end
+      vtds.each do |v|
+        m = v.match(/^20(\d\d\d)(\w+)$/)
+        county_fips = m[1]
+        vtd_code = m[2]
+        county = County.find_by!(fips: county_fips)
+        c = CensusTract.find_by!(vtd_code: vtd_code, county_id: county.id)
+        p = c.precinct
+        puts " > #{vtd_code} -> #{p.name} [#{p.alias_names.join(',')}]"
       end
     end
   end

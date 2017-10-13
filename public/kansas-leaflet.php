@@ -34,7 +34,7 @@
 </div>
 
 <div id='find'>
- <input id='precinct' placeholder='Precinct Name' size='64'></input>
+ <input id='precinct' placeholder='Precinct Name' size='80'></input>
  <button id='search'>Search</button>
 </div>
 <div id='map'></div>

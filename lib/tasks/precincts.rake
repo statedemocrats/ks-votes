@@ -45,6 +45,7 @@ namespace :precincts do
       reported_name = row['reported']
       vtd2010 = row['vtd_2010']
       bare_name = reported_name.gsub(/^\d+ /, '')
+      bare_name.gsub!(/(\d+)/) { sprintf('%02d', Regexp.last_match[1].to_i) }
       p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
       unless p
         puts "[Shawnee] precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"

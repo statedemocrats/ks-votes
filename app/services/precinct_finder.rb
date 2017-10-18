@@ -79,7 +79,7 @@ class PrecinctFinder
     end
 
     # if we still don't have an exact match, try a fuzzy match
-    #precinct_name = fuzzy_match(county.name, precinct_name) unless county_tracts.dig(county.name, precinct_name)
+    precinct_name = fuzzy_match(county.name, precinct_name) unless county_tracts.dig(county.name, precinct_name)
 
     precinct_name
   end

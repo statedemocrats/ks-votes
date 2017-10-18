@@ -422,6 +422,11 @@ namespace :precincts do
         make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
       end
     end
+
+    douglas.precincts.each do |p|
+      next unless p.name.match(/^Lawrence Precinct/)
+      pa = PrecinctAlias.find_or_create_by(name: p.name.sub(/^Lawrence Precinct /, ''), precinct_id: p.id)
+    end
   end
 
   def precinct_for_tract(tract)

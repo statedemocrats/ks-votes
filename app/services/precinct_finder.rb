@@ -11,9 +11,9 @@ class PrecinctFinder
 
   def normalize(name)
     name.strip
+      .gsub('#', ' ')
       .gsub(/\ \ +/, ' ')
       .gsub(' / ', '/')
-      .gsub('#', '')
       .gsub(/\btwp\b/i, 'Township')
       .gsub(/\bpct\b/i, 'Precinct')
       .gsub(/\bpre\b/i, 'Precinct')
@@ -82,7 +82,8 @@ class PrecinctFinder
 
   def fuzzy_match(county_name, precinct_name)
     county_precincts = county_tracts.dig(county_name).keys
-    FuzzyMatch.new(county_precincts).find(precinct_name)
+    name_no_dash = precinct_name.gsub('-', ' ') # dash throws off word tokenization
+    FuzzyMatch.new(county_precincts, must_match_at_least_one_word: true).find(name_no_dash) || precinct_name
   end
 
   def precinct_for_county!(county, precinct_name, election_file)

@@ -24,6 +24,19 @@ namespace :precincts do
     end
   end
 
+  desc 'match orphans'
+  task orphans: :environment do
+    include Term::ANSIColor
+    pf = PrecinctFinder.new
+    sql = File.read(File.join(Rails.root, 'sql/orphan-precincts.sql'))
+    recs = Precinct.connection.execute(sql)
+    recs.each do |r|
+      fuzzy = pf.fuzzy_match(r['county'], r['precinct'])
+      next if fuzzy == r['precinct']
+      puts "[#{blue(r['county'])}] #{r['precinct']} => #{fuzzy}"
+    end
+  end
+
   desc 'alias Riley county'
   task riley: :environment do
     riley = County.find_by(name: 'Riley')

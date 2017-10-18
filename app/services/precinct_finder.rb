@@ -14,6 +14,7 @@ class PrecinctFinder
       .gsub('#', ' ')
       .gsub(/\ \ +/, ' ')
       .gsub(' / ', '/')
+      .gsub(/-([A-G])\b/, ' Part \1')
       .gsub(/\btwp\b/i, 'Township')
       .gsub(/\bpct\b/i, 'Precinct')
       .gsub(/\bpre\b/i, 'Precinct')
@@ -28,9 +29,12 @@ class PrecinctFinder
       .gsub(/\bE\b/, 'East')
       .gsub(/\bW\.\b/, 'West')
       .gsub(/\bW\b/, 'West')
-      .gsub(/\bFT\.?\b/i, 'Fort')
-      .gsub(/\bCk\.?\b/, 'Creek')
+      .gsub(/\bFT\.\b/i, 'Fort')
+      .gsub(/\bFT\b/i, 'Fort')
+      .gsub(/\bCk\.\b/, 'Creek')
+      .gsub(/\bCk\b/, 'Creek')
       .gsub(/\bCtr\b/, 'Center')
+      .gsub(/([1-9])(st|nd|rd|th) (Ward|Precinct)/i, '\3 \1')
   end
 
   def likely_name(county, precinct_name)
@@ -75,15 +79,49 @@ class PrecinctFinder
     end
 
     # if we still don't have an exact match, try a fuzzy match
-    precinct_name = fuzzy_match(county.name, precinct_name) unless county_tracts.dig(county.name, precinct_name)
+    #precinct_name = fuzzy_match(county.name, precinct_name) unless county_tracts.dig(county.name, precinct_name)
 
     precinct_name
   end
 
-  def fuzzy_match(county_name, precinct_name)
+  def matcher(haystack)
+    FuzzyMatch.new(haystack,
+      threshold: 0.5,
+      find_best: true,
+      find_all_with_score: true,
+      must_match_at_least_one_word: true,
+      stop_words: ['Precinct', 'Ward', 'Township'],
+    )
+  end
+
+  def do_fuzzy_match(county_name, precinct_name)
     county_precincts = county_tracts.dig(county_name).keys
-    name_no_dash = precinct_name.gsub('-', ' ') # dash throws off word tokenization
-    FuzzyMatch.new(county_precincts, must_match_at_least_one_word: true).find(name_no_dash) || precinct_name
+    simple_name = precinct_name
+      .gsub(/[\.\,\-\/]/, ' ') # help word tokenization
+      .gsub(/\ \ +/, ' ')
+    m = matcher(county_precincts).find(simple_name)
+    { simple: simple_name, precinct: precinct_name, matches: m }
+  end
+
+  def fuzzy_match(county_name, precinct_name)
+    m = do_fuzzy_match(county_name, precinct_name)
+    return precinct_name unless m[:matches].any?
+    if m[:matches].length > 1
+      pp m
+
+      # if top 2 matches have similar scores, too ambiguous.
+      return precinct_name if m[:matches][0][1] == m[:matches][1][1] && m[:matches][0][2] == m[:matches][1][2]
+
+      # if the first match has obvious substring, allow it. otherwise too ambiguous.
+      m1 = m[:matches][0][0]
+      if m1.match(precinct_name) || precinct_name.match(m1) || m1.match(m[:simple]) || m[:simple].match(m1)
+        return m1
+      else
+        return precinct_name
+      end
+    else
+      return m[:matches][0][0]
+    end
   end
 
   def precinct_for_county!(county, precinct_name, election_file)

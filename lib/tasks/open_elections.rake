@@ -45,6 +45,10 @@ namespace :openelections do
     ENV['CLEAN'] == '1'
   end
 
+  def test_precinct_finder?
+    ENV['TEST_PRECINCTS'] == '1'
+  end
+
   def clean_csv_file(file)
     csv_has_headers = false
     CSV.open("#{file}.clean", 'wb') do |csv|
@@ -162,6 +166,9 @@ namespace :openelections do
       checksum = Digest::SHA256.hexdigest(
         [precinct.name, office.name, election.name, candidate.name, votes, election_file.name].join(':')
       )
+
+      next if test_precinct_finder?
+
       result = Result.find_or_create_by(checksum: checksum) do |r|
         r.votes = votes
         r.precinct = precinct

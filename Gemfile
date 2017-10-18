@@ -16,6 +16,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'jsonapi-resources'
 gem "font-awesome-rails"
 gem 'jquery-rails'
+gem 'term-ansicolor'
 
 gem 'rgeo-geojson'
 gem 'fuzzy_match'

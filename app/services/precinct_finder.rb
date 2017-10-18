@@ -106,6 +106,7 @@ class PrecinctFinder
   def fuzzy_match(county_name, precinct_name)
     m = do_fuzzy_match(county_name, precinct_name)
     return precinct_name unless m[:matches].any?
+    first_match = m[:matches][0][0]
     if m[:matches].length > 1
       pp m
 
@@ -113,14 +114,22 @@ class PrecinctFinder
       return precinct_name if m[:matches][0][1] == m[:matches][1][1] && m[:matches][0][2] == m[:matches][1][2]
 
       # if the first match has obvious substring, allow it. otherwise too ambiguous.
-      m1 = m[:matches][0][0]
-      if m1.match(precinct_name) || precinct_name.match(m1) || m1.match(m[:simple]) || m[:simple].match(m1)
-        return m1
+      substr_match = 0
+      is_first = false
+      m[:matches].each do |potential|
+        m1 = potential[0]
+        if m1.match(precinct_name) || precinct_name.match(m1) || m1.match(m[:simple]) || m[:simple].match(m1)
+          substr_match += 1
+          is_first = m1 == first_match
+        end
+      end
+      if substr_match == 1 && is_first
+        return first_match
       else
         return precinct_name
       end
     else
-      return m[:matches][0][0]
+      return first_match
     end
   end
 

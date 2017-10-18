@@ -13,29 +13,35 @@ class PrecinctFinder
     name.strip
       .gsub(/\ \ +/, ' ')
       .gsub(' / ', '/')
+      .gsub('#', '')
       .gsub(/\btwp\b/i, 'Township')
       .gsub(/\bpct\b/i, 'Precinct')
       .gsub(/\bpre\b/i, 'Precinct')
       .gsub(/\bwd\b/i, 'Ward')
-      .gsub(/\bW\d+P\d+\b/, 'Ward \1 Precinct \2')
-      .gsub(/\bN\.?\b/, 'North')
-      .gsub(/\bS\.?\b/, 'South')
-      .gsub(/\bE\.?\b/, 'East')
-      .gsub(/\bW\.?\b/, 'West')
+      .gsub(/\bW(\d+)P(\d+)\b/, 'Ward \1 Precinct \2')
+      .gsub(/\bW(\d+)\b/, 'Ward \1')
+      .gsub(/\bN\.\b/, 'North')
+      .gsub(/\bN\b/, 'North')
+      .gsub(/\bS\.\b/, 'South')
+      .gsub(/\bS\b/, 'South')
+      .gsub(/\bE\.\b/, 'East')
+      .gsub(/\bE\b/, 'East')
+      .gsub(/\bW\.\b/, 'West')
+      .gsub(/\bW\b/, 'West')
       .gsub(/\bFT\.?\b/i, 'Fort')
       .gsub(/\bCk\.?\b/, 'Creek')
+      .gsub(/\bCtr\b/, 'Center')
   end
 
   def likely_name(county, precinct_name)
     precinct_name = normalize(precinct_name)
-    precinct_name = precinct_name.titlecase if precinct_name.match(/^[A-Z]+$/)
-
-    #puts "normalized: #{precinct_name}"
 
     # leading digits are never part of census tract
-    if precinct_name.match(/^\d+[\-\ ]+/)
-      precinct_name.sub!(/^\d+[\-\ ]+/, '')
+    if precinct_name.match(/^\d\d\d+[\-\ ]+/)
+      precinct_name.sub!(/^\d\d\d+[\-\ ]+/, '')
     end
+
+    precinct_name = precinct_name.titlecase if precinct_name.match(/^[A-Z\ ]+$/)
 
     # try with/without Township suffix
     if !county_tracts.dig(county.name, precinct_name)
@@ -67,7 +73,16 @@ class PrecinctFinder
       maybe_precinct_name = precinct_name.sub(/^.+?Precinct/, 'Precinct')
       precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
     end
+
+    # if we still don't have an exact match, try a fuzzy match
+    precinct_name = fuzzy_match(county.name, precinct_name) unless county_tracts.dig(county.name, precinct_name)
+
     precinct_name
+  end
+
+  def fuzzy_match(county_name, precinct_name)
+    county_precincts = county_tracts.dig(county_name).keys
+    FuzzyMatch.new(county_precincts).find(precinct_name)
   end
 
   def precinct_for_county!(county, precinct_name, election_file)

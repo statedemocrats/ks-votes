@@ -18,6 +18,7 @@ gem "font-awesome-rails"
 gem 'jquery-rails'
 
 gem 'rgeo-geojson'
+gem 'fuzzy_match'
 
 group :development, :test do
   gem 'capybara', '~> 2.13'

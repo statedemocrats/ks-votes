@@ -4,6 +4,7 @@ namespace :precincts do
     my_tasks = [
       'riley',
       'douglas',
+      'saline',
       'shawnee',
       'sedgwick',
       'johnson',
@@ -33,6 +34,16 @@ namespace :precincts do
       if m = p.name.match(/Manhattan Township Precinct (\d+)/)
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan Township %s', m[1]))
         PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan twp %s', m[1]))
+      end
+    end
+  end
+
+  desc 'Saline'
+  task saline: :environment do
+    saline = County.find_by(name: 'Saline')
+    saline.precincts.each do |p|
+      if m = p.name.match(/^Salina Precinct (\d+)$/)
+        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1].to_i)
       end
     end
   end

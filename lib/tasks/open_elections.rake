@@ -98,23 +98,32 @@ namespace :openelections do
     CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
       Rails.logger.debug('new row')
       pp(row) if debug?
-      if !row['county']
-        puts "No county value in row: #{row.inspect}"
+
+      # some required fields
+      missing_field = false
+      ['county', 'candidate', 'precinct'].each do |field|
+        if !row[field]
+          puts "No #{field} value in row: #{row.inspect}"
+          missing_field = true
+        end
+      end
+      next if missing_field
+
+      next if row['county'] == 'COUNTY'
+
+      votes = row['votes'] || row['vote'] || row['poll'] || row['total']
+      if !votes
+        puts "Missing votes in row: #{row.inspect}"
         next
       end
-      votes = row['votes'] || row['vote'] || row['poll'] || row['total']
 
       next if row['candidate'].match(/^(Ballots Cast|Registered)$/)
       next if row['candidate'].match(/^(Blank Votes|Over Votes)$/)
 
-      # these are often summary or informational rows,
-      # unhelpfully, interspersed with actual precinct totals.
-      if !row['precinct'] || !votes # && !row['office']
-        puts "Missing precinct or votes in row: #{row.inspect}"
+      unless county = find_county(row['county'].downcase)
+        puts "Can't find county for #{row.inspect}"
         next
       end
-
-      county = find_county(row['county'].downcase)
 
       # if VTD is present, trust it to determine precinct
       precinct = nil

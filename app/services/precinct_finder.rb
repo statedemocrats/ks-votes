@@ -14,18 +14,40 @@ class PrecinctFinder
       .gsub(/\ \ +/, ' ')
       .gsub(' / ', '/')
       .gsub(/\btwp\b/i, 'Township')
+      .gsub(/\bpct\b/i, 'Precinct')
+      .gsub(/\bpre\b/i, 'Precinct')
+      .gsub(/\bwd\b/i, 'Ward')
+      .gsub(/\bW\d+P\d+\b/, 'Ward \1 Precinct \2')
+      .gsub(/\bN\.?\b/, 'North')
+      .gsub(/\bS\.?\b/, 'South')
+      .gsub(/\bE\.?\b/, 'East')
+      .gsub(/\bW\.?\b/, 'West')
+      .gsub(/\bFT\.?\b/i, 'Fort')
+      .gsub(/\bCk\.?\b/, 'Creek')
   end
 
   def likely_name(county, precinct_name)
     precinct_name = normalize(precinct_name)
-    if county_tracts.dig(county.name, "#{precinct_name} Township")
-      precinct_name += ' Township'
-    elsif county_tracts.dig(county.name, precinct_name.gsub(/\btwp\b/i, 'Township'))
-      precinct_name.gsub!(/\btwp\b/i, 'Township')
-    elsif precinct_name.match(/twp$/i)
-      maybe_precinct_name = precinct_name.sub(/twp$/i, 'Township')
-      precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
-    elsif precinct_name.match(/twp [\-\d]+$/)
+    precinct_name = precinct_name.titlecase if precinct_name.match(/^[A-Z]+$/)
+
+    #puts "normalized: #{precinct_name}"
+
+    # leading digits are never part of census tract
+    if precinct_name.match(/^\d+[\-\ ]+/)
+      precinct_name.sub!(/^\d+[\-\ ]+/, '')
+    end
+
+    # try with/without Township suffix
+    if !county_tracts.dig(county.name, precinct_name)
+      if county_tracts.dig(county.name, "#{precinct_name} Township")
+        precinct_name += ' Township'
+      elsif precinct_name.match(/ Township$/)
+        maybe_precinct_name = precinct_name.sub(/ Township$/, '')
+        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+      end
+    end
+
+    if precinct_name.match(/twp [\-\d]+$/)
       maybe_precinct_name = precinct_name.sub(/twp ([\d\-]+)$/i, 'Township Precinct \1')
       precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
     elsif precinct_name.match(/\w, \w/)

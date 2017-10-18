@@ -13,6 +13,9 @@ orphans:
 2012:
 	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2012
 
+2014:
+	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2014
+
 2016:
 	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2016
 
@@ -28,4 +31,4 @@ sedg2012:
 geosha-kansas:
 	rake map:geosha IN_FILE=public/kansas-state-voting-precincts-2012-min.geojson OUT_FILE=public/kansas-state-voting-precincts-2012-sha-min.geojson
 
-.PHONY: 2012 orphans
+.PHONY: 2012 2014 2016 orphans

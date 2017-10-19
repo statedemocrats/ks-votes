@@ -5,9 +5,17 @@ require 'pp'
 namespace :openelections do
 
   SKIP_PRECINCTS = [
+    'Absent',
+    'Adv/Prov',
     'Advance',
+    'Advanced',
+    'Ent Test',
+    'Prov',
     'Provisional',
     'Paper Ballots',
+    'Supplemental Votes',
+    'Total',
+    'Write-ins',
   ].freeze
 
   desc 'load files for year'
@@ -145,12 +153,13 @@ namespace :openelections do
       # find a reasonable precinct name
       precinct_name = row['precinct']
 
-      next if SKIP_PRECINCTS.include? precinct_name
+      next if SKIP_PRECINCTS.include? precinct_name.titlecase
 
       precinct ||= precinct_finder.precinct_for_county!(county, precinct_name, election_file)
 
       # create a PrecinctAlias if the name we were given is not the normalized name
-      if precinct.name != precinct_name
+      if precinct.name != precinct_name && !precinct.has_alias?(precinct_name)
+        puts "[#{county.name}] Aliasing what PrecinctFinder found: #{precinct_name} -> #{precinct.name}"
         PrecinctAlias.find_or_create_by(name: precinct_name, precinct_id: precinct.id)
       end
 

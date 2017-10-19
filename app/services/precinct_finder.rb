@@ -23,6 +23,7 @@ class PrecinctFinder
       .gsub(/\bpct\b/i, 'Precinct')
       .gsub(/\bpre\b/i, 'Precinct')
       .gsub(/\bwd\b/i, 'Ward')
+      .gsub(/\bW\ (\d+)\ P (\d+)\b/, 'W\1P\2')
       .gsub(/\bW(\d+)P(\d+)\b/, 'Ward \1 Precinct \2')
       .gsub(/\bW(\d+)\b/, 'Ward \1')
       .gsub(/\bN\.\b/, 'North')
@@ -102,6 +103,7 @@ class PrecinctFinder
     simple_name = precinct_name
       .gsub(/[\.\,\-\/]/, ' ') # help word tokenization
       .gsub(/\ \ +/, ' ')
+      .gsub(/\b0(\d+)/, '\1')  # strip leading zeroes
     m = matcher(county_precincts).find(simple_name)
     { simple: simple_name, precinct: precinct_name, matches: m }
   end
@@ -185,6 +187,7 @@ class PrecinctFinder
     # NOTE we do NOT pass in census_precinct_id to create a new Precinct since we trust it is
     # *NOT* the primary precinct for the census tract (in which case we would have found it above).
     precinct ||= Precinct.where(county_id: county.id).where('lower(name) = ?', precinct_name.downcase).first
+    puts "[#{county.name}] Creating precinct '#{precinct_name}'" if !precinct
     precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
       p.election_file_id = election_file.id
     end
@@ -192,7 +195,7 @@ class PrecinctFinder
     # finally, create Precinct relations if we could not identify 1:1 with CensusTract
     if !census_tract_id && !precinct.census_tract_id
       if orig_precinct_name != precinct_name && !precinct.has_alias?(orig_precinct_name)
-        puts "Aliasing #{orig_precinct_name} -> #{precinct_name}"
+        puts "[#{county.name}] Aliasing #{orig_precinct_name} -> #{precinct_name}"
         PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id)
       end
     else

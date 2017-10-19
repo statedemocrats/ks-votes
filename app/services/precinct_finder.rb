@@ -89,7 +89,6 @@ class PrecinctFinder
       threshold: 0.5,
       find_best: true,
       find_all_with_score: true,
-      must_match_at_least_one_word: true,
       stop_words: ['Precinct', 'Ward', 'Township'],
     )
   end
@@ -126,6 +125,16 @@ class PrecinctFinder
       if substr_match == 1 && is_first
         return first_match
       else
+        # use fuzzy_tools against our pool
+        pool = m[:matches].map { |m1| m1[0] }
+        ftools = pool.fuzzy_find_all_with_scores(precinct_name)
+        pp( { fuzzy_tools: ftools } )
+        ftools.each do |m1|
+          n, score = m1
+          if score.round(1) >= 0.4 # TODO right threshold?
+            return n
+          end
+        end
         return precinct_name
       end
     else

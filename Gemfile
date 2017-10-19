@@ -19,7 +19,8 @@ gem 'jquery-rails'
 gem 'term-ansicolor'
 
 gem 'rgeo-geojson'
-gem 'fuzzy_match'
+gem 'fuzzy_match', git: 'https://github.com/rlue/fuzzy_match.git'
+gem 'fuzzy_tools', github: 'statedemocrats/fuzzy_tools', branch: 'nan-fix'
 
 group :development, :test do
   gem 'capybara', '~> 2.13'

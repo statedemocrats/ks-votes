@@ -4,6 +4,12 @@ require 'pp'
 
 namespace :openelections do
 
+  SKIP_PRECINCTS = [
+    'Advance',
+    'Provisional',
+    'Paper Ballots',
+  ].freeze
+
   desc 'load files for year'
   task load_files: :environment do
     year = ENV['YEAR']
@@ -138,6 +144,9 @@ namespace :openelections do
 
       # find a reasonable precinct name
       precinct_name = row['precinct']
+
+      next if SKIP_PRECINCTS.include? precinct_name
+
       precinct ||= precinct_finder.precinct_for_county!(county, precinct_name, election_file)
 
       # create a PrecinctAlias if the name we were given is not the normalized name

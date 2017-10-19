@@ -5,6 +5,10 @@ class PrecinctFinder
     @@county_tracts
   end
 
+  def debug?
+    ENV['DEBUG'] == '1'
+  end
+
   def county_tracts
     @@county_tracts
   end
@@ -107,7 +111,7 @@ class PrecinctFinder
     return precinct_name unless m[:matches].any?
     first_match = m[:matches][0][0]
     if m[:matches].length > 1
-      pp m
+      pp m if debug?
 
       # if top 2 matches have similar scores, too ambiguous.
       return precinct_name if m[:matches][0][1] == m[:matches][1][1] && m[:matches][0][2] == m[:matches][1][2]
@@ -128,7 +132,7 @@ class PrecinctFinder
         # use fuzzy_tools against our pool
         pool = m[:matches].map { |m1| m1[0] }
         ftools = pool.fuzzy_find_all_with_scores(precinct_name)
-        pp( { fuzzy_tools: ftools } )
+        pp( { fuzzy_tools: ftools } ) if debug?
         ftools.each do |m1|
           n, score = m1
           if score.round(1) >= 0.4 # TODO right threshold?

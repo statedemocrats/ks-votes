@@ -1,5 +1,9 @@
 # common tasks too simple for Rakefile
 
+setup:
+	bundle install
+	rake db:setup map:setup
+
 clean:
 	rm -f log/development.log
 	rake db:reset precincts:aliases

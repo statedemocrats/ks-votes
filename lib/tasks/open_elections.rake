@@ -147,6 +147,7 @@ namespace :openelections do
 
       # if VTD is present, trust it to determine precinct
       precinct = nil
+      census_tract = nil
       if row['vtd']
         census_tract = find_tract_by_vtd(row['vtd'], county)
         if census_tract
@@ -163,7 +164,7 @@ namespace :openelections do
       precinct ||= precinct_finder.precinct_for_county!(county, precinct_name, election_file)
 
       # create a PrecinctAlias if the name we were given is not the normalized name
-      if precinct.name != precinct_name && !precinct.has_alias?(precinct_name)
+      if !census_tract && precinct.name != precinct_name && !precinct.has_alias?(precinct_name)
         puts "[#{county.name}] Aliasing PrecinctFinder result: #{red(precinct_name)} -> #{red(precinct.name)}"
         PrecinctAlias.find_or_create_by(name: precinct_name, precinct_id: precinct.id) do |pa|
           pa.reason = :finder

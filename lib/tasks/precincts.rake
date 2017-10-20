@@ -1,16 +1,20 @@
 namespace :precincts do
-  desc 'load precinct aliasese'
-  task aliases: :environment do
-    my_tasks = [
+
+  def county_tasks
+    @county_tasks ||= [
       'riley',
       'douglas',
       'saline',
       'shawnee',
       'sedgwick',
       'johnson',
-      'wyandotte',
+      'wyandotte'
     ]
-    my_tasks.each do |t|
+  end
+
+  desc 'load precinct aliasese'
+  task aliases: :environment do
+    county_tasks.each do |t|
       Rake::Task["precincts:#{t}"].invoke
     end
   end

@@ -1,7 +1,8 @@
 class PrecinctFinder
   include Term::ANSIColor
 
-  FUZZY_THRESHOLD = 0.6
+  FUZZY_TOOLS_THRESHOLD = 0.7
+  FUZZY_MATCH_THRESHOLD = 0.5
 
   @@county_tracts = County.all.map { |cty| [cty.name, cty.census_tracts.pluck(:name, :id).to_h ] }.to_h
 
@@ -88,14 +89,20 @@ class PrecinctFinder
     end
 
     # if we still don't have an exact match, try a fuzzy match
-    precinct_name = fuzzy_match(county.name, precinct_name) unless county_tracts.dig(county.name, precinct_name)
+    if !county_tracts.dig(county.name, precinct_name)
+      before = precinct_name
+      precinct_name = fuzzy_match(county.name, precinct_name)
+      if before != precinct_name and debug?
+        puts "[#{county.name}] Fuzzy match #{cyan(before)} -> #{blue(precinct_name)}"
+      end
+    end
 
     precinct_name
   end
 
   def matcher(haystack)
     FuzzyMatch.new(haystack,
-      threshold: FUZZY_THRESHOLD,
+      threshold: FUZZY_MATCH_THRESHOLD,
       find_best: true,
       find_all_with_score: true,
       stop_words: ['Precinct', 'Ward', 'Township'],
@@ -116,8 +123,8 @@ class PrecinctFinder
     m = do_fuzzy_match(county_name, precinct_name)
     return precinct_name unless m[:matches].any?
     first_match = m[:matches][0][0]
+    pp m if debug?
     if m[:matches].length > 1
-      pp m if debug?
 
       # if top 2 matches have similar scores, too ambiguous.
       return precinct_name if m[:matches][0][1] == m[:matches][1][1] && m[:matches][0][2] == m[:matches][1][2]
@@ -141,7 +148,7 @@ class PrecinctFinder
         pp( { fuzzy_tools: ftools } ) if debug?
         ftools.each do |m1|
           n, score = m1
-          if score.round(1) >= FUZZY_THRESHOLD # TODO right threshold?
+          if score.round(1) >= FUZZY_TOOLS_THRESHOLD # TODO right threshold?
             return n
           end
         end
@@ -181,21 +188,26 @@ class PrecinctFinder
 
       # no alias? look for common permutations
       else
+        before = precinct_name
         precinct_name = likely_name(county, precinct_name)
-        puts "[#{county.name}] Found likely name #{blue(precinct_name)} from #{red(orig_precinct_name)}" if debug?
+        if debug?
+          puts "[#{county.name}] Likely #{cyan(precinct_name)} from #{red(before)} [#{magenta(orig_precinct_name)}]"
+        end
       end
     end
 
     # if we still don't have a census_tract, try again with the altered name.
     census_tract_id ||= county_tracts.dig(county.name, precinct_name) || nil
 
+    # one last try to find precinct based on normalized name (searches aliases too)
+    precinct ||= Precinct.find_by_any_name(precinct_name, county.id).first
+
     # make sure Precinct exists, no matter what.
     # NOTE we do NOT pass in census_precinct_id to create a new Precinct since we trust it is
     # *NOT* the primary precinct for the census tract (in which case we would have found it above).
-    precinct ||= Precinct.where(county_id: county.id).where('lower(name) = ?', precinct_name.downcase).first
-    puts "[#{county.name}] Creating precinct #{green(precinct_name)}" if !precinct
-    precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
-      p.election_file_id = election_file.id
+    if !precinct
+      puts "[#{county.name}] Creating precinct #{green(precinct_name)}"
+      precinct = Precinct.create(county_id: county.id, name: precinct_name, election_file_id: election_file.id)
     end
 
     # finally, create Precinct relations if we could not identify 1:1 with CensusTract

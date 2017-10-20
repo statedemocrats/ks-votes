@@ -278,7 +278,7 @@ namespace :precincts do
         pa = curated_alias(p.id, reported_name)
         puts "[Sedgwick] Alias #{reported_name} -> #{precinct_name}"
       elsif census_tracts.any?
-        p = Precinct.find_by_any_name(reported_name).select {|p| p.county_id == sedgwick.id }.first
+        p = Precinct.find_by_any_name(reported_name, sedgwick.id).first
         if !p
           # last gasp - create the precinct
           p = Precinct.create!(name: reported_name, county_id: sedgwick.id)
@@ -290,7 +290,7 @@ namespace :precincts do
           puts "[Sedgwick] CensusPrecinct #{ct} <-> #{reported_name}"
         end
       elsif m = reported_name.match(/^WICHITA PRECINCT (\d+)$/)
-        p = Precinct.find_by_any_name(m[1]).select {|p| p.county_id == sedgwick.id }.first
+        p = Precinct.find_by_any_name(m[1], sedgwick.id).first
         if p
           pa = curated_alias(p.id, reported_name)
           puts "[Sedgwick] Alias #{reported_name} -> #{p.name}"

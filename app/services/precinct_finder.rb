@@ -181,7 +181,7 @@ class PrecinctFinder
         .where(precincts: { county_id: county.id }) \
         .where('lower(precinct_aliases.name) IN (?)', [precinct_name.downcase, orig_precinct_name.downcase]).first
       if pa
-        puts "[#{county.name}] Found alias #{green(pa.name)} for #{blue(precinct_name)} [#{red(orig_precinct_name)}]" if debug?
+        puts "[#{county.name}] Found precinct #{green(pa.precinct.name)} via alias #{blue(precinct_name)} | #{red(orig_precinct_name)}" if debug?
         precinct_name = pa.precinct.name
         census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
         precinct = pa.precinct

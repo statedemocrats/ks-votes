@@ -23,6 +23,9 @@ orphans:
 2016:
 	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2016
 
+2017:
+	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2017
+
 years:	2012 2014 2016 2017
 
 joco2016:

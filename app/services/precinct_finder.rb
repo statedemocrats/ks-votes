@@ -44,6 +44,7 @@ class PrecinctFinder
       .gsub(/\bW\ (\d+)\ P (\d+)\b/, 'W\1P\2')
       .gsub(/\bW(\d+)P(\d+)\b/, 'Ward \1 Precinct \2')
       .gsub(/\bW(\d+)\b/, 'Ward \1')
+      .gsub(/\bP(\d+)\b/, 'Precinct \1')
       .gsub(/\bN\.\b/, 'North')
       .gsub(/\bN\b/, 'North')
       .gsub(/\bS\.\b/, 'South')

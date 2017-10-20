@@ -24,6 +24,10 @@ namespace :precincts do
     end
   end
 
+  def curated_alias(precinct_id, name)
+    PrecinctAlias.find_or_create_by(reason: :curated, precinct_id: precinct_id, name: name)
+  end
+
   desc 'match orphans'
   task orphans: :environment do
     include Term::ANSIColor
@@ -42,11 +46,11 @@ namespace :precincts do
     riley = County.find_by(name: 'Riley')
     riley.precincts.each do |p|
       if m = p.name.match(/Ward (\d+) Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('W%02dP%02d', m[1], m[2]))
+        curated_alias(p.id, sprintf('W%02dP%02d', m[1], m[2]))
       end
       if m = p.name.match(/Manhattan Township Precinct (\d+)/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan Township %s', m[1]))
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sprintf('Manhattan twp %s', m[1]))
+        curated_alias(p.id, sprintf('Manhattan Township %s', m[1]))
+        curated_alias(p.id, sprintf('Manhattan twp %s', m[1]))
       end
     end
   end
@@ -56,7 +60,7 @@ namespace :precincts do
     saline = County.find_by(name: 'Saline')
     saline.precincts.each do |p|
       if m = p.name.match(/^Salina Precinct (\d+)$/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1].to_i)
+        curated_alias(p.id, m[1].to_i)
       end
     end
   end
@@ -75,8 +79,8 @@ namespace :precincts do
         puts "[Shawnee] precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"
         next
       end
-      PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
-      PrecinctAlias.find_or_create_by(precinct_id: p.id, name: bare_name) if bare_name != reported_name
+      curated_alias(p.id, reported_name)
+      curated_alias(p.id, bare_name) if bare_name != reported_name
     end
     shawnee.precincts.each do |p|
       if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)
@@ -97,7 +101,7 @@ namespace :precincts do
         end
         aliases.each do |n|
           next if n == p.name
-          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: n)
+          curated_alias(p.id, n)
           puts "[Shawnee] Alias #{n} -> #{p.name}"
         end
       end
@@ -120,7 +124,7 @@ namespace :precincts do
     end
     aliases.each do |n|
       next if n == name
-      PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: n)
+      curated_alias(precinct_id, n)
       puts "[Sedgwick] Alias #{n} -> #{name}"
     end
   end
@@ -166,7 +170,7 @@ namespace :precincts do
         c = CensusTract.find_by!(vtd_code: vtd_code, county_id: cty.id)
         p = c.precinct
         unless p.has_alias?(precinct_name_2016)
-          pa = PrecinctAlias.find_or_create_by(name: precinct_name_2016, precinct_id: p.id)
+          pa = curated_alias(precinct_name_2016, p.id)
           puts "[#{county_name}] Created PrecinctAlias #{precinct_name_2016} -> #{p.name}"
         end
       end
@@ -218,21 +222,21 @@ namespace :precincts do
     sedgwick.precincts.each do |p|
       p_name = p.name
       if abbr = sedgwick_precinct_abbrs[p_name]
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: abbr)
+        curated_alias(p.id, abbr)
       elsif n = p_name.match(/^([\ A-Za-z]+?) (Ward|Precinct) (\d+)/)
         long_name = n[1]
         abbr = sedgwick_precinct_abbrs[long_name] or fail "No Sedgwick abbreviation for #{p_name} [#{long_name}]"
         if abbr == '' # i.e. Wichita
           if m = p_name.match(/^Wichita Precinct (\d+)$/)
-            PrecinctAlias.find_or_create_by(precinct_id: p.id, name: m[1])
+            curated_alias(p.id, m[1])
           elsif m = p.name.match(/^Wichita Precinct (\d+)/) # might have leg district suffix
             p_id = m[1]
             if p.alias_names.include? "WICHITA PRECINCT #{p_id}"
-              PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p_id)
+              curated_alias(p.id, p_id)
             end
           end
         elsif long_name.match(/^(Mulvane|Valley Center) City /)
-          PrecinctAlias.find_or_create_by(precinct_id: p.id, name: p.name.sub(' City', ''))
+          curated_alias(p.id, p.name.sub(' City', ''))
 
         # Ward + Precinct patterns
         elsif m = p_name.match(/ Ward (\d+) Precinct (\d+)$/)
@@ -245,18 +249,18 @@ namespace :precincts do
           pa = "#{abbr}#{m[1].to_i}#{m[2].to_i}"
           long_pa = "#{long_name} Ward #{m[1]} Precinct #{m[2]}"
           if p.has_alias?(pa) && !p.has_alias?(long_pa)
-            PrecinctAlias.find_or_create_by(name: long_pa, precinct_id: p.id)
+            curated_alias(long_pa, p.id)
           end
         elsif m = p_name.match(/ Precinct (\d+) (.+)$/)
           pa = "#{abbr}#{sprintf("%02d", m[1].to_i)}"
           long_pa = "#{long_name} Precinct #{m[1]}"
           if p.has_alias?(pa) && !p.has_alias?(long_pa)
-            PrecinctAlias.find_or_create_by(name: long_pa, precinct_id: p.id)
+            curated_alias(long_pa, p.id)
           end
         end
       # odd
       elsif p_name.match(/^Valley Center Township/)
-        PrecinctAlias.find_or_create_by(precinct_id: p.id, name: sedgwick_precinct_abbrs['Valley Center Township'])
+        curated_alias(p.id, sedgwick_precinct_abbrs['Valley Center Township'])
       else
         fail "Unexpected Sedgwick precinct name #{p_name}"
       end
@@ -271,7 +275,7 @@ namespace :precincts do
       census_tracts = (row['census_tracts'] || '').split('|') # secondary overlapping tracts
       if precinct_name
         p = Precinct.find_by!(name: precinct_name, county_id: sedgwick.id)
-        pa = PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+        pa = curated_alias(p.id, reported_name)
         puts "[Sedgwick] Alias #{reported_name} -> #{precinct_name}"
       elsif census_tracts.any?
         p = Precinct.find_by_any_name(reported_name).select {|p| p.county_id == sedgwick.id }.first
@@ -288,7 +292,7 @@ namespace :precincts do
       elsif m = reported_name.match(/^WICHITA PRECINCT (\d+)$/)
         p = Precinct.find_by_any_name(m[1]).select {|p| p.county_id == sedgwick.id }.first
         if p
-          pa = PrecinctAlias.find_or_create_by(name: reported_name, precinct_id: p.id)
+          pa = curated_alias(p.id, reported_name)
           puts "[Sedgwick] Alias #{reported_name} -> #{p.name}"
         end
       else
@@ -316,7 +320,7 @@ namespace :precincts do
         # TODO
         puts "[Johnson] Found existing precinct for #{reported_name}"
       elsif p
-        pa = PrecinctAlias.find_or_create_by(precinct_id: p.id, name: reported_name)
+        pa = curated_alias(p.id, reported_name)
         puts "[Johnson] Created PrecinctAlias #{pa.id} for #{reported_name} -> #{precinct}"
       elsif c
         p = Precinct.create(name: reported_name, county_id: johnson.id)
@@ -351,18 +355,18 @@ namespace :precincts do
       name = sprintf("%s Ward %d Precinct %02d", city, ward.to_i, precinct.to_i)
       alt_name = sprintf("%s Ward %02d Precinct %02d", city, ward.to_i, precinct.to_i)
       if p = Precinct.find_by(name: [name, alt_name], county_id: wyandotte.id)
-        pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
+        pa = curated_alias(p.id, short)
         puts "[Wyandotte] Alias #{short} -> #{name}"
         if p.name != alt_name
-          pa = PrecinctAlias.find_or_create_by(name: alt_name, precinct_id: p.id)
+          pa = curated_alias(p.id, alt_name)
           puts "[Wyandotte] Alias #{alt_name} -> #{name}"
         end
       elsif ct = CensusTract.find_by(vtd_code: vtd_code, county_id: wyandotte.id)
         p = ct.precinct
-        pa = PrecinctAlias.find_or_create_by(name: short, precinct_id: p.id)
+        pa = curated_alias(p.id, short)
         puts "[Wyandotte] Alias #{short} -> #{p.name} (via CensusTract #{vtd_code})"
         if alt_name != name
-          pa = PrecinctAlias.find_or_create_by(name: alt_name, precinct_id: p.id)
+          pa = curated_alias(p.id, alt_name)
           puts "[Wyandotte] Alias #{alt_name} -> #{name}"
         end
       else
@@ -376,7 +380,7 @@ namespace :precincts do
       alias_names = row['aliases'].split('|')
       p = Precinct.find_by!(name: precinct_name, county_id: wyandotte.id)
       alias_names.each do |n|
-        PrecinctAlias.find_or_create_by(name: n, precinct_id: p.id)
+        curated_alias(p.id, n)
         puts "[Wyandotte] Alias #{n} -> #{precinct_name}"
       end
     end
@@ -425,7 +429,7 @@ namespace :precincts do
 
     douglas.precincts.each do |p|
       next unless p.name.match(/^Lawrence Precinct/)
-      pa = PrecinctAlias.find_or_create_by(name: p.name.sub(/^Lawrence Precinct /, ''), precinct_id: p.id)
+      pa = curated_alias(p.id, p.name.sub(/^Lawrence Precinct /, ''))
     end
   end
 
@@ -458,7 +462,7 @@ namespace :precincts do
     end
 
     aliases.each do |n|
-      PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: n)
+      curated_alias(precinct_id, n)
     end
   end
 end

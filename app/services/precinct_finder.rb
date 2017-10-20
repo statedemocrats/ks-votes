@@ -1,4 +1,8 @@
 class PrecinctFinder
+  include Term::ANSIColor
+
+  FUZZY_THRESHOLD = 0.6
+
   @@county_tracts = County.all.map { |cty| [cty.name, cty.census_tracts.pluck(:name, :id).to_h ] }.to_h
 
   def self.county_tracts
@@ -91,7 +95,7 @@ class PrecinctFinder
 
   def matcher(haystack)
     FuzzyMatch.new(haystack,
-      threshold: 0.5,
+      threshold: FUZZY_THRESHOLD,
       find_best: true,
       find_all_with_score: true,
       stop_words: ['Precinct', 'Ward', 'Township'],
@@ -137,7 +141,7 @@ class PrecinctFinder
         pp( { fuzzy_tools: ftools } ) if debug?
         ftools.each do |m1|
           n, score = m1
-          if score.round(1) >= 0.4 # TODO right threshold?
+          if score.round(1) >= FUZZY_THRESHOLD # TODO right threshold?
             return n
           end
         end
@@ -170,6 +174,7 @@ class PrecinctFinder
         .where(precincts: { county_id: county.id }) \
         .where('lower(precinct_aliases.name) IN (?)', [precinct_name.downcase, orig_precinct_name.downcase]).first
       if pa
+        puts "[#{county.name}] Found alias #{green(pa.name)} for #{blue(precinct_name)} [#{red(orig_precinct_name)}]" if debug?
         precinct_name = pa.precinct.name
         census_tract_id = pa.precinct.census_tract_id # might be null, that's ok.
         precinct = pa.precinct
@@ -177,6 +182,7 @@ class PrecinctFinder
       # no alias? look for common permutations
       else
         precinct_name = likely_name(county, precinct_name)
+        puts "[#{county.name}] Found likely name #{blue(precinct_name)} from #{red(orig_precinct_name)}" if debug?
       end
     end
 
@@ -187,7 +193,7 @@ class PrecinctFinder
     # NOTE we do NOT pass in census_precinct_id to create a new Precinct since we trust it is
     # *NOT* the primary precinct for the census tract (in which case we would have found it above).
     precinct ||= Precinct.where(county_id: county.id).where('lower(name) = ?', precinct_name.downcase).first
-    puts "[#{county.name}] Creating precinct '#{precinct_name}'" if !precinct
+    puts "[#{county.name}] Creating precinct #{green(precinct_name)}" if !precinct
     precinct ||= Precinct.find_or_create_by(county_id: county.id, name: precinct_name) do |p|
       p.election_file_id = election_file.id
     end
@@ -195,13 +201,9 @@ class PrecinctFinder
     # finally, create Precinct relations if we could not identify 1:1 with CensusTract
     if !census_tract_id && !precinct.census_tract_id
       if orig_precinct_name != precinct_name && !precinct.has_alias?(orig_precinct_name)
-        puts "[#{county.name}] Aliasing #{orig_precinct_name} -> #{precinct_name}"
-        PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id)
+        puts "[#{county.name}] Alias new precinct #{blue(orig_precinct_name)} -> #{blue(precinct_name)}"
+        PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id, reason: :orphan)
       end
-    else
-      # census_tract.name == precinct_name
-      # TODO do we need the secondary CensusPrecinct?
-      #CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: census_tract_id)
     end
     precinct
   end

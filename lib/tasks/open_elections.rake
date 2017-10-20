@@ -3,6 +3,7 @@ require 'digest'
 require 'pp'
 
 namespace :openelections do
+  include Term::ANSIColor
 
   SKIP_PRECINCTS = [
     'Absent',
@@ -100,9 +101,10 @@ namespace :openelections do
     @_counties[name.downcase] ||= County.where('lower(name) = ?', name.downcase).first
   end
 
-  def find_tract_by_vtd(vtd_code)
+  def find_tract_by_vtd(vtd_code, county)
     @_tracts_by_vtd ||= {}
-    @_tracts_by_vtd[vtd_code] ||= CensusTract.find_by(vtd_code: vtd_code)
+    k = "#{county.name}|#{vtd_code}"
+    @_tracts_by_vtd[k] ||= CensusTract.find_by(vtd_code: vtd_code, county_id: county.id)
   end
 
   def load_csv_file(file)
@@ -146,8 +148,11 @@ namespace :openelections do
       # if VTD is present, trust it to determine precinct
       precinct = nil
       if row['vtd']
-        census_tract = find_tract_by_vtd(row['vtd'])
-        precinct = census_tract.precinct if census_tract
+        census_tract = find_tract_by_vtd(row['vtd'], county)
+        if census_tract
+          precinct = census_tract.precinct
+          puts "[#{county.name}] Located precinct #{blue(precinct.name)} via VTD #{row['vtd']}" if debug?
+        end
       end
 
       # find a reasonable precinct name
@@ -159,8 +164,10 @@ namespace :openelections do
 
       # create a PrecinctAlias if the name we were given is not the normalized name
       if precinct.name != precinct_name && !precinct.has_alias?(precinct_name)
-        puts "[#{county.name}] Aliasing what PrecinctFinder found: #{precinct_name} -> #{precinct.name}"
-        PrecinctAlias.find_or_create_by(name: precinct_name, precinct_id: precinct.id)
+        puts "[#{county.name}] Aliasing PrecinctFinder result: #{red(precinct_name)} -> #{red(precinct.name)}"
+        PrecinctAlias.find_or_create_by(name: precinct_name, precinct_id: precinct.id) do |pa|
+          pa.reason = :finder
+        end
       end
 
       # FIXME ugly hack for what seems to be a JoCo re-use of name for different precincts
@@ -174,7 +181,7 @@ namespace :openelections do
         end
       end 
 
-      puts "raw #{row['precinct']} baked #{precinct_name} precinct_id #{precinct.id}" if debug?
+      puts "raw #{blue(row['precinct'])} baked #{blue(precinct.name)} precinct_id #{precinct.id}" if debug?
 
       office = find_office(row['office'], row['district'], election_file.id)
       party = find_party((row['party'] || '').downcase, election_file.id)

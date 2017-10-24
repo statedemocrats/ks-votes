@@ -17,7 +17,7 @@ class Precinct < ApplicationRecord
   def self.find_by_any_name(name, county_id=nil)
     pas = PrecinctAlias.includes(:precinct).where('lower(precinct_aliases.name) IN (?)', [name.downcase])
     ps = Precinct.where('lower(name) IN (?)', [name.downcase])
-    matches = [ps, pas.collect(&:precinct)].flatten.uniq
+    matches = [ps, pas.collect(&:precinct)].flatten.uniq.sort_by {|p| p.created_at }
     if county_id
       matches.select {|p| p.county_id == county_id }
     else

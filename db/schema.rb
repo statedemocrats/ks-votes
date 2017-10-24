@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171019214855) do
+ActiveRecord::Schema.define(version: 20171024211524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 20171019214855) do
     t.string "vtd_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "reason"
+    t.string "year"
     t.index ["vtd_code", "county_id"], name: "index_census_tracts_on_vtd_code_and_county_id", unique: true
   end
 

@@ -138,7 +138,7 @@ CensusTract.transaction do
     precinct_code = matches[2]
     cty_id = cty_map[cty_fips]
     # not .create() because we want to skip validations for speed.
-    c = CensusTract.new(county_id: cty_id, vtd_code: precinct_code, name: name)
+    c = CensusTract.new(county_id: cty_id, vtd_code: precinct_code, name: name, year: '2012', reason: :census)
     c.save!(validate: false)
     p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
     p.save!(validate: false)

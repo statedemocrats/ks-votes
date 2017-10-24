@@ -1,7 +1,9 @@
 namespace :precincts do
+  include Term::ANSIColor
 
   def county_tasks
     @county_tasks ||= [
+      'vtd2014', # FIRST
       'riley',
       'douglas',
       'saline',
@@ -32,6 +34,43 @@ namespace :precincts do
     PrecinctAlias.find_or_create_by(reason: :curated, precinct_id: precinct_id, name: name)
   end
 
+  desc '2014 VTD mapping'
+  task vtd2014: :environment do
+    json = File.read(File.join(Rails.root, 'db/2014-vtd-county-mapping.json'))
+    vtdmap = JSON.parse(json)
+    counties = {}
+    vtdmap.each do |cty, vtds|
+      county = counties[cty] ||= County.l(cty)
+      vtds.each do |vtd, precinct_name|
+        next if vtd.length != 6  # comes from SOS as 3-digits, likely an internal mapping, not federal.
+        next if precinct_name == 'ADVANCED' # comes from SOS, not geographic.
+
+        ct = CensusTract.find_or_create_by(vtd_code: vtd, county_id: county.id) do |c|
+          c.year = '2014'
+          c.reason = :sos
+          c.name = precinct_name
+          puts "[#{cty}] Creating CensusTract for 2014 with #{blue(vtd)} #{green(precinct_name)}"
+        end
+        if !ct.precinct
+          Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
+          puts "[#{cty}] Creating Precinct #{green(precinct_name)}"
+        end
+        m = Precinct.find_by_any_name(precinct_name, county.id)
+        if !m.any?
+          curated_alias(ct.precinct.id, precinct_name)
+          puts "[#{cty}] 2014 VTD Alias #{blue(precinct_name)} -> #{green(ct.precinct.name)}"
+        elsif m && m.length > 1
+          puts "[#{cty}] too many matches for precinct name #{red(precinct_name)}"
+          next
+        elsif m.first.name == precinct_name || m.first.has_alias?(precinct_name)
+          # everything is already ok
+        else
+          puts "[#{cty}] Found precinct #{blue(m.first.name)} for vtd #{green(vtd)} mismatch #{red(precinct_name)}"
+        end
+      end
+    end
+  end
+        
   desc 'match orphans'
   task orphans: :environment do
     include Term::ANSIColor
@@ -364,17 +403,21 @@ namespace :precincts do
       name = sprintf("%s Ward %d Precinct %02d", city, ward.to_i, precinct.to_i)
       alt_name = sprintf("%s Ward %02d Precinct %02d", city, ward.to_i, precinct.to_i)
       if p = Precinct.find_by(name: [name, alt_name], county_id: wyandotte.id)
-        pa = curated_alias(p.id, short)
-        puts "[Wyandotte] Alias #{short} -> #{name}"
-        if p.name != alt_name
+        unless p.has_alias?(short)
+          pa = curated_alias(p.id, short)
+          puts "[Wyandotte] Alias #{short} -> #{name}"
+        end
+        if p.name != alt_name && !p.has_alias?(alt_name)
           pa = curated_alias(p.id, alt_name)
           puts "[Wyandotte] Alias #{alt_name} -> #{name}"
         end
       elsif ct = CensusTract.find_by(vtd_code: vtd_code, county_id: wyandotte.id)
         p = ct.precinct
-        pa = curated_alias(p.id, short)
-        puts "[Wyandotte] Alias #{short} -> #{p.name} (via CensusTract #{vtd_code})"
-        if alt_name != name
+        unless p.has_alias?(short)
+          pa = curated_alias(p.id, short)
+          puts "[Wyandotte] Alias #{short} -> #{p.name} (via CensusTract #{vtd_code})"
+        end
+        if alt_name != name && !p.has_alias?(alt_name)
           pa = curated_alias(p.id, alt_name)
           puts "[Wyandotte] Alias #{alt_name} -> #{name}"
         end
@@ -389,6 +432,7 @@ namespace :precincts do
       alias_names = row['aliases'].split('|')
       p = Precinct.find_by!(name: precinct_name, county_id: wyandotte.id)
       alias_names.each do |n|
+        next if p.has_alias?(n)
         curated_alias(p.id, n)
         puts "[Wyandotte] Alias #{n} -> #{precinct_name}"
       end

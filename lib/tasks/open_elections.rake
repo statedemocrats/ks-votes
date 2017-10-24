@@ -185,7 +185,7 @@ namespace :openelections do
       puts "raw #{blue(row['precinct'])} baked #{blue(precinct.name)} precinct_id #{precinct.id}" if debug?
 
       office = find_office(row['office'], row['district'], election_file.id)
-      party = find_party((row['party'] || '').downcase, election_file.id)
+      party = find_party((row['party'] || ''), election_file.id)
       candidate = Candidate.find_or_create_by(name: row['candidate'], party_id: party.id, office_id: office.id) do |c|
         c.election_file_id = election_file.id
       end
@@ -210,14 +210,15 @@ namespace :openelections do
   def find_office(office_name, district_name, election_file_id)
     @_offices ||= {}
     k = "#{office_name},#{district_name}"
-    @_offices[k] ||= Office.find_or_create_by(name: office_name, district: district_name) do |o|
+    @_offices[k] ||= Office.find_or_create_by(name: office_name.strip.downcase, district: district_name) do |o|
       o.election_file_id = election_file_id
     end
   end
 
   def find_party(party_name, election_file_id)
     @_parties ||= {}
-    @_parties[party_name] ||= Party.find_or_create_by(name: party_name) do |p|
+    normed_name = Party::NORMS[party_name.strip.downcase] || party_name.to_sym
+    @_parties[normed_name] ||= Party.find_or_create_by(name: normed_name) do |p|
       p.election_file_id = election_file_id
     end
   end

@@ -78,13 +78,18 @@ namespace :precincts do
       vtd2010 = row['vtd_2010']
       bare_name = reported_name.gsub(/^\d+ /, '')
       bare_name.gsub!(/(\d+)/) { sprintf('%02d', Regexp.last_match[1].to_i) }
+      int_name = bare_name.gsub(/(\d+)/) { sprintf('%d', Regexp.last_match[1].to_i) }
+      ward_name = int_name.gsub(/^Topeka /, '')
       p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
       unless p
         puts "[Shawnee] precinct not found: #{vtd2010 || bare_name} [#{reported_name}]"
         next
       end
-      curated_alias(p.id, reported_name)
-      curated_alias(p.id, bare_name) if bare_name != reported_name
+      [reported_name, bare_name, int_name, ward_name].uniq.each do |n|
+        next if n == p.name
+        curated_alias(p.id, n)
+        puts "[Shawnee] Alias #{n} -> #{p.name}"
+      end
     end
     shawnee.precincts.each do |p|
       if m = p.name.match(/^Topeka Ward (\d+) Precinct (\d+)$/)

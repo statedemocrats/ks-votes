@@ -162,9 +162,10 @@ namespace :openelections do
       next if SKIP_PRECINCTS.include? precinct_name.titlecase
 
       precinct ||= precinct_finder.precinct_for_county!(county, precinct_name, election_file)
+      census_tract ||= precinct.census_tract
 
       # create a PrecinctAlias if the name we were given is not the normalized name
-      if !census_tract && precinct.name != precinct_name && !precinct.has_alias?(precinct_name)
+      if !census_tract && precinct.name.downcase != precinct_name.downcase && !precinct.has_alias?(precinct_name)
         puts "[#{county.name}] Aliasing PrecinctFinder result: #{red(precinct_name)} -> #{red(precinct.name)}"
         PrecinctAlias.find_or_create_by(name: precinct_name, precinct_id: precinct.id) do |pa|
           pa.reason = :finder

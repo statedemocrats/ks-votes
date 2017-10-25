@@ -226,7 +226,7 @@ class PrecinctFinder
 
     # finally, create Precinct relations if we could not identify 1:1 with CensusTract
     if !census_tract_id && !precinct.census_tract_id
-      if orig_precinct_name != precinct_name && !precinct.has_alias?(orig_precinct_name)
+      if orig_precinct_name.downcase != precinct_name.downcase && !precinct.has_alias?(orig_precinct_name)
         puts "[#{county.name}] Alias new precinct #{blue(orig_precinct_name)} -> #{blue(precinct_name)}"
         PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id, reason: :orphan)
       end

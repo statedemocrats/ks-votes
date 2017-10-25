@@ -31,6 +31,12 @@ class PrecinctFinder
     @@county_tracts
   end
 
+  def precinct_for_census_tract_id(census_tract_id)
+    @_tracts ||= {}
+    @_tracts[census_tract_id] ||= CensusTract.find(census_tract_id)
+    @_tracts[census_tract_id].precinct
+  end
+
   def normalize(name)
     name.strip
       .gsub('#', ' ')
@@ -182,7 +188,7 @@ class PrecinctFinder
     # common clean up first since we'll create from this string
     precinct_name = normalize(precinct_name)
 
-    #puts "Orig precinct '#{orig_precinct_name}' cleaned '#{precinct_name}'"
+    puts "Orig precinct '#{orig_precinct_name}' cleaned '#{precinct_name}'" if debug?
 
     # check cache of tract names
     census_tract_id = county_tracts.dig(county.name, precinct_name)
@@ -212,8 +218,9 @@ class PrecinctFinder
         end
       end
     else
+      precinct = precinct_for_census_tract_id(census_tract_id)
       if debug?
-        puts "[#{county.name}] Found census_tract_id #{cyan(census_tract_id)} via cache"
+        puts "[#{county.name}] Found census_tract_id #{cyan(census_tract_id.to_s)} via cache"
       end
     end
 

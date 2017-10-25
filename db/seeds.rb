@@ -127,6 +127,7 @@ end
 
 puts "Loading 2012 Census tracts"
 # run in a single transaction for speed.
+seen_names = {}
 CensusTract.transaction do
   precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv')
   CSV.foreach(precinct_names) do |row|
@@ -137,12 +138,19 @@ CensusTract.transaction do
     cty_fips = matches[1]
     precinct_code = matches[2]
     cty_id = cty_map[cty_fips]
+
+    # dupe check
+    seen_names[cty_id] ||= {}
+    if seen_names[cty_id][name]
+      STDERR.puts "WARNING dupe precinct '#{name}' with vtd #{seen_names[cty_id][name]} (#{precinct_code})"
+    end
+    seen_names[cty_id][name] = precinct_code
+
     # not .create() because we want to skip validations for speed.
     c = CensusTract.new(county_id: cty_id, vtd_code: precinct_code, name: name, year: '2012', reason: :census)
     c.save!(validate: false)
     p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
     p.save!(validate: false)
-    #CensusPrecinct.create(census_tract_id: c.id, precinct_id: p.id)
   end
 end
 

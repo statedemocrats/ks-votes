@@ -55,6 +55,7 @@ namespace :precincts do
           Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
           puts "[#{cty}] Creating Precinct #{green(precinct_name)}"
         end
+
         m = Precinct.find_by_any_name(precinct_name, county.id)
         if !m.any?
           curated_alias(ct.precinct.id, precinct_name)
@@ -158,6 +159,7 @@ namespace :precincts do
 
   def sedgwick_palias_formatted(precinct_id, name, abbr, matches)
     aliases = []
+    aliases << name.upcase
     if matches[2]
       w = matches[1].to_i
       p = matches[2].to_i

@@ -28,6 +28,11 @@ class PrecinctReporter
 
       next if r.office.name == ''
 
+      if !r.election
+        puts "No election for #{r.inspect}"
+        next
+      end
+
       k = [r.election.name, r.office.name, r.office.district].join('::')
       report[k] ||= {total: 0, parties: {}}
       report[k][:parties][r.candidate.party.name] ||= {votes: 0, percent: 0}
@@ -42,7 +47,9 @@ class PrecinctReporter
       v[:parties].each do |n, rep|
         # percentage of votes *available* (max) not total (since some races are un-opposed)
         rep[:percent] = (rep[:votes].fdiv(report[:stats][:max]) * 100).round(1)
+        rep[:percent] = 0.0 if rep[:percent].nan?
       end
+      #pp v[:parties]
       sorted_parties = v[:parties].sort { |a, b| b[1][:percent] <=> a[1][:percent] }
       if sorted_parties.length > 1
         v[:margin] = (sorted_parties[0][1].dig(:percent) - sorted_parties[1][1].dig(:percent)).round(1)

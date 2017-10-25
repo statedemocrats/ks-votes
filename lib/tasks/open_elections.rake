@@ -115,7 +115,7 @@ namespace :openelections do
     end
     election_file = ElectionFile.find_or_create_by(name: File.basename(file))
 
-    CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8') do |row|
+    CSV.foreach(file, headers: true, header_converters: [:downcase], encoding: 'bom|utf-8').with_index(1) do |row, line_num|
       Rails.logger.debug('new row')
       pp(row) if debug?
 
@@ -189,7 +189,7 @@ namespace :openelections do
       candidate = Candidate.find_or_create_by(name: row['candidate'], party_id: party.id, office_id: office.id) do |c|
         c.election_file_id = election_file.id
       end
-      checksum = Digest::SHA256.hexdigest(
+      checksum = line_num.to_s + ':' + Digest::SHA256.hexdigest(
         [precinct.name, office.name, election.name, candidate.name, votes, election_file.name].join(':')
       )
 

@@ -68,6 +68,9 @@ class PrecinctFinder
     if precinct_name.match(/^\d\d\d+[\-\ ]+/)
       precinct_name.sub!(/^\d\d\d+[\-\ ]+/, '')
     end
+    if precinct_name.match(/^\d+ (\w+) (\w+)/)
+      precinct_name.sub!(/^\d+ /, '')
+    end
 
     precinct_name = precinct_name.titlecase if precinct_name.match(/^[A-Z\ ]+$/)
 
@@ -208,6 +211,10 @@ class PrecinctFinder
           puts "[#{county.name}] Likely #{cyan(precinct_name)} from #{red(before)} [#{magenta(orig_precinct_name)}]"
         end
       end
+    else
+      if debug?
+        puts "[#{county.name}] Found census_tract_id #{cyan(census_tract_id)} via cache"
+      end
     end
 
     # if we still don't have a census_tract, try again with the altered name.
@@ -227,7 +234,7 @@ class PrecinctFinder
     # finally, create Precinct relations if we could not identify 1:1 with CensusTract
     if !census_tract_id && !precinct.census_tract_id
       if orig_precinct_name.downcase != precinct_name.downcase && !precinct.has_alias?(orig_precinct_name)
-        puts "[#{county.name}] Alias new precinct #{blue(orig_precinct_name)} -> #{blue(precinct_name)}"
+        puts "[#{county.name}] Alias orphaned precinct #{blue(orig_precinct_name)} -> #{green(precinct_name)}"
         PrecinctAlias.create(name: orig_precinct_name, precinct_id: precinct.id, reason: :orphan)
       end
     end

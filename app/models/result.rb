@@ -6,4 +6,7 @@ class Result < ApplicationRecord
   belongs_to :election_file
 
   scope :full, -> { includes([:election, :office, { candidate: :party }]) }
+
+  # why the Precinct was chosen for this Result
+  enum reason: { vtd: 0, name: 1 }
 end

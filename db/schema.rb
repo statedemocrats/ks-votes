@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171024211524) do
+ActiveRecord::Schema.define(version: 20171026212405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20171024211524) do
     t.datetime "updated_at", null: false
     t.integer "election_file_id"
     t.string "checksum"
+    t.integer "reason"
     t.index ["checksum"], name: "index_results_on_checksum", unique: true
   end
 

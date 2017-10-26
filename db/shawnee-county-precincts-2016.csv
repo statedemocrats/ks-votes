@@ -70,7 +70,9 @@ reported,vtd_2010
 99 Verbena,North Mission S20 H53
 Topeka Ward 3 Precinct 09,Topeka Ward 3 Precinct 09 H58
 Topeka Ward 3 Precinct 10,Topeka Ward 3 Precinct 09 H57
-Topeka Ward 4 Precinct 14,Topeka Ward 4 Precinct 04 S18
+Topeka Ward 4 Precinct 14,Topeka Ward 4 Precinct 04 S18,# via http://gis.snco.us/electionviewer/ manual comparison
+Topeka Ward 4 Precinct 13,Topeka Ward 4 Precinct 14,# via http://gis.snco.us/electionviewer/ manual comparison
+Topeka Ward 4 Precinct 01,Topeka Ward 4 Precinct 13,# via http://gis.snco.us/electionviewer/ manual comparison
 Topeka Ward 4 Precinct 04,Topeka Ward 4 Precinct 04 S19
 Topeka Ward 4 Precinct 15,Topeka Ward 4 Precinct 11 H56
 Topeka Ward 4 Precinct 11,Topeka Ward 4 Precinct 11 H58

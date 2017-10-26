@@ -1,5 +1,6 @@
 class PrecinctFinder
   include Term::ANSIColor
+  extend Term::ANSIColor
 
   FUZZY_TOOLS_THRESHOLD = 0.7
   FUZZY_MATCH_THRESHOLD = 0.5
@@ -9,10 +10,14 @@ class PrecinctFinder
     ActiveRecord::Base.logger = nil
     @@counties = County.all.map { |cty| [cty.id, cty.name] }.to_h
     @@county_tracts = County.all.map { |cty| [cty.name, cty.census_tracts.pluck(:name, :id).to_h ] }.to_h
-    PrecinctAlias.curated.includes(:precinct).each do |pa|
+    PrecinctAlias.curated.includes(:precinct).order(:created_at).each do |pa|
       cty_name = @@counties[pa.precinct.county_id]
       cti = pa.precinct.census_tract_id
-      @@county_tracts[cty_name][pa.name] = cti unless @@county_tracts.dig(cty_name, pa.name)
+      existing_cti = @@county_tracts.dig(cty_name, pa.name)
+      if existing_cti
+        puts "[#{cty_name}] PrecinctAlias #{green(pa.name)} #{cti} pre-defined as #{existing_cti}"
+      end
+      @@county_tracts[cty_name][pa.name] = cti
     end
     ActiveRecord::Base.logger = old_logger
   end

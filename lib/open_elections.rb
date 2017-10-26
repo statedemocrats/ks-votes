@@ -95,11 +95,13 @@ module OpenElections
       # if VTD is present, trust it to determine precinct
       precinct = nil
       census_tract = nil
+      reason = :name
       if row['vtd']
         census_tract = find_tract_by_vtd(row['vtd'], county)
         if census_tract
           precinct = census_tract.precinct
           puts "[#{county.name}] Located precinct #{blue(precinct.name)} via VTD #{row['vtd']}" if debug?
+          reason = :vtd
         end
       end
 
@@ -149,6 +151,7 @@ module OpenElections
         r.election = election
         r.candidate = candidate
         r.election_file = election_file
+        r.reason = reason
       end
 
     end

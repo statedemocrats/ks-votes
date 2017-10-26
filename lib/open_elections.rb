@@ -95,7 +95,7 @@ module OpenElections
       # if VTD is present, trust it to determine precinct
       precinct = nil
       census_tract = nil
-      reason = :name
+      reason = :finder # default
       if row['vtd']
         census_tract = find_tract_by_vtd(row['vtd'], county)
         if census_tract

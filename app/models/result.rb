@@ -8,5 +8,5 @@ class Result < ApplicationRecord
   scope :full, -> { includes([:election, :office, { candidate: :party }]) }
 
   # why the Precinct was chosen for this Result
-  enum reason: { vtd: 0, name: 1 }
+  enum reason: { vtd: 0, finder: 1 }
 end

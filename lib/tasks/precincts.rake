@@ -6,14 +6,14 @@ namespace :precincts do
 
   def county_tasks
     @county_tasks ||= [
-      'vtd2014', # FIRST
       'riley',
       'douglas',
       'saline',
       'shawnee',
       'sedgwick',
       'johnson',
-      'wyandotte'
+      'wyandotte',
+      'vtd2014', # LAST
     ]
   end
 
@@ -34,6 +34,14 @@ namespace :precincts do
       vtds.each do |vtd, precinct_name|
         next if vtd.length != 6  # comes from SOS as 3-digits, likely an internal mapping, not federal.
         next if precinct_name == 'ADVANCED' # comes from SOS, not geographic.
+
+        # if we find an existing alias for precinct_name,
+        # prefer it since the 2012 names are 1:1 with our census map.
+        # i.e. don't create a CensusTract entry for those.
+        if pa = PrecinctAlias.l(precinct_name)
+          puts "[#{county.name}] Skipping #{blue(precinct_name)} since alias already exists"
+          next
+        end
 
         ct = CensusTract.find_or_create_by(vtd_code: vtd, county_id: county.id) do |c|
           c.year = '2014'

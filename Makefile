@@ -11,6 +11,9 @@ clean:
 deploy:
 	rake map:setup
 
+check:
+	rake precincts:check
+
 orphans:
 	@psql -q -A -F , -d ksvotes < sql/orphan-precincts.sql | grep -v ' rows'
 

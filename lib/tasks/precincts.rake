@@ -469,6 +469,14 @@ namespace :precincts do
       p = Precinct.find_by!(name: precinct_name, county_id: wyandotte.id)
       alias_names.each do |n|
         next if p.has_alias?(n)
+        ct = CensusTract.find_by(name: n, county_id: wyandotte.id)
+        if ct && ct.id != p.census_tract_id
+          puts "[Wyandotte] Found existing CensusTract for alias #{blue(n)} - reassigning Precinct"
+          p.census_tract_id = ct.id
+          p.save!
+          next
+        end
+
         curated_alias(p.id, n)
         puts "[Wyandotte] Alias mapped #{blue(n)} -> #{green(precinct_name)}"
       end

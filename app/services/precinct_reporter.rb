@@ -1,14 +1,36 @@
 class PrecinctReporter
   attr_reader :precinct
 
+  PARTY_LABELS = {
+    democratic: :d,
+    republican: :r,
+    reform:     :rf,
+    libertarian: :lb,
+    indepedent: :in,
+    write_in:   :w,
+  }.freeze
+
+  KEY_LEGEND = {
+    P: :parties,
+    T: :total,
+    V: :votes,
+    PC: :percent,
+    S: :stats,
+    M: :max,
+    pcm: :percent_of_max,
+    m: :margin,
+    w: :winner,
+  }.freeze
+
   def self.all_by_year
-    report = {}
+    report = {legend: legend}
     Precinct.find_in_batches do |precincts|
       precincts.each do |p|
-        report[p.county.name] ||= {}
-        # TODO better unique identifier than p.name
-        # make geojson lookup fast.
-        report[p.county.name][p.name] = new(p).by_year
+        r = new(p).by_year
+        r.delete(:legend) # one legend for entire report
+        #puts p.map_id
+        #puts r.inspect
+        report[p.map_id] = r
       end
     end
     report
@@ -18,11 +40,19 @@ class PrecinctReporter
     @precinct = precinct
   end
 
+  def party_abbr(candidate)
+    PARTY_LABELS[candidate.party.name] || 'U'
+  end
+
+  def self.legend
+    KEY_LEGEND.merge(parties: PARTY_LABELS.invert)
+  end
+
   def by_year(year=nil)
     # for all the races in a given year or years,
     # calculate the totals for each office and the spread
     # between the top two candidates.
-    report = {stats: {max: 0}}
+    report = {S: {M: 0}, legend: self.class.legend}
     precinct.results.full.each do |r|
       next if year and r.election.date.year != year.to_i
 
@@ -34,29 +64,32 @@ class PrecinctReporter
       end
 
       k = [r.election.name, r.office.name, r.office.district].join('::')
-      report[k] ||= {total: 0, parties: {}}
-      report[k][:parties][r.candidate.party.name] ||= {votes: 0, percent: 0}
-      report[k][:parties][r.candidate.party.name][:votes] += r.votes
-      report[k][:total] += r.votes
-      report[:stats][:max] = report[k][:total] if report[k][:total] > report[:stats][:max]
+      report[k] ||= {T: 0, P: {}}
+      party = party_abbr(r.candidate)
+      report[k][:P][party] ||= {V: 0, PC: 0}
+      report[k][:P][party][:V] += r.votes
+      report[k][:T] += r.votes
+      report[:S][:M] = report[k][:T] if report[k][:T] > report[:S][:M]
     end
     # compute percentages
     report.each do |k, v|
-      next if k == :stats
-      v[:percent_of_max] = (v[:total].fdiv(report[:stats][:max]) * 100).round(1)
-      v[:parties].each do |n, rep|
+      next if k == :S
+      next if k == :legend
+      v[:pcm] = (v[:T].fdiv(report[:S][:M]) * 100).round(1)
+      v[:P].each do |n, party_rep|
         # percentage of votes *available* (max) not total (since some races are un-opposed)
-        rep[:percent] = (rep[:votes].fdiv(report[:stats][:max]) * 100).round(1)
-        rep[:percent] = 0.0 if rep[:percent].nan?
+        party_rep[:PC] = (party_rep[:V].fdiv(report[:S][:M]) * 100).round(1)
+        party_rep[:PC] = 0.0 if party_rep[:PC].nan?
       end
-      #pp v[:parties]
-      sorted_parties = v[:parties].sort { |a, b| b[1][:percent] <=> a[1][:percent] }
+      sorted_parties = v[:P].sort { |a, b| b[1][:PC] <=> a[1][:PC] }
       if sorted_parties.length > 1
-        v[:margin] = (sorted_parties[0][1].dig(:percent) - sorted_parties[1][1].dig(:percent)).round(1)
+        p1 = sorted_parties[0]
+        p2 = sorted_parties[1]
+        v[:m] = (p1[1].dig(:PC) - p2[1].dig(:PC)).round(1)
       else
-        v[:margin] = 100
+        v[:m] = 100
       end
-      v[:winner] = sorted_parties[0][0]
+      v[:w] = sorted_parties[0][0]
     end
 
     report

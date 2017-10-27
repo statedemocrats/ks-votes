@@ -114,19 +114,51 @@ namespace :precincts do
     CSV.foreach(csv_file, headers: true) do |row|
       reported_name = row['reported']
       vtd2010 = row['vtd_2010']
+      comment = row['comment']
       bare_name = reported_name.gsub(/^\d+ /, '')
       bare_name.gsub!(/(\d+)/) { sprintf('%02d', Regexp.last_match[1].to_i) }
-      int_name = bare_name.gsub(/(\d+)/) { sprintf('%d', Regexp.last_match[1].to_i) }
-      ward_name = int_name.gsub(/^Topeka /, '')
-      p = Precinct.find_by(name: (vtd2010 || bare_name), county_id: shawnee.id)
-      unless p
-        puts "[Shawnee] precinct not found: #{red(vtd2010 || bare_name)} #{blue(reported_name)}"
+
+      # find the first Precinct to match. Order is important since we prefer explicit over derived.
+      p = nil
+      [reported_name, bare_name].each do |n|
+        break if p = Precinct.find_by(name: n, county_id: shawnee.id)
+      end
+      if vtd2010
+        ct = CensusTract.find_by(name: vtd2010, county_id: shawnee.id)
+        if !ct
+          puts "[Shawnee] census tract not found #{red(vtd2010)}"
+          next
+        elsif !p && !comment
+          # couldn't find precinct with name reported, so use the vtd2010, unless we commented about it.
+          p = ct.precinct
+          puts "[Shawnee] Could not find Precinct for #{blue(reported_name)} so using CensusTract #{green(vtd2010)}"
+        else
+          # re-point the Precinct at the CensusTract if it is not already.
+          # Shawnee re-used names from the 2010 census to point at different precincts,
+          # and we have manually mapped them so that election Results name (Precinct) point at the correct
+          # geography (CensusTract)
+          if !p
+            p = Precinct.create(name: reported_name, county_id: shawnee.id, census_tract_id: ct.id)
+            puts "[Shawnee] Created Precinct #{green(reported_name)} for CensusTract #{ct.id} #{blue(ct.name)}"
+          end
+          if p.census_tract_id != ct.id
+            puts "[Shawnee] re-pointing Precinct #{green(p.id.to_s)} at CensusTract #{blue(ct.id.to_s)} from #{cyan(p.census_tract_id.to_s)}"
+            p.census_tract_id = ct.id
+            p.save!
+          end
+        end
+      elsif !p
+        puts "[Shawnee] No vtd2010 value, no Precinct found for #{red(reported_name)} or #{red(bare_name)}"
         next
       end
+
+      # alias all permutations of the reported_name
+      int_name = bare_name.gsub(/(\d+)/) { sprintf('%d', Regexp.last_match[1].to_i) }
+      ward_name = int_name.gsub(/^Topeka /, '')
       [reported_name, bare_name, int_name, ward_name].uniq.each do |n|
         next if n == p.name
         curated_alias(p.id, n)
-        puts "[Shawnee] Alias mapping #{blue(n)} -> #{green(p.name)}"
+        puts "[Shawnee] Alias #{blue(n)} -> #{green(p.name)}"
       end
     end
     shawnee.precincts.order(:name).each do |p|
@@ -471,7 +503,7 @@ namespace :precincts do
             c_tract = CensusTract.find_by!(name: n, county_id: douglas.id)
             precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
             cp = CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: c_tract.id)
-            make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
+            douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
           end
         else
           puts "[Douglas] no CensusPrecinct or census_names found for #{row.inspect}"
@@ -480,7 +512,7 @@ namespace :precincts do
 
       else
         precinct = precinct_for_tract(tract)
-        make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
+        douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
       end
     end
 
@@ -490,7 +522,7 @@ namespace :precincts do
     end
   end
 
-  def make_precinct_aliases(name, precinctid, subprecinctid, precinct_id)
+  def douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct_id)
     aliases = [
       name.gsub(/^.+? Precinct/, 'Precinct'),
       "Precinct #{precinctid}-#{subprecinctid}",

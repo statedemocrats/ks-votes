@@ -130,10 +130,10 @@ puts "Loading 2012 Census tracts"
 seen_names = {}
 CensusTract.transaction do
   precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv')
-  CSV.foreach(precinct_names) do |row|
-    name = row[0] # NAME
-    code = row[1] # VTD
-    matches = code.match(/^20(\d\d\d)(\w+)$/)
+  CSV.foreach(precinct_names, headers: true) do |row|
+    name = row['name']
+    vtd = row['vtd']
+    matches = vtd.match(/^20(\d\d\d)(\w+)$/)
     #puts "#{name} #{code} #{matches.to_a.inspect}"
     cty_fips = matches[1]
     precinct_code = matches[2]

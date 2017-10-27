@@ -16,6 +16,7 @@ class PrecinctFinder
       existing_cti = @@county_tracts.dig(cty_name, pa.name)
       if existing_cti
         puts "[#{cty_name}] PrecinctAlias #{green(pa.name)} #{cti} pre-defined as #{existing_cti}"
+        next # TODO overwrite??
       end
       @@county_tracts[cty_name][pa.name] = cti
     end

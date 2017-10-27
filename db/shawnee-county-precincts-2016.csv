@@ -1,85 +1,85 @@
-reported,vtd_2010
-01 East Rossville,
-02 West Rossville,
-09 East Silver Lake,
-10 West Silver Lake,
-12 Grove,Grove Township
-14 Kiro,
-15 Messhoss Creek,
-17 Croco,Kaw H57
-22 Little Muddy Creek,Kilmer H50
-24 Sac,
-25 Sherman,
-26 Iroquois,
-27 Halfday,
-28 West Wichita,
-29 Indianola,
-30 Apache,
-31 East Wichita,
-32 Fox,
-33 Elmont,
-34 Kilmer,Kilmer H47
-35 Rochester,
-36 East Soldier,
-37 Whitfield,
-38 Sioux,
-39 Pottawatomie,
-40 Stinson Creek,Cheyenne H47
-41 North Tecumseh,
-42 South Tecumseh,
-43 Pawnee,
-44 Kaw,Kaw H47
-45 Peck,
-46 East Peck,
-47 Kiowa,
-48 Cheyenne,Cheyenne H57
-49 Ponca,
-52 Deer Creek,
-53 Pauline,Pauline S19
-54 West Potter,
-55 Central Pauline,Pauline S20
-56 NW Monmouth,Northwest Monmouth
-57 NE Monmouth,Northeast Monmouth
-58 South Monmouth,
-62 Forbes,Montara S19
-63 Montara,Montara S20
-64 Cullen,
-65 Wakarusa,
-66 Kingston,
-72 City Of Auburn,City of Auburn
-73 Meadowlark,
-74 Buffalo,
-80 Gaillardia,North Mission S20 H52
-81 Dover,
-82 Willard,
-83 Ich Wshbrn,Ichabad Washburn Precinct Mission Township
-84 Yucca,
-85 Aldersgate,
-86 Sunflower,
-87 Washburn,Washburn Precinct Mission Township Voting District
-88 Lykins,
-89 North Mission,North Mission S18 H52
-90 South Mission,
-91 Central Mission,
-92 Sherwood,
-93 South Sherwood,
-94 Indian Hills,
-95 York,
-96 Vaquero,
-97 York Outer,
-99 Verbena,North Mission S20 H53
-Topeka Ward 3 Precinct 09,Topeka Ward 3 Precinct 09 H58
-Topeka Ward 3 Precinct 10,Topeka Ward 3 Precinct 09 H57
+reported,vtd_2010,comment
+01 East Rossville,,
+02 West Rossville,,
+09 East Silver Lake,,
+10 West Silver Lake,,
+12 Grove,Grove Township,
+14 Kiro,,
+15 Messhoss Creek,,
+17 Croco,Kaw H57,
+22 Little Muddy Creek,Kilmer H50,
+24 Sac,,
+25 Sherman,,
+26 Iroquois,,
+27 Halfday,,
+28 West Wichita,,
+29 Indianola,,
+30 Apache,,
+31 East Wichita,,
+32 Fox,,
+33 Elmont,,
+34 Kilmer,Kilmer H47,
+35 Rochester,,
+36 East Soldier,,
+37 Whitfield,,
+38 Sioux,,
+39 Pottawatomie,,
+40 Stinson Creek,Cheyenne H47,
+41 North Tecumseh,,
+42 South Tecumseh,,
+43 Pawnee,,
+44 Kaw,Kaw H47,
+45 Peck,,
+46 East Peck,,
+47 Kiowa,,
+48 Cheyenne,Cheyenne H57,
+49 Ponca,,
+52 Deer Creek,,
+53 Pauline,Pauline S19,
+54 West Potter,,
+55 Central Pauline,Pauline S20,
+56 NW Monmouth,Northwest Monmouth,
+57 NE Monmouth,Northeast Monmouth,
+58 South Monmouth,,
+62 Forbes,Montara S19,
+63 Montara,Montara S20,
+64 Cullen,,
+65 Wakarusa,,
+66 Kingston,,
+72 City Of Auburn,City of Auburn,
+73 Meadowlark,,
+74 Buffalo,,
+80 Gaillardia,North Mission S20 H52,
+81 Dover,,
+82 Willard,,
+83 Ich Wshbrn,Ichabad Washburn Precinct Mission Township,
+84 Yucca,,
+85 Aldersgate,,
+86 Sunflower,,
+87 Washburn,Washburn Precinct Mission Township Voting District,
+88 Lykins,,
+89 North Mission,North Mission S18 H52,
+90 South Mission,,
+91 Central Mission,,
+92 Sherwood,,
+93 South Sherwood,,
+94 Indian Hills,,
+95 York,,
+96 Vaquero,,
+97 York Outer,,
+99 Verbena,North Mission S20 H53,
+Topeka Ward 3 Precinct 09,Topeka Ward 3 Precinct 09 H58,
+Topeka Ward 3 Precinct 10,Topeka Ward 3 Precinct 09 H57,
 Topeka Ward 4 Precinct 14,Topeka Ward 4 Precinct 04 S18,# via http://gis.snco.us/electionviewer/ manual comparison
 Topeka Ward 4 Precinct 13,Topeka Ward 4 Precinct 14,# via http://gis.snco.us/electionviewer/ manual comparison
 Topeka Ward 4 Precinct 01,Topeka Ward 4 Precinct 13,# via http://gis.snco.us/electionviewer/ manual comparison
-Topeka Ward 4 Precinct 04,Topeka Ward 4 Precinct 04 S19
-Topeka Ward 4 Precinct 15,Topeka Ward 4 Precinct 11 H56
-Topeka Ward 4 Precinct 11,Topeka Ward 4 Precinct 11 H58
-Topeka Ward 5 Precinct 11,Topeka Ward 5 Precinct 01 H57
-Topeka Ward 5 Precinct 01,Topeka Ward 5 Precinct 01 H58
-Topeka Ward 9 Precinct 01,Topeka Ward 9 Precinct 01 S19
-Topeka Ward 9 Precinct 12,Topeka Ward 9 Precinct 01 S20
-Topeka Ward 12 Precinct 91,Topeka Ward 12 Precinct 91 S18 H53
-Topeka Ward 12 Precinct 93,Topeka Ward 12 Precinct 91 S20 H52
-Topeka Ward 12 Precinct 92,Topeka Ward 12 Precinct 91 S20 H53
+Topeka Ward 4 Precinct 04,Topeka Ward 4 Precinct 04 S19,
+Topeka Ward 4 Precinct 15,Topeka Ward 4 Precinct 11 H56,
+Topeka Ward 4 Precinct 11,Topeka Ward 4 Precinct 11 H58,
+Topeka Ward 5 Precinct 11,Topeka Ward 5 Precinct 01 H57,
+Topeka Ward 5 Precinct 01,Topeka Ward 5 Precinct 01 H58,
+Topeka Ward 9 Precinct 01,Topeka Ward 9 Precinct 01 S19,
+Topeka Ward 9 Precinct 12,Topeka Ward 9 Precinct 01 S20,
+Topeka Ward 12 Precinct 91,Topeka Ward 12 Precinct 91 S18 H53,
+Topeka Ward 12 Precinct 93,Topeka Ward 12 Precinct 91 S20 H52,
+Topeka Ward 12 Precinct 92,Topeka Ward 12 Precinct 91 S20 H53,

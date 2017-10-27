@@ -87,10 +87,10 @@ namespace :precincts do
   task riley: :environment do
     riley = County.find_by(name: 'Riley')
     riley.precincts.each do |p|
-      if m = p.name.match(/Ward (\d+) Precinct (\d+)/)
+      if m = p.name.match(/Ward (\d+) Precinct (\d+)$/)
         curated_alias(p.id, sprintf('W%02dP%02d', m[1], m[2]))
       end
-      if m = p.name.match(/Manhattan Township Precinct (\d+)/)
+      if m = p.name.match(/Manhattan Township Precinct (\d+)$/)
         curated_alias(p.id, sprintf('Manhattan Township %s', m[1]))
         curated_alias(p.id, sprintf('Manhattan twp %s', m[1]))
       end

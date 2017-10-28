@@ -45,7 +45,16 @@ class PrecinctReporter
   end
 
   def self.legend
-    KEY_LEGEND.merge(parties: PARTY_LABELS.invert)
+    KEY_LEGEND.merge(parties: PARTY_LABELS.invert, races: races)
+  end
+
+  def self.races
+    @@_races ||= begin
+      {
+        offices: Office.all.map { |o| [o.id, {n: o.name, d: o.district}] }.to_h,
+        elections: Election.all.map { |e| [e.id, e.name] }.to_h,
+      }
+    end
   end
 
   def by_year(year=nil)
@@ -63,7 +72,7 @@ class PrecinctReporter
         next
       end
 
-      k = [r.election.name, r.office.name, r.office.district].join('::')
+      k = [r.election_id, r.office_id].join(':')
       report[k] ||= {T: 0, P: {}}
       party = party_abbr(r.candidate)
       report[k][:P][party] ||= {V: 0, PC: 0}

@@ -169,8 +169,8 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   });
 
   var colors = {
-    'solid_r': '#f44242',
-    'solid_d': '#427df4',
+    'solid_r': '#ff0000',
+    'solid_d': '#0055ff',
     'purple' : '#c242f4',
     'unknown': '#f4e242',
   };
@@ -212,6 +212,7 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
     onEachFeature: polyEach,
     style: function(feature) {
       return {
+        color: '#777',
         weight: 1,
         opacity: 1,
         fillOpacity: 0.2,

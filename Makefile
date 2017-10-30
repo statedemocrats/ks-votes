@@ -11,6 +11,9 @@ clean:
 deploy:
 	rake map:setup
 
+publish:
+	scp -P 10022 public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
+
 check:
 	rake precincts:check
 

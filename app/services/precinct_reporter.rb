@@ -6,7 +6,7 @@ class PrecinctReporter
     republican: :r,
     reform:     :rf,
     libertarian: :lb,
-    indepedent: :in,
+    independent: :in,
     write_in:   :w,
   }.freeze
 
@@ -41,7 +41,7 @@ class PrecinctReporter
   end
 
   def party_abbr(candidate)
-    PARTY_LABELS[candidate.party.name] || 'U'
+    PARTY_LABELS[candidate.party.name.to_sym] || candidate.party.name
   end
 
   def self.legend

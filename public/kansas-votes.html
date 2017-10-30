@@ -53,6 +53,10 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   var renderPolys = function(polys) {
     //console.log('clicked on', polys);
     $.each(polys, function(idx, poly) {
+      if (!poly) {
+        console.log("No poly for idx", idx);
+        return true;
+      }
       var props = poly.feature.properties;
       //console.log(props);
       if (props['LSAD'] && props['LSAD'] == 'County') {
@@ -143,10 +147,78 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
   };
   var opts = { style: style, onEachFeature: polyEach };
 
+  // load election results first so they are available when we render precincts
+  var elections, legend, president2016;
+  $.getJSON('all-precincts-by-year.json', function(data) {
+    elections = data;
+    legend = elections['legend'];
+    var presId, g2016Id;
+    $.each(legend['races']['offices'], function(key, val) {
+      if (val['n'] == 'President') {
+        presId = key;
+        return false;
+      }
+    });
+    $.each(legend['races']['elections'], function(key, val) {
+      if (val == '2016 general') {
+        g2016Id = key;
+        return false;
+      }
+    });
+    president2016 = [g2016Id, presId].join(':');
+  });
+
+  var colors = {
+    'solid_r': '#f44242',
+    'solid_d': '#427df4',
+    'purple' : '#c242f4',
+    'unknown': '#f4e242',
+  };
+
+  var getPrecinctColor = function(feature) {
+    var unknown = colors['unknown'];
+    var vtd = feature.properties['VTD_2012'];
+    //console.log('vtd', vtd, president2016);
+    var precinct_history = elections[vtd];
+    if (!precinct_history) {
+      return unknown;
+    }
+    //console.log('pres2016', precinct_history);
+    var results = precinct_history[president2016];
+    //console.log(results);
+    var color = 'solid_r';
+    if (!results || !results['m'] || !results['w']) {
+      return unknown;
+    }
+    if (results['m'] < 10) {
+      color = 'purple';
+    }
+    else if (results['w'] == 'r') {
+      color = 'solid_r';
+    }
+    else if (results['w'] == 'd') {
+      color = 'solid_d';
+    }
+    else {
+      color = 'unknown';
+    }
+    return colors[color];
+  };
+
   counties = L.geoJson.ajax('ks-counties.geojson', { style: style, onEachFeature: countyEach });
   state_leg_lower = L.geoJson.ajax('cb_2016_20_sldl_500k.geojson', opts);
   state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', opts);
-  precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson', opts);
+  precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson', {
+    onEachFeature: polyEach,
+    style: function(feature) {
+      return {
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.2,
+        fillColor: getPrecinctColor(feature)
+      };
+    }
+  });
 
   var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +

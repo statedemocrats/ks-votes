@@ -15,7 +15,7 @@ publish-results:
 	scp -P 10022 public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 
 publish-app:
-	ssh -p 10022 peknet.com 'cd /data/statedemocrats.us/kansas/map/ && git pull'
+	ssh -p 10022 statedemocrats.us 'cd /data/statedemocrats.us/kansas/map/ && git pull'
 
 publish: publish-results publish-app
 

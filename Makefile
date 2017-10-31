@@ -11,8 +11,13 @@ clean:
 deploy:
 	rake map:setup
 
-publish:
+publish-results:
 	scp -P 10022 public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
+
+publish-app:
+	ssh -p 10022 peknet.com 'cd /data/statedemocrats.us/kansas/map/ && git pull'
+
+publish: publish-results publish-app
 
 check:
 	rake precincts:check

@@ -579,5 +579,18 @@ namespace :precincts do
         end
       end
     end
+    seen = {}
+    Precinct.find_in_batches do |precincts|
+      precincts.each do |p|
+        next unless p.census_tract_id # for now, skip those without 1:1 mapping
+        next unless p.map_id.length > 0
+        county = find_county_by_id(p.county_id)
+        if seen[p.map_id]
+          puts "[#{county.name}] Duplicate map_id #{p.map_id} for #{p.id} and #{seen[p.map_id]}"
+          next
+        end
+        seen[p.map_id] = p.id
+      end
+    end
   end
 end

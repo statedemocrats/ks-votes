@@ -97,10 +97,9 @@ var countyEach = function(p, layer) {
 var polyEach = function(p, layer) {
   layer.on({click: polyClick});
 };
-var opts = { style: style, onEachFeature: polyEach };
 
 // load election results first so they are available when we render precincts
-var elections, legend, president2016;
+var elections, legend, president2016, districts;
 $.getJSON('all-precincts-by-year.json', function(data) {
   elections = data;
   legend = elections['legend'];
@@ -118,6 +117,9 @@ $.getJSON('all-precincts-by-year.json', function(data) {
     }
   });
   president2016 = [g2016Id, presId].join(':');
+});
+$.getJSON('ksleg.json', function(data) {
+  districts = data;
 });
 
 var colors = {
@@ -169,9 +171,41 @@ var getPrecinctColor = function(feature) {
   return colors[color];
 };
 
+var getDistrictColor = function(feature, chamber) {
+  var district = feature.properties['NAME'];
+  var party = districts[chamber][district]['party'];
+  if (party == 'Republican') {
+    return colors['solid_r'];
+  }
+  if (party == 'Democrat') {
+    return colors['solid_d'];
+  }
+  return colors['unknown'];
+};
+
 counties = L.geoJson.ajax('ks-counties.geojson', { style: style, onEachFeature: countyEach });
-state_leg_lower = L.geoJson.ajax('cb_2016_20_sldl_500k.geojson', opts);
-state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', opts);
+state_leg_lower = L.geoJson.ajax('cb_2016_20_sldl_500k.geojson', {
+  onEachFeature: polyEach,
+  style: function(feature) {
+    return {
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.3,
+      fillColor: getDistrictColor(feature, 'house')
+    }
+  }
+});
+state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', {
+  onEachFeature: polyEach,
+  style: function(feature) {
+    return {
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.3,
+      fillColor: getDistrictColor(feature, 'senate')
+    }
+  }
+});
 precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson', {
   onEachFeature: polyEach,
   style: function(feature) {

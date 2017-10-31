@@ -43,7 +43,7 @@ var renderPolys = function(polys) {
     if (props['VTDNAME']) {
       $('#precinct').html('<h3>Precinct</h3>' + props['VTDNAME'] + ' [' + props['VTD_S'] + ']');
       $('#precinct').append(JSON.stringify(props, null, '<br/>'));
-      poly.setStyle({ weight: 3, color: '#222', fillOpacity: 0.1 });
+      poly.setStyle({ weight: 3, color: '#222' });
       if (lastPrecinct && lastPrecinct != poly) {
         precincts.resetStyle(lastPrecinct);
       }

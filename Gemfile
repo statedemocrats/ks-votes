@@ -18,6 +18,7 @@ gem "font-awesome-rails"
 gem 'jquery-rails'
 gem 'term-ansicolor'
 gem 'ansi'
+gem 'httparty'
 
 gem 'rgeo-geojson'
 gem 'fuzzy_match', git: 'https://github.com/rlue/fuzzy_match.git'

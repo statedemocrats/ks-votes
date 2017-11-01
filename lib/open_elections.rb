@@ -12,6 +12,7 @@ module OpenElections
     'Advance',
     'Advanced',
     'Ent Test',
+    'President',
     'Prov',
     'Provisional',
     'Paper Ballots',

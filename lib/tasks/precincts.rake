@@ -6,6 +6,7 @@ namespace :precincts do
 
   def county_tasks
     @county_tasks ||= [
+      'map_orphans', # master catch-all list FIRST
       'riley',
       'geary',
       'douglas',
@@ -40,7 +41,7 @@ namespace :precincts do
         # prefer it since the 2012 names are 1:1 with our census map.
         # i.e. don't create a CensusTract entry for those.
         if pa = PrecinctAlias.l(precinct_name)
-          puts "[#{county.name}] Skipping #{blue(precinct_name)} since alias already exists"
+          puts "[#{county.name}] Skipping #{blue(precinct_name)} since alias already exists" if debug?
           next
         end
 
@@ -48,22 +49,24 @@ namespace :precincts do
           c.year = '2014'
           c.reason = :sos
           c.name = precinct_name
-          puts "[#{county.name}] Creating CensusTract for 2014 with #{blue(vtd)} #{green(precinct_name)}"
-        end
-        if !ct.precinct
-          Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
-          puts "[#{county.name}] Creating Precinct #{green(precinct_name)}"
+          puts "[#{county.name}] Creating 2014 CensusTract #{blue(vtd)} #{green(precinct_name)}"
         end
 
         m = Precinct.find_by_any_name(precinct_name, county.id)
         if !m.any?
-          curated_alias(ct.precinct.id, precinct_name)
+          p = Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
+          puts "[#{county.name}] Creating 2014 Precinct #{green(precinct_name)}"
           puts "[#{county.name}] 2014 VTD Alias #{blue(precinct_name)} -> #{green(ct.precinct.name)}"
         elsif m && m.length > 1
           puts "[#{county.name}] too many matches for precinct name #{red(precinct_name)}"
           next
         elsif m.first.name == precinct_name || m.first.has_alias?(precinct_name)
-          # everything is already ok
+          # there existed a Precinct or Alias already for this name.
+          # warn if mapped to a different CensusTract
+          precinct = m.first
+          if precinct.census_tract_id && precinct.census_tract_id != ct.id
+            puts "[#{county.name}] Found Precinct #{green(precinct.name)} for #{blue(precinct_name)} but not in CensusTract #{cyan(ct.name)} (ct.id=#{ct.id} precinct.census_precinct_id=#{precinct.census_tract_id} precinct.id=#{precinct.id}"
+          end
         else
           puts "[#{county.name}] Found precinct #{blue(m.first.name)} for vtd #{green(vtd)} mismatch #{red(precinct_name)}"
         end
@@ -104,8 +107,15 @@ namespace :precincts do
     geary.precincts.each do |p|
       if p.name.match(/^Ward \d/)
         curated_alias(p.id, "Junction City #{p.name}")
+      elsif p.name.match(/^Junction City Ward/)
+        curated_alias(p.id, p.name.sub('Junction City ', ''))
       elsif p.name.match(/^Smokey/)
         curated_alias(p.id, p.name.sub('Smokey', 'Smoky'))
+      end
+      p.precinct_aliases.each do |pa|
+        if pa.name.match(/^Smokey/)
+          curated_alias(p.id, pa.name.sub('Smokey', 'Smoky'))
+        end
       end
     end
   end
@@ -128,7 +138,7 @@ namespace :precincts do
       precinct = Precinct.find_by(name: row['precinct'], county_id: row['county_id'])
       next if precinct && precinct.census_tract_id
       if row['vtd_2012']
-        puts "looking for CensusTract #{row['vtd_2012']} in county #{row['county']}"
+        #puts "looking for CensusTract #{row['vtd_2012']} in county #{row['county']}"
         ct = CensusTract.find_by!(vtd_code: row['vtd_2012'], county_id: row['county_id'])
         # if there's already a precinct, add this one as an alias
         if ct.precincts.count == 1 && !ct.precinct.has_alias?(row['precinct'])
@@ -138,7 +148,14 @@ namespace :precincts do
           puts "Not exactly one precinct for CensusTract #{ct.id}"
         end
       elsif row['census_tracts']
-        puts "TODO add CensusTracts for precinct #{row['precinct']}"
+        census_tract_vtds = row['census_tracts'].split('|')
+        # probably need to create a Precinct
+        precinct ||= Precinct.create(name: row['precinct'], county_id: row['county_id'])
+        census_tract_vtds.each do |vtd|
+          ct = CensusTract.find_by!(vtd_code: vtd, county_id: row['county_id'])
+          precinct.census_tracts << ct
+          puts "[#{row['county']}] Add CensusTract #{cyan(ct.name)} to new Precinct #{green(precinct.name)}"
+        end
       end
     end
   end
@@ -278,7 +295,8 @@ namespace :precincts do
         county_fips = m[1]
         vtd_code = m[2]
         cty = county_by_fips(county_fips)
-        c = CensusTract.find_by!(vtd_code: vtd_code, county_id: cty.id)
+        c = CensusTract.find_by(vtd_code: vtd_code, county_id: cty.id)
+        fail "[#{cty.name}] No CensusTract for #{vtd_code}" unless c
         p = c.precinct
         unless p.has_alias?(precinct_name_2016)
           pa = curated_alias(precinct_name_2016, p.id)
@@ -599,6 +617,9 @@ namespace :precincts do
       aliases.each do |pa|
         county = find_county_by_id(pa.precinct.county_id)
         k = "#{county.name}:#{pa.name}"
+        if pa.name.match(/\ \ /)
+          puts "[#{county.name}] Multiple spaces in name #{pa.name}"
+        end
         if seen[k]
           puts "[#{county.name}] More than one alias #{blue(pa.name)}"
         end
@@ -618,9 +639,12 @@ namespace :precincts do
     seen = {}
     Precinct.find_in_batches do |precincts|
       precincts.each do |p|
+        county = find_county_by_id(p.county_id)
+        if p.name.match(/\ \ /)
+          puts "[#{county.name}] Multiple spaces in name #{green(p.name)}"
+        end
         next unless p.census_tract_id # for now, skip those without 1:1 mapping
         next unless p.map_id.length > 0
-        county = find_county_by_id(p.county_id)
         if seen[p.map_id]
           puts "[#{county.name}] Duplicate map_id #{p.map_id} for #{p.id} and #{seen[p.map_id]}"
           next

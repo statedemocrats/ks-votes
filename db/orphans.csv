@@ -1,4 +1,4 @@
-"precinct","county_id","county","vtd_2012","census_precincts"
+"precinct","county_id","county","vtd_2012","census_tracts"
 "CITY OF HUMBOLDT, Ward 1","1","Allen",,
 "CITY OF HUMBOLDT- Ward 2","1","Allen",,
 "LOGAN Township","1","Allen",,
@@ -241,6 +241,18 @@ Smoky Hill Township Precinct 3,31,Geary,120160,
 Smoky Hill Township Precinct 4,31,Geary,12015A,
 Smoky Hill Township Precinct 5,31,Geary,120170,
 Smoky Hill Township Precinct 6,31,Geary,120150,
+"Ward 1 Precinct 5","31","Geary",120070,
+"Ward 1 Precinct 6","31","Geary",900130,
+"Ward 2 Precinct 3","31","Geary",,900160|00016A
+"Ward 2 Precinct 4","31","Geary",900150,
+"Ward 2 Precinct 5","31","Geary",,00016A
+"Ward 2 Precinct 7","31","Geary",120100,
+"Ward 2 Precinct 8","31","Geary",120110,
+"Ward 3 Precinct 3","31","Geary",120080,
+"Ward 3 Precinct 4","31","Geary",120090,
+"Ward 4 Precinct 2","31","Geary",000230,
+"Ward 4 Precinct 3","31","Geary",900210,
+"Ward 4 Precinct 4","31","Geary",120120,
 "Hill City 1 H 110","33","Graham",,
 "Hill City 2 H 110","33","Graham",,
 "Hill City 3 H 110","33","Graham",,

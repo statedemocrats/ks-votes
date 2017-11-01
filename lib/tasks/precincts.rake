@@ -105,17 +105,25 @@ namespace :precincts do
   task geary: :environment do
     geary = County.find_by(name: 'Geary')
     geary.precincts.each do |p|
+      aliases = []
       if p.name.match(/^Ward \d/)
-        curated_alias(p.id, "Junction City #{p.name}")
+        aliases << "Junction City #{p.name}"
       elsif p.name.match(/^Junction City Ward/)
-        curated_alias(p.id, p.name.sub('Junction City ', ''))
+        aliases << p.name.sub('Junction City ', '')
       elsif p.name.match(/^Smokey/)
-        curated_alias(p.id, p.name.sub('Smokey', 'Smoky'))
+        aliases << p.name.sub('Smokey', 'Smoky')
       end
       p.precinct_aliases.each do |pa|
         if pa.name.match(/^Smokey/)
-          curated_alias(p.id, pa.name.sub('Smokey', 'Smoky'))
+          aliases << pa.name.sub('Smokey', 'Smoky')
         end
+      end
+      aliases.uniq.each do |n|
+        # avoid duplicates from manual orphan mapping
+        next if Precinct.find_by(name: n, county_id: geary.id)
+        next if p.has_alias?(n)
+        curated_alias(p.id, n)
+        puts "[Geary] Alias #{blue(n)} -> #{green(p.name)}"
       end
     end
   end
@@ -627,7 +635,7 @@ namespace :precincts do
           # is it an alias to itself?
           next if p.id == pa.precinct_id
           puts "[#{county.name}] Found alias and precinct with same name: #{blue(pa.name)}"
-          if p.census_tract.year == '2014'
+          if p.census_tract && p.census_tract.year == '2014'
             puts "[#{county.name}] Has CensusTract 2014 #{green(p.name)}"
           end
           if p.results.count > 0
@@ -646,10 +654,10 @@ namespace :precincts do
         next unless p.census_tract_id # for now, skip those without 1:1 mapping
         next unless p.map_id.length > 0
         if seen[p.map_id]
-          puts "[#{county.name}] Duplicate map_id #{p.map_id} for #{p.id} and #{seen[p.map_id]}"
+          puts "[#{county.name}] Duplicate map_id #{p.map_id} for #{p.id} #{green(p.name)} and #{seen[p.map_id].inspect}"
           next
         end
-        seen[p.map_id] = p.id
+        seen[p.map_id] = {id: p.id, name: p.name}
       end
     end
   end

@@ -1,958 +1,958 @@
 "precinct","county_id","county","vtd_2012","census_precincts"
-"CITY OF HUMBOLDT, Ward 1","1","Allen","",""
-"CITY OF HUMBOLDT- Ward 2","1","Allen","",""
-"LOGAN Township","1","Allen","",""
-"Logan","1","Allen","",""
-"NORTH ELSMORE Township","1","Allen","",""
-"North Iola Township","1","Allen","",""
-"SOUTH ELSMORE Township","1","Allen","",""
-"SOUTH IOLA Township","1","Allen","",""
-"WEST ELM Township","1","Allen","",""
-"Garnett Ward 1","2","Anderson","",""
-"Garnett Ward 2","2","Anderson","",""
-"Garnett Ward 3","2","Anderson","",""
-"Garnett Ward 4","2","Anderson","",""
-"EAST 2ND","3","Atchison","",""
-"EAST 3RD","3","Atchison","",""
-"MT. PLEASANT","3","Atchison","",""
-"ONLY 1ST","3","Atchison","",""
-"ONLY 4TH","3","Atchison","",""
-"WEST 2ND","3","Atchison","",""
-"WEST 3RD","3","Atchison","",""
-"1st Med. Lodge","4","Barber","",""
-"2nd Med. Lodge","4","Barber","",""
-"3rd Med. Lodge","4","Barber","",""
-"4th Med. Lodge","4","Barber","",""
-"5th Med. Lodge","4","Barber","",""
-"Med Lodge 2","4","Barber","",""
-"Barton rural","5","Barton","",""
-"GBC 1st Prec - Ward 1","5","Barton","",""
-"GBC 1st Prec - Ward 2","5","Barton","",""
-"GBC 1st Prec - Ward 3","5","Barton","",""
-"GBC 1st Prec - Ward 4","5","Barton","",""
-"GBC 2nd Prec - Ward 1","5","Barton","",""
-"GBC 2nd Prec - Ward 2","5","Barton","",""
-"GBC 2nd Prec - Ward 3","5","Barton","",""
-"GBC 2nd Prec - Ward 4","5","Barton","",""
-"GBC 3rd Prec - Ward 1","5","Barton","",""
-"GBC 3rd Prec - Ward 2","5","Barton","",""
-"GBC 3rd Prec - Ward 3","5","Barton","",""
-"GBC 3rd Prec - Ward 4","5","Barton","",""
-"Great Bend City","5","Barton","",""
-"Hoisington City Ward 1","5","Barton","",""
-"Hoisington City Ward 2","5","Barton","",""
-"Hoisington City Ward 3","5","Barton","",""
-"Hoisington City Ward 4","5","Barton","",""
-"Andover Ward 1","8","Butler","",""
-"Andover Ward 2","8","Butler","",""
-"Andover Ward 3","8","Butler","",""
-"Andover Ward 4","8","Butler","",""
-"Augusta Township","8","Butler","",""
-"Augusta Township - 14","8","Butler","",""
-"Augusta Township - 16","8","Butler","",""
-"Benton City/Benton Township","8","Butler","",""
-"Bruno Township","8","Butler","",""
-"Bruno Township North - 77","8","Butler","",""
-"Bruno Township North - 99","8","Butler","",""
-"Bruno Township South - 77","8","Butler","",""
-"Bruno Township South - 99","8","Butler","",""
-"El Dorado Ward 1","8","Butler","",""
-"El Dorado Ward 2","8","Butler","",""
-"El Dorado Ward 3","8","Butler","",""
-"El Dorado Ward 4","8","Butler","",""
-"Latham/Union","8","Butler","",""
-"Whitewater/Milton","8","Butler","",""
-"Whitewater/Milton - 72","8","Butler","",""
-"Chase Ks","9","Chase","",""
-"Provisionals","9","Chase","",""
-"Belleville","10","Chautauqua","",""
-"Sedan","10","Chautauqua","",""
-"Baxter Sprs Ward 4","11","Cherokee","",""
-"Garden-Lowell","11","Cherokee","",""
-"Garden-Stanley Mines","11","Cherokee","",""
-"Ross-Roseland","11","Cherokee","",""
-"Ross-West Mineral","11","Cherokee","",""
-"Spring Valley-Neutral","11","Cherokee","",""
-"Spring Valley-SV","11","Cherokee","",""
-"Ward 1","14","Clay","",""
-"Ward 2","14","Clay","",""
-"Ward 3","14","Clay","",""
-"Ward 4","14","Clay","",""
-"East. Lincoln","15","Cloud","",""
-"Precinct 1 Ward 2","15","Cloud","",""
-"Precinct 2 Ward 2","15","Cloud","",""
-"Ward 1","15","Cloud","",""
-"Ward 3","15","Cloud","",""
-"Ward 4","15","Cloud","",""
-"Protection 115","17","Comanche","",""
-"Protection 116","17","Comanche","",""
-"AC1A","18","Cowley","",""
-"AC1A/AC1A Part A","18","Cowley","",""
-"AC1B","18","Cowley","",""
-"AC1C","18","Cowley","",""
-"AC1D","18","Cowley","",""
-"AC2A","18","Cowley","",""
-"AC2B","18","Cowley","",""
-"AC2B Part A","18","Cowley","",""
-"AC2B-2","18","Cowley","",""
-"AC2C","18","Cowley","",""
-"AC2D","18","Cowley","",""
-"AC3A","18","Cowley","",""
-"AC3B","18","Cowley","",""
-"AC3C","18","Cowley","",""
-"AC4A","18","Cowley","",""
-"AC4B","18","Cowley","",""
-"AC4C","18","Cowley","",""
-"AC4D","18","Cowley","",""
-"Creek","18","Cowley","",""
-"Creswell West","18","Cowley","",""
-"Omina","18","Cowley","",""
-"WD1E","18","Cowley","",""
-"WD1W","18","Cowley","",""
-"WD2C","18","Cowley","",""
-"WD2E","18","Cowley","",""
-"WD2S","18","Cowley","",""
-"WD2W","18","Cowley","",""
-"WD3","18","Cowley","",""
-"WD3S","18","Cowley","",""
-"WD4","18","Cowley","",""
-"WD5E","18","Cowley","",""
-"WD5W","18","Cowley","",""
-"WD6","18","Cowley","",""
-"WD6A","18","Cowley","",""
-"WD7","18","Cowley","",""
-"WD8","18","Cowley","",""
-"Ward 1E","18","Cowley","",""
-"Ward 1W","18","Cowley","",""
-"Ward 2C","18","Cowley","",""
-"Ward 2E","18","Cowley","",""
-"Ward 2S","18","Cowley","",""
-"Ward 2W","18","Cowley","",""
-"Ward 3","18","Cowley","",""
-"Ward 3S","18","Cowley","",""
-"Ward 4","18","Cowley","",""
-"Ward 5E","18","Cowley","",""
-"Ward 5W","18","Cowley","",""
-"Ward 6","18","Cowley","",""
-"Ward 6A","18","Cowley","",""
-"Ward 7","18","Cowley","",""
-"Ward 8","18","Cowley","",""
-"26 Lincoln-Arcadia","19","Crawford","",""
-"33 Osage-McCune","19","Crawford","",""
-"53 Sheridan-Cherokee","19","Crawford","",""
-"58 Walnut","19","Crawford","",""
-"61 Walnut-Hepler","19","Crawford","",""
-"62 Walnut-Hepler","19","Crawford","",""
-"Dresden-Custer","20","Decatur","",""
-"Dresden-Lyon","20","Decatur","",""
-"Jennings-Allison","20","Decatur","",""
-"Jennings-Pleas Valley","20","Decatur","",""
-"South-Oberlin","20","Decatur","",""
-"Herington Ward 3","21","Dickinson","",""
-"Lyon 68","21","Dickinson","",""
-"Lyon 68A","21","Dickinson","",""
-"Lyon 70","21","Dickinson","",""
-"1","23","Douglas","",""
-"2","23","Douglas","",""
-"3","23","Douglas","",""
-"38 H10","23","Douglas","",""
-"4","23","Douglas","",""
-"42 H45","23","Douglas","",""
-"42 H46","23","Douglas","",""
-"43 CC1","23","Douglas","",""
-"43 CC3","23","Douglas","",""
-"5","23","Douglas","",""
-"52 Eudora","23","Douglas","",""
-"59 Marion","23","Douglas","",""
-"6","23","Douglas","",""
-"70 Lawrence/Willow","23","Douglas","",""
-"71 Lawrence/Willow","23","Douglas","",""
-"Baldwin NE Palmyra","23","Douglas","",""
-"Baldwin NW Palmyra","23","Douglas","",""
-"C Eudora","23","Douglas","",""
-"Eudora West","23","Douglas","",""
-"Lawrence Precinct 76","23","Douglas","",""
-"Lawrence Precinct 77","23","Douglas","",""
-"Wakarusa East H10","23","Douglas","",""
-"Wakarusa East H46","23","Douglas","",""
-"Kinsley City Ward 2","24","Edwards","",""
-"Lewis City","24","Edwards","",""
-"Offerle City","24","Edwards","",""
-"Herzog 110","26","Ellis","",""
-"Herzog 111","26","Ellis","",""
-"North Big Creek 110","26","Ellis","",""
-"North Big Creek 111","26","Ellis","",""
-"North Lookout 110","26","Ellis","",""
-"North Lookout 111","26","Ellis","",""
-"South Lookout 110","26","Ellis","",""
-"West Big Creek 110","26","Ellis","",""
-"West Big Creek 111","26","Ellis","",""
-"Holyrood","27","Ellsworth","",""
-"Lorraine Township","27","Ellsworth","",""
-"10TH WARD","28","Finney","",""
-"1WARD 1","28","Finney","",""
-"1WARD 2","28","Finney","",""
-"1WARD 3","28","Finney","",""
-"1WARD 4","28","Finney","",""
-"1WARD 5","28","Finney","",""
-"1WARD 6","28","Finney","",""
-"Pierceville","28","Finney","",""
-"Riverside","28","Finney","",""
-"WARD 1","28","Finney","",""
-"WARD 2","28","Finney","",""
-"WARD 3","28","Finney","",""
-"WARD 4","28","Finney","",""
-"WARD 5","28","Finney","",""
-"WARD 6","28","Finney","",""
-"WARD 7","28","Finney","",""
-"WARD 8","28","Finney","",""
-"WARD 9","28","Finney","",""
-"Dodge City 1","29","Ford","",""
-"Dodge City 2","29","Ford","",""
-"Dodge City 3","29","Ford","",""
-"Dodge City 4","29","Ford","",""
-"Dodge City 5","29","Ford","",""
-"Dodge City 6","29","Ford","",""
-"Dodge City 7","29","Ford","",""
-"Dodge City 9","29","Ford","",""
-"Dodge Township 115","29","Ford","",""
-"Dodge Township 119","29","Ford","",""
-"Enterprise Township 115","29","Ford","",""
-"Enterprise Township 119","29","Ford","",""
-"Grandview Township 115","29","Ford","",""
-"Grandview Township 119","29","Ford","",""
-"Grandview Township 2 115","29","Ford","",""
-"Grandview Township 2 119","29","Ford","",""
-"Advance 59","30","Franklin","",""
-"Early","30","Franklin","",""
-"Early 59","30","Franklin","",""
-"North. Centropolis","30","Franklin","",""
-"Precinct 2","30","Franklin","",""
-"Precinct 3","30","Franklin","",""
-"Precinct 4","30","Franklin","",""
-"Precinct 6","30","Franklin","",""
-"Precinct 7","30","Franklin","",""
-"Precinct 8","30","Franklin","",""
-"Provisional 59","30","Franklin","",""
-"South. Centropolis","30","Franklin","",""
+"CITY OF HUMBOLDT, Ward 1","1","Allen",,
+"CITY OF HUMBOLDT- Ward 2","1","Allen",,
+"LOGAN Township","1","Allen",,
+"Logan","1","Allen",,
+"NORTH ELSMORE Township","1","Allen",,
+"North Iola Township","1","Allen",,
+"SOUTH ELSMORE Township","1","Allen",,
+"SOUTH IOLA Township","1","Allen",,
+"WEST ELM Township","1","Allen",,
+"Garnett Ward 1","2","Anderson",,
+"Garnett Ward 2","2","Anderson",,
+"Garnett Ward 3","2","Anderson",,
+"Garnett Ward 4","2","Anderson",,
+"EAST 2ND","3","Atchison",,
+"EAST 3RD","3","Atchison",,
+"MT. PLEASANT","3","Atchison",,
+"ONLY 1ST","3","Atchison",,
+"ONLY 4TH","3","Atchison",,
+"WEST 2ND","3","Atchison",,
+"WEST 3RD","3","Atchison",,
+"1st Med. Lodge","4","Barber",,
+"2nd Med. Lodge","4","Barber",,
+"3rd Med. Lodge","4","Barber",,
+"4th Med. Lodge","4","Barber",,
+"5th Med. Lodge","4","Barber",,
+"Med Lodge 2","4","Barber",,
+"Barton rural","5","Barton",,
+"GBC 1st Prec - Ward 1","5","Barton",,
+"GBC 1st Prec - Ward 2","5","Barton",,
+"GBC 1st Prec - Ward 3","5","Barton",,
+"GBC 1st Prec - Ward 4","5","Barton",,
+"GBC 2nd Prec - Ward 1","5","Barton",,
+"GBC 2nd Prec - Ward 2","5","Barton",,
+"GBC 2nd Prec - Ward 3","5","Barton",,
+"GBC 2nd Prec - Ward 4","5","Barton",,
+"GBC 3rd Prec - Ward 1","5","Barton",,
+"GBC 3rd Prec - Ward 2","5","Barton",,
+"GBC 3rd Prec - Ward 3","5","Barton",,
+"GBC 3rd Prec - Ward 4","5","Barton",,
+"Great Bend City","5","Barton",,
+"Hoisington City Ward 1","5","Barton",,
+"Hoisington City Ward 2","5","Barton",,
+"Hoisington City Ward 3","5","Barton",,
+"Hoisington City Ward 4","5","Barton",,
+"Andover Ward 1","8","Butler",,
+"Andover Ward 2","8","Butler",,
+"Andover Ward 3","8","Butler",,
+"Andover Ward 4","8","Butler",,
+"Augusta Township","8","Butler",,
+"Augusta Township - 14","8","Butler",,
+"Augusta Township - 16","8","Butler",,
+"Benton City/Benton Township","8","Butler",,
+"Bruno Township","8","Butler",,
+"Bruno Township North - 77","8","Butler",,
+"Bruno Township North - 99","8","Butler",,
+"Bruno Township South - 77","8","Butler",,
+"Bruno Township South - 99","8","Butler",,
+"El Dorado Ward 1","8","Butler",,
+"El Dorado Ward 2","8","Butler",,
+"El Dorado Ward 3","8","Butler",,
+"El Dorado Ward 4","8","Butler",,
+"Latham/Union","8","Butler",,
+"Whitewater/Milton","8","Butler",,
+"Whitewater/Milton - 72","8","Butler",,
+"Chase Ks","9","Chase",,
+"Provisionals","9","Chase",,
+"Belleville","10","Chautauqua",,
+"Sedan","10","Chautauqua",,
+"Baxter Sprs Ward 4","11","Cherokee",,
+"Garden-Lowell","11","Cherokee",,
+"Garden-Stanley Mines","11","Cherokee",,
+"Ross-Roseland","11","Cherokee",,
+"Ross-West Mineral","11","Cherokee",,
+"Spring Valley-Neutral","11","Cherokee",,
+"Spring Valley-SV","11","Cherokee",,
+"Ward 1","14","Clay",,
+"Ward 2","14","Clay",,
+"Ward 3","14","Clay",,
+"Ward 4","14","Clay",,
+"East. Lincoln","15","Cloud",,
+"Precinct 1 Ward 2","15","Cloud",,
+"Precinct 2 Ward 2","15","Cloud",,
+"Ward 1","15","Cloud",,
+"Ward 3","15","Cloud",,
+"Ward 4","15","Cloud",,
+"Protection 115","17","Comanche",,
+"Protection 116","17","Comanche",,
+"AC1A","18","Cowley",,
+"AC1A/AC1A Part A","18","Cowley",,
+"AC1B","18","Cowley",,
+"AC1C","18","Cowley",,
+"AC1D","18","Cowley",,
+"AC2A","18","Cowley",,
+"AC2B","18","Cowley",,
+"AC2B Part A","18","Cowley",,
+"AC2B-2","18","Cowley",,
+"AC2C","18","Cowley",,
+"AC2D","18","Cowley",,
+"AC3A","18","Cowley",,
+"AC3B","18","Cowley",,
+"AC3C","18","Cowley",,
+"AC4A","18","Cowley",,
+"AC4B","18","Cowley",,
+"AC4C","18","Cowley",,
+"AC4D","18","Cowley",,
+"Creek","18","Cowley",,
+"Creswell West","18","Cowley",,
+"Omina","18","Cowley",,
+"WD1E","18","Cowley",,
+"WD1W","18","Cowley",,
+"WD2C","18","Cowley",,
+"WD2E","18","Cowley",,
+"WD2S","18","Cowley",,
+"WD2W","18","Cowley",,
+"WD3","18","Cowley",,
+"WD3S","18","Cowley",,
+"WD4","18","Cowley",,
+"WD5E","18","Cowley",,
+"WD5W","18","Cowley",,
+"WD6","18","Cowley",,
+"WD6A","18","Cowley",,
+"WD7","18","Cowley",,
+"WD8","18","Cowley",,
+"Ward 1E","18","Cowley",,
+"Ward 1W","18","Cowley",,
+"Ward 2C","18","Cowley",,
+"Ward 2E","18","Cowley",,
+"Ward 2S","18","Cowley",,
+"Ward 2W","18","Cowley",,
+"Ward 3","18","Cowley",,
+"Ward 3S","18","Cowley",,
+"Ward 4","18","Cowley",,
+"Ward 5E","18","Cowley",,
+"Ward 5W","18","Cowley",,
+"Ward 6","18","Cowley",,
+"Ward 6A","18","Cowley",,
+"Ward 7","18","Cowley",,
+"Ward 8","18","Cowley",,
+"26 Lincoln-Arcadia","19","Crawford",,
+"33 Osage-McCune","19","Crawford",,
+"53 Sheridan-Cherokee","19","Crawford",,
+"58 Walnut","19","Crawford",,
+"61 Walnut-Hepler","19","Crawford",,
+"62 Walnut-Hepler","19","Crawford",,
+"Dresden-Custer","20","Decatur",,
+"Dresden-Lyon","20","Decatur",,
+"Jennings-Allison","20","Decatur",,
+"Jennings-Pleas Valley","20","Decatur",,
+"South-Oberlin","20","Decatur",,
+"Herington Ward 3","21","Dickinson",,
+"Lyon 68","21","Dickinson",,
+"Lyon 68A","21","Dickinson",,
+"Lyon 70","21","Dickinson",,
+"1","23","Douglas",,
+"2","23","Douglas",,
+"3","23","Douglas",,
+"38 H10","23","Douglas",,
+"4","23","Douglas",,
+"42 H45","23","Douglas",,
+"42 H46","23","Douglas",,
+"43 CC1","23","Douglas",,
+"43 CC3","23","Douglas",,
+"5","23","Douglas",,
+"52 Eudora","23","Douglas",,
+"59 Marion","23","Douglas",,
+"6","23","Douglas",,
+"70 Lawrence/Willow","23","Douglas",,
+"71 Lawrence/Willow","23","Douglas",,
+"Baldwin NE Palmyra","23","Douglas",,
+"Baldwin NW Palmyra","23","Douglas",,
+"C Eudora","23","Douglas",,
+"Eudora West","23","Douglas",,
+"Lawrence Precinct 76","23","Douglas",,
+"Lawrence Precinct 77","23","Douglas",,
+"Wakarusa East H10","23","Douglas",,
+"Wakarusa East H46","23","Douglas",,
+"Kinsley City Ward 2","24","Edwards",,
+"Lewis City","24","Edwards",,
+"Offerle City","24","Edwards",,
+"Herzog 110","26","Ellis",,
+"Herzog 111","26","Ellis",,
+"North Big Creek 110","26","Ellis",,
+"North Big Creek 111","26","Ellis",,
+"North Lookout 110","26","Ellis",,
+"North Lookout 111","26","Ellis",,
+"South Lookout 110","26","Ellis",,
+"West Big Creek 110","26","Ellis",,
+"West Big Creek 111","26","Ellis",,
+"Holyrood","27","Ellsworth",,
+"Lorraine Township","27","Ellsworth",,
+"10TH WARD","28","Finney",,
+"1WARD 1","28","Finney",,
+"1WARD 2","28","Finney",,
+"1WARD 3","28","Finney",,
+"1WARD 4","28","Finney",,
+"1WARD 5","28","Finney",,
+"1WARD 6","28","Finney",,
+"Pierceville","28","Finney",,
+"Riverside","28","Finney",,
+"WARD 1","28","Finney",,
+"WARD 2","28","Finney",,
+"WARD 3","28","Finney",,
+"WARD 4","28","Finney",,
+"WARD 5","28","Finney",,
+"WARD 6","28","Finney",,
+"WARD 7","28","Finney",,
+"WARD 8","28","Finney",,
+"WARD 9","28","Finney",,
+"Dodge City 1","29","Ford",,
+"Dodge City 2","29","Ford",,
+"Dodge City 3","29","Ford",,
+"Dodge City 4","29","Ford",,
+"Dodge City 5","29","Ford",,
+"Dodge City 6","29","Ford",,
+"Dodge City 7","29","Ford",,
+"Dodge City 9","29","Ford",,
+"Dodge Township 115","29","Ford",,
+"Dodge Township 119","29","Ford",,
+"Enterprise Township 115","29","Ford",,
+"Enterprise Township 119","29","Ford",,
+"Grandview Township 115","29","Ford",,
+"Grandview Township 119","29","Ford",,
+"Grandview Township 2 115","29","Ford",,
+"Grandview Township 2 119","29","Ford",,
+"Advance 59","30","Franklin",,
+"Early","30","Franklin",,
+"Early 59","30","Franklin",,
+"North. Centropolis","30","Franklin",,
+"Precinct 2","30","Franklin",,
+"Precinct 3","30","Franklin",,
+"Precinct 4","30","Franklin",,
+"Precinct 6","30","Franklin",,
+"Precinct 7","30","Franklin",,
+"Precinct 8","30","Franklin",,
+"Provisional 59","30","Franklin",,
+"South. Centropolis","30","Franklin",,
 Fort. Riley A,31,Geary,120030,
 Smoky Hill Township Precinct 2,31,Geary,12015B,
 Smoky Hill Township Precinct 3,31,Geary,120160,
 Smoky Hill Township Precinct 4,31,Geary,12015A,
 Smoky Hill Township Precinct 5,31,Geary,120170,
 Smoky Hill Township Precinct 6,31,Geary,120150,
-"Hill City 1 H 110","33","Graham","",""
-"Hill City 2 H 110","33","Graham","",""
-"Hill City 3 H 110","33","Graham","",""
-"Hill City Precinct 1 110","33","Graham","",""
-"Hill City Precinct 2 110","33","Graham","",""
-"Hill City Precinct 3 110","33","Graham","",""
-"Hill City Township 71 118","33","Graham","",""
-"Hill City Township 72 118","33","Graham","",""
-"Hill City Township 73 118","33","Graham","",""
-"Hill City Township 73 H 118","33","Graham","",""
-"Nicodemus Township 110","33","Graham","",""
-"Nicodemus Township 118","33","Graham","",""
-"Prec 4","34","Grant","",""
-"Ward 1","34","Grant","",""
-"Ward 2","34","Grant","",""
-"Ward 3","34","Grant","",""
-"Gsd","36","Greeley","",""
-"Hc","36","Greeley","",""
-"Msd","36","Greeley","",""
-"Eureka City Ward 1","37","Greenwood","",""
-"Eureka City Ward 2","37","Greenwood","",""
-"Eureka City Ward 3","37","Greenwood","",""
-"Saith Sprs","37","Greenwood","",""
-"South Salem","37","Greenwood","",""
-"South Salem Township","37","Greenwood","",""
-"Spg Creek","37","Greenwood","",""
-"Ward 1","37","Greenwood","",""
-"Ward 2","37","Greenwood","",""
-"Ward 3","37","Greenwood","",""
-"Early Voters","39","Harper","",""
-"12-Newton City Ward 3 Precinct 3","40","Harvey","",""
-"18-North Newton","40","Harvey","",""
-"21-Darlington Township","40","Harvey","",""
-"22-Darlington Township North","40","Harvey","",""
-"3-Hesston City Ward 1 Precinct 1","40","Harvey","",""
-"30-Newton Township AB","40","Harvey","",""
-"31-Newton Township CDE","40","Harvey","",""
-"4-Hesston City Ward 2 Precinct 1","40","Harvey","",""
-"Darlington Township","40","Harvey","",""
-"Darlington Township North","40","Harvey","",""
-"Halstead City 1W-1P","40","Harvey","",""
-"Halstead City 1W-2P","40","Harvey","",""
-"Hesston City 1W-1P","40","Harvey","",""
-"Hesston City 1W-2P","40","Harvey","",""
-"Newton City","40","Harvey","",""
-"Newton City 1W-1P","40","Harvey","",""
-"Newton City 1W-2P","40","Harvey","",""
-"Newton City 1W-3P","40","Harvey","",""
-"Newton City 2W-1P","40","Harvey","",""
-"Newton City 2W-2P","40","Harvey","",""
-"Newton City 3W-1P","40","Harvey","",""
-"Newton City 3W-2P","40","Harvey","",""
-"Newton City 3W-3P","40","Harvey","",""
-"Newton City 3W-4P","40","Harvey","",""
-"Newton City 4W-1P","40","Harvey","",""
-"Newton City 4W-2P","40","Harvey","",""
-"Newton City 4W-3P","40","Harvey","",""
-"Newton City 4W-4P","40","Harvey","",""
-"Newton Township AB","40","Harvey","",""
-"Newton Township CDE","40","Harvey","",""
-"Sat 1 124","41","Haskell","",""
-"Sub 1 H124","41","Haskell","",""
-"Sub 3 122","41","Haskell","",""
-"Sub 3 H124","41","Haskell","",""
-"City of Jetmore - NW/SW Center","42","Hodgeman","",""
-"City of Jetmore - North","42","Hodgeman","",""
-"City of Jetmore - South","42","Hodgeman","",""
-"North Marena","42","Hodgeman","",""
-"South Marena","42","Hodgeman","",""
-"Southeast Center","42","Hodgeman","",""
-"Ward 1","43","Jackson","",""
-"Ward 2","43","Jackson","",""
-"Ward 3","43","Jackson","",""
-"precinct","43","Jackson","",""
-"Jewell Ks","45","Jewell","",""
-"Aubry Township 0-07","46","Johnson","",""
-"De Soto 0-09","46","Johnson","",""
-"Edgerton","46","Johnson","",""
-"Edgerton 0-07","46","Johnson","",""
-"Edgerton 0-08","46","Johnson","",""
-"Edgerton 0-09","46","Johnson","",""
-"Gardner 7","46","Johnson","",""
-"Lake Quivira","46","Johnson","",""
-"Leawood 3-07","46","Johnson","",""
-"Lenexa 1-04","46","Johnson","",""
-"Lenexa 1-08","46","Johnson","",""
-"Lenexa 1-09","46","Johnson","",""
-"Lenexa 2-09","46","Johnson","",""
-"Lenexa 2-10","46","Johnson","",""
-"Lenexa 2-11","46","Johnson","",""
-"Lenexa 3-09","46","Johnson","",""
-"Lenexa 4-01","46","Johnson","",""
-"Lenexa 4-03","46","Johnson","",""
-"Lenexa 4-10","46","Johnson","",""
-"Lenexa 4-11","46","Johnson","",""
-"Lenexa 4-12","46","Johnson","",""
-"Lexexa 1-09","46","Johnson","",""
-"McCamish Township 0-01","46","Johnson","",""
-"McCamish Township 0-03","46","Johnson","",""
-"Merriam 2-02","46","Johnson","",""
-"Merriam 2-03","46","Johnson","",""
-"Merriam 4-02","46","Johnson","",""
-"Merriam 4-03","46","Johnson","",""
-"Olathe 1-01","46","Johnson","",""
-"Olathe 1-04","46","Johnson","",""
-"Olathe 1-11","46","Johnson","",""
-"Olathe 1-15","46","Johnson","",""
-"Olathe 1-25","46","Johnson","",""
-"Olathe 1-26","46","Johnson","",""
-"Olathe 1-27","46","Johnson","",""
-"Olathe 1-28","46","Johnson","",""
-"Olathe 1-29","46","Johnson","",""
-"Olathe 2-13","46","Johnson","",""
-"Olathe 2-23","46","Johnson","",""
-"Olathe 2-26","46","Johnson","",""
-"Olathe 2-27","46","Johnson","",""
-"Olathe 2-28","46","Johnson","",""
-"Olathe 3-11","46","Johnson","",""
-"Olathe 3-16","46","Johnson","",""
-"Olathe 3-25","46","Johnson","",""
-"Olathe 3-26","46","Johnson","",""
-"Olathe 3-27","46","Johnson","",""
-"Olathe 4-03","46","Johnson","",""
-"Olathe 4-04","46","Johnson","",""
-"Olathe 4-11","46","Johnson","",""
-"Olathe 4-15","46","Johnson","",""
-"Olathe 4-16","46","Johnson","",""
-"Olathe 4-17","46","Johnson","",""
-"Olathe 4-18","46","Johnson","",""
-"Olathe Township 0-01","46","Johnson","",""
-"Olathe Township 0-12","46","Johnson","",""
-"Olathe Township 0-13","46","Johnson","",""
-"Olathe Township 0-14","46","Johnson","",""
-"Olathe Township 0-15","46","Johnson","",""
-"Olathe Township 0-27","46","Johnson","",""
-"Overland Park 1-04","46","Johnson","",""
-"Overland Park 1-05","46","Johnson","",""
-"Overland Park 1-09","46","Johnson","",""
-"Overland Park 1-20","46","Johnson","",""
-"Overland Park 1-21","46","Johnson","",""
-"Overland Park 1-22","46","Johnson","",""
-"Overland Park 2-10","46","Johnson","",""
-"Overland Park 2-26","46","Johnson","",""
-"Overland Park 3-21","46","Johnson","",""
-"Overland Park 3-22","46","Johnson","",""
-"Overland Park 4-08","46","Johnson","",""
-"Overland Park 4-18","46","Johnson","",""
-"Overland Park 4-19","46","Johnson","",""
-"Overland Park 5-12","46","Johnson","",""
-"Overland Park 5-15","46","Johnson","",""
-"Overland Park 5-19","46","Johnson","",""
-"Overland Park 6-16","46","Johnson","",""
-"Overland Park 6-23","46","Johnson","",""
-"Oxford Township 0-01","46","Johnson","",""
-"Oxford Township 0-11","46","Johnson","",""
-"Roeland Park 3-03","46","Johnson","",""
-"Roeland Park 4-03","46","Johnson","",""
-"Shawnee 1-10","46","Johnson","",""
-"Shawnee 1-12","46","Johnson","",""
-"Shawnee 2-10","46","Johnson","",""
-"Shawnee 2-11","46","Johnson","",""
-"Shawnee 2-12","46","Johnson","",""
-"Shawnee 2-13","46","Johnson","",""
-"Shawnee 4-01","46","Johnson","",""
-"Shawnee 4-09","46","Johnson","",""
-"Shawnee 4-11","46","Johnson","",""
-"Shawnee 4-12","46","Johnson","",""
-"Shawnee 4-13","46","Johnson","",""
-"Lakin City 1","47","Kearny","",""
-"Lakin City 2","47","Kearny","",""
-"Kingman City Ward 1","48","Kingman","",""
-"Kingman City Ward 2","48","Kingman","",""
-"Kingman City Ward 3","48","Kingman","",""
-"Kingman City Ward 4","48","Kingman","",""
-"White","48","Kingman","",""
-"White Township","48","Kingman","",""
-"Center 1 Township","49","Kiowa","",""
-"Center 11A","49","Kiowa","",""
-"Center 1A Township","49","Kiowa","",""
-"Center II City","49","Kiowa","",""
-"Center IIA","49","Kiowa","",""
-"Center IIA City","49","Kiowa","",""
-"City of Oswego Ward 1","50","Labette","",""
-"City of Oswego Ward 2","50","Labette","",""
-"City of Oswego Ward 3","50","Labette","",""
-"Osage","50","Labette","",""
-"Richland 1A","50","Labette","",""
-"Richland 1B","50","Labette","",""
-"Richland 7","50","Labette","",""
-"Ward 1 Precinct 1","50","Labette","",""
-"Ward 1 Precinct 2","50","Labette","",""
-"Ward 1 Precinct 3","50","Labette","",""
-"Ward 2 Precinct 1","50","Labette","",""
-"Ward 2 Precinct 2","50","Labette","",""
-"Ward 2 Precinct 3","50","Labette","",""
-"Ward 3 Precinct 1","50","Labette","",""
-"Ward 3 Precinct 2","50","Labette","",""
-"Ward 3 Precinct 3","50","Labette","",""
-"Ward 3 Precinct 4","50","Labette","",""
-"Ward 4 Precinct 1","50","Labette","",""
-"Ward 4 Precinct 2","50","Labette","",""
-"Ward 4 Precinct 3","50","Labette","",""
-"Ward 4 Precinct 4","50","Labette","",""
-"Delaware 1","52","Leavenworth","",""
-"Delaware 4","52","Leavenworth","",""
-"Fort Leavenworth, Precinct 41","52","Leavenworth","",""
-"Fort Leavenworth, Precinct 42","52","Leavenworth","",""
-"Glenwood/Fairmount","52","Leavenworth","",""
-"Tonganoxie Rural","52","Leavenworth","",""
-"Tonganoxie South","52","Leavenworth","",""
-"Ward 1 Precinct 1","52","Leavenworth","",""
-"Ward 2 Precinct 1","52","Leavenworth","",""
-"Ward 2 Precinct 2","52","Leavenworth","",""
-"Ward 2 Precinct 3","52","Leavenworth","",""
-"Ward 3 Precinct 1","52","Leavenworth","",""
-"Ward 4 Precinct 1","52","Leavenworth","",""
-"Ward 5 Precinct 1","52","Leavenworth","",""
-"Ward 5 Precinct 2","52","Leavenworth","",""
-"Ward 5 Precinct 3","52","Leavenworth","",""
-"Ward 5 Precinct 4","52","Leavenworth","",""
-"Ward 6 Precinct 1","52","Leavenworth","",""
-"Ward 6 Precinct 2","52","Leavenworth","",""
-"Ward 6 Precinct 3","52","Leavenworth","",""
-"Ward 6 Precinct 4","52","Leavenworth","",""
-"Ward 6 Precinct 5","52","Leavenworth","",""
-"Ward 7 Precinct 1","52","Leavenworth","",""
-"Ward 7 Precinct 2","52","Leavenworth","",""
-"Ward 7 Precinct 3","52","Leavenworth","",""
-"Allender","55","Logan","",""
-"Oakley Township 1","55","Logan","",""
-"Oakley Township 2","55","Logan","",""
-"Emporia 01.01","56","Lyon","",""
-"Emporia 02.01","56","Lyon","",""
-"Emporia 03.01","56","Lyon","",""
-"Emporia 04.01","56","Lyon","",""
-"Emporia 05.01","56","Lyon","",""
-"Emporia 06.01","56","Lyon","",""
-"Emporia 07.01","56","Lyon","",""
-"Emporia 08.01","56","Lyon","",""
-"Emporia 09.01","56","Lyon","",""
-"Emporia 10.01","56","Lyon","",""
-"Emporia 11.01","56","Lyon","",""
-"Emporia 12.01","56","Lyon","",""
-"Emporia 13.01","56","Lyon","",""
-"Emporia 14.01","56","Lyon","",""
-"Emporia 15.01","56","Lyon","",""
-"Emporia 16.01","56","Lyon","",""
-"Emporia 17.01","56","Lyon","",""
-"Emporia 18.01","56","Lyon","",""
-"Emporia 19.01","56","Lyon","",""
-"Emporia 20.01","56","Lyon","",""
-"Emporia 4A.01","56","Lyon","",""
-"Emporia 4B.01","56","Lyon","",""
-"Emporia 4C.01","56","Lyon","",""
-"Precinct 29D.01","56","Lyon","",""
-"Advance Voters","59","Marshall","",""
-"Franklin Township-District 1","59","Marshall","",""
-"Franklin Township-District 2","59","Marshall","",""
-"Guittard Township-District 1","59","Marshall","",""
-"Guittard Township-District 2","59","Marshall","",""
-"Marysville City - Ward 2","59","Marshall","",""
-"Marysville City - Ward 3","59","Marshall","",""
-"Marysville City - Ward 4","59","Marshall","",""
-"Vermillion Township-East Precinct","59","Marshall","",""
-"Vermillion Township-West Precinct","59","Marshall","",""
-"Bh","57","McPherson","",""
-"Bon","57","McPherson","",""
-"Del","57","McPherson","",""
-"Gc","57","McPherson","",""
-"Gr","57","McPherson","",""
-"Jac","57","McPherson","",""
-"Kc","57","McPherson","",""
-"Lindsborg City 1","57","McPherson","",""
-"Lindsborg City 2","57","McPherson","",""
-"Lindsborg City 3","57","McPherson","",""
-"Lindsborg City 4","57","McPherson","",""
-"Lt","57","McPherson","",""
-"Lv","57","McPherson","",""
-"McPherson City 1","57","McPherson","",""
-"McPherson City 2","57","McPherson","",""
-"McPherson City 3","57","McPherson","",""
-"McPherson City 4","57","McPherson","",""
-"Md","57","McPherson","",""
-"Mer","57","McPherson","",""
-"Mp","57","McPherson","",""
-"Mq","57","McPherson","",""
-"Ng","57","McPherson","",""
-"Sh","57","McPherson","",""
-"Ssc","57","McPherson","",""
-"Su","57","McPherson","",""
-"Sv","57","McPherson","",""
-"Tc","57","McPherson","",""
-"EMC(2)","61","Miami","",""
-"EMC(3)","61","Miami","",""
-"Ev","61","Miami","",""
-"Fc","61","Miami","",""
-"LC 01","61","Miami","",""
-"LC 02","61","Miami","",""
-"LC 03","61","Miami","",""
-"LC 04","61","Miami","",""
-"NMV(2)","61","Miami","",""
-"NMV(3)","61","Miami","",""
-"NPE Prt1","61","Miami","",""
-"NPE Prt2","61","Miami","",""
-"Npw","61","Miami","",""
-"Nw","61","Miami","",""
-"OC 01","61","Miami","",""
-"OC 02","61","Miami","",""
-"OC 03","61","Miami","",""
-"OC 04","61","Miami","",""
-"PC 01","61","Miami","",""
-"PC 02","61","Miami","",""
-"PC 03","61","Miami","",""
-"PC 04","61","Miami","",""
-"SH 01","61","Miami","",""
-"SH 02","61","Miami","",""
-"SH 03","61","Miami","",""
-"SMV(2)","61","Miami","",""
-"SMV(3)","61","Miami","",""
-"SPE Prt2","61","Miami","",""
-"Sc","61","Miami","",""
-"Spw","61","Miami","",""
-"Sw","61","Miami","",""
-"Tm","61","Miami","",""
-"WMC 368","61","Miami","",""
-"WMC 416","61","Miami","",""
-"WV(12) 367","61","Miami","",""
-"WV(12) 368","61","Miami","",""
-"WV(5)","61","Miami","",""
-"WV(6)","61","Miami","",""
-"Ward 1","62","Mitchell","",""
-"Ward 2","62","Mitchell","",""
-"Ward 3","62","Mitchell","",""
-"Ward 4","62","Mitchell","",""
-"CANEY Ward 1 Precinct 1","63","Montgomery","",""
-"CANEY Ward 1 Precinct 2 H12","63","Montgomery","",""
-"CANEY Ward 2 Precinct 1","63","Montgomery","",""
-"CANEY Ward 3 Precinct 1","63","Montgomery","",""
-"CANEY Ward 3 Precinct 2","63","Montgomery","",""
-"CANEY Ward 4 Precinct 1","63","Montgomery","",""
-"CANEY Ward 4 Precinct 2","63","Montgomery","",""
-"CANEY-TYRO","63","Montgomery","",""
-"COFFEYVILLE 1","63","Montgomery","",""
-"COFFEYVILLE 2","63","Montgomery","",""
-"COFFEYVILLE 3","63","Montgomery","",""
-"COFFEYVILLE 4","63","Montgomery","",""
-"COFFEYVILLE 5","63","Montgomery","",""
-"COFFEYVILLE 6","63","Montgomery","",""
-"COFFEYVILLE 7","63","Montgomery","",""
-"COFFEYVILLE 8","63","Montgomery","",""
-"COFFEYVILLE 9","63","Montgomery","",""
-"FAWN CREEK-DEARING","63","Montgomery","",""
-"FAWN CREEK-TYRO","63","Montgomery","",""
-"INDEPENDENCE Ward 3 Precinct 2 EX","63","Montgomery","",""
-"INDEPENDENCE Ward 6 Precinct 2 H11A","63","Montgomery","",""
-"INDEPENDENCE Ward 6 Precinct 2 H12A","63","Montgomery","",""
-"PARKER 2 EX H11","63","Montgomery","",""
-"Sycamore","63","Montgomery","",""
-"Ward 1","64","Morris","",""
-"Ward 2","64","Morris","",""
-"Centralia-Illinois","66","Nemaha","",""
-"Harrison-Goff","66","Nemaha","",""
-"Harrison-Kelly","66","Nemaha","",""
-"Sabetha City Ward 1","66","Nemaha","",""
-"Sabetha City Ward 2","66","Nemaha","",""
-"Sabetha City Ward 3","66","Nemaha","",""
-"Sabetha City Ward 4","66","Nemaha","",""
-"Seneca City Ward 1","66","Nemaha","",""
-"Seneca City Ward 2","66","Nemaha","",""
-"Seneca City Ward 3","66","Nemaha","",""
-"Advance Ballots","69","Norton","",""
-"Belle Plaine","69","Norton","",""
-"Belle Plaine-Sol 1","69","Norton","",""
-"Sandcreek-Sol 1","69","Norton","",""
-"Provisional Osb 3","71","Osborne","",""
-"Mpls 1","72","Ottawa","",""
-"Mpls II","72","Ottawa","",""
-"Mpls III","72","Ottawa","",""
-"Browns Grove 4/Sawmill Township","73","Pawnee","",""
-"Grant Township","73","Pawnee","",""
-"Agra City","74","Phillips","",""
-"Glade City","74","Phillips","",""
-"Ward 1","74","Phillips","",""
-"Ward 2","74","Phillips","",""
-"Ward 3","74","Phillips","",""
-"Advance Precinct","75","Pottawatomie","",""
-"Clerk Creek","75","Pottawatomie","",""
-"Federal Service Precinct","75","Pottawatomie","",""
-"Provisional Precinct","75","Pottawatomie","",""
-"St George 1","75","Pottawatomie","",""
-"St George 17","75","Pottawatomie","",""
-"Wamego City 17-7","75","Pottawatomie","",""
-"Wamego City 18-4","75","Pottawatomie","",""
-"Wamego Township 1-6","75","Pottawatomie","",""
-"Wamego Township 17-7","75","Pottawatomie","",""
-"Wamego Township 18-4","75","Pottawatomie","",""
-"WARD 1","76","Pratt","",""
-"WARD 2","76","Pratt","",""
-"WARD 3","76","Pratt","",""
-"WARD 4","76","Pratt","",""
-"WARD 5","76","Pratt","",""
-"CITY 01-H102","78","Reno","",""
-"CITY 01-HII4","78","Reno","",""
-"CITY 02","78","Reno","",""
-"CITY 03","78","Reno","",""
-"CITY 04","78","Reno","",""
-"CITY 05","78","Reno","",""
-"CITY 06","78","Reno","",""
-"CITY 07","78","Reno","",""
-"CITY 08","78","Reno","",""
-"CITY 09","78","Reno","",""
-"CITY 10","78","Reno","",""
-"CITY 11","78","Reno","",""
-"CITY 12","78","Reno","",""
-"CITY 13","78","Reno","",""
-"CITY 14","78","Reno","",""
-"CITY 15","78","Reno","",""
-"CITY 16","78","Reno","",""
-"CITY 17","78","Reno","",""
-"CITY 18","78","Reno","",""
-"CITY 19","78","Reno","",""
-"CITY 20","78","Reno","",""
-"CITY 21","78","Reno","",""
-"CITY 22","78","Reno","",""
-"CITY 23","78","Reno","",""
-"CITY 23 EX","78","Reno","",""
-"CITY 24","78","Reno","",""
-"CITY 25","78","Reno","",""
-"CITY 26","78","Reno","",""
-"CITY 26 EX","78","Reno","",""
-"CITY 27","78","Reno","",""
-"CITY 28","78","Reno","",""
-"CITY 28 EX","78","Reno","",""
-"CITY 29","78","Reno","",""
-"CITY 30","78","Reno","",""
-"CITY 31","78","Reno","",""
-"CITY 32","78","Reno","",""
-"CITY 33","78","Reno","",""
-"CITY 34","78","Reno","",""
-"CITY 34 EX","78","Reno","",""
-"CITY 35","78","Reno","",""
-"Clay North Township","78","Reno","",""
-"Clay South 101 Township","78","Reno","",""
-"Clay South H102A Township","78","Reno","",""
-"Reno North Township","78","Reno","",""
-"Ward 1","79","Republic","",""
-"Ward 2","79","Republic","",""
-"Ward 3","79","Republic","",""
-"LYONS 1ST","80","Rice","",""
-"LYONS 2ND","80","Rice","",""
-"LYONS 3RD","80","Rice","",""
-"LYONS 4TH","80","Rice","",""
-"Stering","80","Rice","",""
-"Sterling East","80","Rice","",""
-"Hand Counted Paper Ballots","81","Riley","",""
-"Mad/Fort Ril A","81","Riley","",""
-"Mad/Fort Ril B","81","Riley","",""
-"Mad/Fort Riley A","81","Riley","",""
-"Mad/Fort Riley B","81","Riley","",""
-"Man Township 1","81","Riley","",""
-"Man Township 2","81","Riley","",""
-"Man Township 3","81","Riley","",""
-"Man Township 4","81","Riley","",""
-"Ogden/Fort Ril","81","Riley","",""
-"Ogden/Fort Ril A","81","Riley","",""
-"W11P1B","81","Riley","",""
-"Ward 06 Precinct 01","81","Riley","",""
-"Ward 1 Precinct 1","81","Riley","",""
-"Ward 10 Precinct 1","81","Riley","",""
-"Ward 11 Precinct 1","81","Riley","",""
-"Ward 11 Precinct 3","81","Riley","",""
-"Ward 12 Precinct 01","81","Riley","",""
-"Ward 2 Precinct 1","81","Riley","",""
-"Ward 2 Precinct 2","81","Riley","",""
-"Ward 2 Precinct 3","81","Riley","",""
-"Ward 2 Precinct 4","81","Riley","",""
-"Ward 3 Precinct 2","81","Riley","",""
-"Ward 3 Precinct 3","81","Riley","",""
-"Ward 4 Precinct 2","81","Riley","",""
-"Ward 4 Precinct 3","81","Riley","",""
-"Ward 4 Precinct 4","81","Riley","",""
-"Ward 4 Precinct 5","81","Riley","",""
-"Ward 4 Precinct 6","81","Riley","",""
-"Ward 4 Precinct 7","81","Riley","",""
-"Ward 5 Precinct 10","81","Riley","",""
-"Ward 5 Precinct 11","81","Riley","",""
-"Ward 5 Precinct 2","81","Riley","",""
-"Ward 5 Precinct 3","81","Riley","",""
-"Ward 5 Precinct 5","81","Riley","",""
-"Ward 5 Precinct 6","81","Riley","",""
-"Ward 5 Precinct 7","81","Riley","",""
-"Ward 5 Precinct 8","81","Riley","",""
-"Ward 5 Precinct 9","81","Riley","",""
-"Ward 6 Precinct 1","81","Riley","",""
-"Ward 8 Precinct 1","81","Riley","",""
-"Ward 8 Precinct 2","81","Riley","",""
-"Ward 8 Precinct 3","81","Riley","",""
-"Ward 9 Precinct 1","81","Riley","",""
-"Ward 9 Precinct 2","81","Riley","",""
-"Ward 9 Precinct 3","81","Riley","",""
-"Precinct 1","82","Rooks","",""
-"Precinct 11-1","82","Rooks","",""
-"Precinct 11-2","82","Rooks","",""
-"Precinct 2","82","Rooks","",""
-"Precinct 4","82","Rooks","",""
-"Precinct 5","82","Rooks","",""
-"Precinct 6","82","Rooks","",""
-"Precinct 7","82","Rooks","",""
-"Precinct 8","82","Rooks","",""
-"Precinct 9","82","Rooks","",""
-"14","85","Saline","",""
-"15","85","Saline","",""
-"20","85","Saline","",""
-"21","85","Saline","",""
-"31","85","Saline","",""
-"ELM CREEK 69","85","Saline","",""
-"ELM CREEK 71","85","Saline","",""
-"Elm Creek","85","Saline","",""
-"SMOKY HILL 71","85","Saline","",""
-"Smoky Hill","85","Saline","",""
-"Absentee","86","Scott","",""
-"Ward 1","86","Scott","",""
-"Ward 2","86","Scott","",""
-"Ward 3","86","Scott","",""
-"Ward 4","86","Scott","",""
-"& 415 & 537","87","Sedgwick","",""
-"& 428","87","Sedgwick","",""
-"& 617","87","Sedgwick","",""
-"104","87","Sedgwick","",""
-"105","87","Sedgwick","",""
-"117","87","Sedgwick","",""
-"118","87","Sedgwick","",""
-"123","87","Sedgwick","",""
-"131","87","Sedgwick","",""
-"21","87","Sedgwick","",""
-"222","87","Sedgwick","",""
-"223","87","Sedgwick","",""
-"228","87","Sedgwick","",""
-"231","87","Sedgwick","",""
-"234","87","Sedgwick","",""
-"239","87","Sedgwick","",""
-"304","87","Sedgwick","",""
-"305","87","Sedgwick","",""
-"307","87","Sedgwick","",""
-"311","87","Sedgwick","",""
-"312","87","Sedgwick","",""
-"313","87","Sedgwick","",""
-"316","87","Sedgwick","",""
-"323","87","Sedgwick","",""
-"417","87","Sedgwick","",""
-"419","87","Sedgwick","",""
-"420","87","Sedgwick","",""
-"513","87","Sedgwick","",""
-"521","87","Sedgwick","",""
-"533","87","Sedgwick","",""
-"535","87","Sedgwick","",""
-"606","87","Sedgwick","",""
-"611","87","Sedgwick","",""
-"613","87","Sedgwick","",""
-"616","87","Sedgwick","",""
-"617","87","Sedgwick","",""
-"620","87","Sedgwick","",""
-"625","87","Sedgwick","",""
-"628","87","Sedgwick","",""
-"AT06","87","Sedgwick","",""
-"AT07","87","Sedgwick","",""
-"ATTICA PRECINCT 06","87","Sedgwick","",""
-"ATTICA PRECINCT 07","87","Sedgwick","",""
-"DB11","87","Sedgwick","",""
-"DB22","87","Sedgwick","",""
-"DB31","87","Sedgwick","",""
-"DB34","87","Sedgwick","",""
-"DB35","87","Sedgwick","",""
-"DB43","87","Sedgwick","",""
-"DB44","87","Sedgwick","",""
-"DERBY WARD 02 PRECINCT 06","87","Sedgwick","",""
-"DERBY WARD 03 PRECINCT 04","87","Sedgwick","",""
-"DERBY WARD 03 PRECINCT 05","87","Sedgwick","",""
-"DERBY WARD 03 PRECINCT 06","87","Sedgwick","",""
-"DERBY WARD 04 PRECINCT 03","87","Sedgwick","",""
-"DERBY WARD 04 PRECINCT 04","87","Sedgwick","",""
-"GY01","87","Sedgwick","",""
-"GYPSUM PRECINCT 01","87","Sedgwick","",""
-"GYPSUM PRECINCT 04","87","Sedgwick","",""
-"Goddard","87","Sedgwick","",""
-"Grant","87","Sedgwick","",""
-"HA21 & HA23","87","Sedgwick","",""
-"IJNION PRECINCT 01","87","Sedgwick","",""
-"KE03","87","Sedgwick","",""
-"KECHI PRECINCT 03","87","Sedgwick","",""
-"KECHI PRECINCT 08","87","Sedgwick","",""
-"MI01","87","Sedgwick","",""
-"MI04 & MI05","87","Sedgwick","",""
-"MINNEHA PRECINCT 03","87","Sedgwick","",""
-"MINNEHA PRECINCT 07","87","Sedgwick","",""
-"MINNEHA PRECINCT 08","87","Sedgwick","",""
-"MINNEHA PRECINCT 09","87","Sedgwick","",""
-"MINNEHA PRECINCT 12","87","Sedgwick","",""
-"Ni","87","Sedgwick","",""
-"PA01","87","Sedgwick","",""
-"PA02","87","Sedgwick","",""
-"PA09","87","Sedgwick","",""
-"PARK PRECINCT 05","87","Sedgwick","",""
-"PARK PRECINCT 06","87","Sedgwick","",""
-"PAYNE PRECINCT 04","87","Sedgwick","",""
-"PC12 & 14 & 15","87","Sedgwick","",""
-"President","87","Sedgwick","",""
-"RI04","87","Sedgwick","",""
-"RIVERSIDE PRECINCT 04","87","Sedgwick","",""
-"RIVERSIDE PRECINCT 06","87","Sedgwick","",""
-"RIVERSIDE PRECINCT 07","87","Sedgwick","",""
-"RO02","87","Sedgwick","",""
-"ROCKFORD PRECINCT 02","87","Sedgwick","",""
-"ROCKFORD PRECINCT 04","87","Sedgwick","",""
-"VALLEY CENTER WARD 03 PRECINCT 01","87","Sedgwick","",""
-"VALLEY CENTER WARD 03 PRECINCT 02","87","Sedgwick","",""
-"VALLEY CENTER WARD 04 PRECINCT 01","87","Sedgwick","",""
-"VC31","87","Sedgwick","",""
-"VC32 & 42 & 43","87","Sedgwick","",""
-"VC41","87","Sedgwick","",""
-"WICHITA PRECINCT 103","87","Sedgwick","",""
-"WICHITA PRECINCT 104","87","Sedgwick","",""
-"WICHITA PRECINCT 105","87","Sedgwick","",""
-"WICHITA PRECINCT 117","87","Sedgwick","",""
-"WICHITA PRECINCT 118","87","Sedgwick","",""
-"WICHITA PRECINCT 123","87","Sedgwick","",""
-"WICHITA PRECINCT 131","87","Sedgwick","",""
-"WICHITA PRECINCT 132","87","Sedgwick","",""
-"WICHITA PRECINCT 211","87","Sedgwick","",""
-"WICHITA PRECINCT 222","87","Sedgwick","",""
-"WICHITA PRECINCT 223","87","Sedgwick","",""
-"WICHITA PRECINCT 228","87","Sedgwick","",""
-"WICHITA PRECINCT 231","87","Sedgwick","",""
-"WICHITA PRECINCT 234","87","Sedgwick","",""
-"WICHITA PRECINCT 304","87","Sedgwick","",""
-"WICHITA PRECINCT 305","87","Sedgwick","",""
-"WICHITA PRECINCT 307","87","Sedgwick","",""
-"WICHITA PRECINCT 311","87","Sedgwick","",""
-"WICHITA PRECINCT 312","87","Sedgwick","",""
-"WICHITA PRECINCT 313","87","Sedgwick","",""
-"WICHITA PRECINCT 316","87","Sedgwick","",""
-"WICHITA PRECINCT 323","87","Sedgwick","",""
-"WICHITA PRECINCT 417","87","Sedgwick","",""
-"WICHITA PRECINCT 419","87","Sedgwick","",""
-"WICHITA PRECINCT 420","87","Sedgwick","",""
-"WICHITA PRECINCT 513","87","Sedgwick","",""
-"WICHITA PRECINCT 521","87","Sedgwick","",""
-"WICHITA PRECINCT 533","87","Sedgwick","",""
-"WICHITA PRECINCT 535","87","Sedgwick","",""
-"WICHITA PRECINCT 606","87","Sedgwick","",""
-"WICHITA PRECINCT 611","87","Sedgwick","",""
-"WICHITA PRECINCT 613","87","Sedgwick","",""
-"WICHITA PRECINCT 616","87","Sedgwick","",""
-"WICHITA PRECINCT 620","87","Sedgwick","",""
-"WICHITA PRECINCT 625","87","Sedgwick","",""
-"WICHITA PRECINCT 628","87","Sedgwick","",""
-"ADVANCE VOTES HOUSE125","88","Seward","",""
-"Advance Votes","88","Seward","",""
-"Kismet City","88","Seward","",""
-"PROVISIONAL VOTES HOUSE125","88","Seward","",""
-"Provisional Votes","88","Seward","",""
-"Ward 1 Precinct 1","88","Seward","",""
-"Ward 1 Precinct 2","88","Seward","",""
-"Ward 1 Precinct 3","88","Seward","",""
-"Ward 2","88","Seward","",""
-"Ward 3","88","Seward","",""
-"Ward 4","88","Seward","",""
-"Ward 5","88","Seward","",""
-"Ward 6 Precinct 1","88","Seward","",""
-"Ward 6 Precinct 2","88","Seward","",""
-"45 Peck & 17 Croco","89","Shawnee","",""
-"Apace","89","Shawnee","",""
-"Elmot","89","Shawnee","",""
-"Iroquis","89","Shawnee","",""
-"Messltoss Creek","89","Shawnee","",""
-"North Tecumseh","89","Shawnee","",""
-"TOPEKA WARD 03 PRECINCT 05","89","Shawnee","",""
-"Ward 1 Precinct I","89","Shawnee","",""
-"Ward 12 Precinct 00","89","Shawnee","",""
-"Ward 13 Precinct 30 & Ward 13 Precinct 08","89","Shawnee","",""
-"Ward 15 Precinct 02 & Ward 15 Precinct 04","89","Shawnee","",""
-"Ward 3 Precinct 8","89","Shawnee","",""
-"Kenneth - East","90","Sheridan","",""
-"Kenneth - West","90","Sheridan","",""
-"Oak Precinct","92","Smith","",""
-"South. St. John","93","Stafford","",""
-"Hugoton Ward 3 Precinct 2","95","Stevens","",""
-"Hugoton Ward 4 Precinct 2","95","Stevens","",""
-"Hugoton Ward 5 Precinct 2","95","Stevens","",""
-"Hugoton Ward 6 Precinct 2","95","Stevens","",""
-"Hugoton Ward 7 Precinct 2","95","Stevens","",""
-"Hugoton Ward 8 Precinct 2","95","Stevens","",""
-"Belle Plaine H 79","96","Sumner","",""
-"Belle Plaine H 82","96","Sumner","",""
-"Gore H 79","96","Sumner","",""
-"Gore H 82","96","Sumner","",""
-"Mulvane","96","Sumner","",""
-"SEVENTY-SIX","96","Sumner","",""
-"WELLINGTON CITY 1 H80","96","Sumner","",""
-"WELLINGTON CITY 2 116","96","Sumner","",""
-"Wellington Township H 116","96","Sumner","",""
-"Wellington Township H 80","96","Sumner","",""
-"Write-ins","96","Sumner","",""
-"Hale Township/Brewster","97","Thomas","",""
-"Eskridge","99","Wabaunsee","",""
-"Wabaunsee","99","Wabaunsee","",""
-"Wabaunsee 17","99","Wabaunsee","",""
-"Wabaunsee 18","99","Wabaunsee","",""
-"Wabaunsee Township","99","Wabaunsee","",""
-"Sharon Sprs 3","100","Wallace","",""
-"Sharon Sprs 4","100","Wallace","",""
-"PRECINCT 1","102","Wichita","",""
-"PRECINCT 2","102","Wichita","",""
-"PRECINCT 3","102","Wichita","",""
-"OC 1-1","105","Wyandotte","",""
+"Hill City 1 H 110","33","Graham",,
+"Hill City 2 H 110","33","Graham",,
+"Hill City 3 H 110","33","Graham",,
+"Hill City Precinct 1 110","33","Graham",,
+"Hill City Precinct 2 110","33","Graham",,
+"Hill City Precinct 3 110","33","Graham",,
+"Hill City Township 71 118","33","Graham",,
+"Hill City Township 72 118","33","Graham",,
+"Hill City Township 73 118","33","Graham",,
+"Hill City Township 73 H 118","33","Graham",,
+"Nicodemus Township 110","33","Graham",,
+"Nicodemus Township 118","33","Graham",,
+"Prec 4","34","Grant",,
+"Ward 1","34","Grant",,
+"Ward 2","34","Grant",,
+"Ward 3","34","Grant",,
+"Gsd","36","Greeley",,
+"Hc","36","Greeley",,
+"Msd","36","Greeley",,
+"Eureka City Ward 1","37","Greenwood",,
+"Eureka City Ward 2","37","Greenwood",,
+"Eureka City Ward 3","37","Greenwood",,
+"Saith Sprs","37","Greenwood",,
+"South Salem","37","Greenwood",,
+"South Salem Township","37","Greenwood",,
+"Spg Creek","37","Greenwood",,
+"Ward 1","37","Greenwood",,
+"Ward 2","37","Greenwood",,
+"Ward 3","37","Greenwood",,
+"Early Voters","39","Harper",,
+"12-Newton City Ward 3 Precinct 3","40","Harvey",,
+"18-North Newton","40","Harvey",,
+"21-Darlington Township","40","Harvey",,
+"22-Darlington Township North","40","Harvey",,
+"3-Hesston City Ward 1 Precinct 1","40","Harvey",,
+"30-Newton Township AB","40","Harvey",,
+"31-Newton Township CDE","40","Harvey",,
+"4-Hesston City Ward 2 Precinct 1","40","Harvey",,
+"Darlington Township","40","Harvey",,
+"Darlington Township North","40","Harvey",,
+"Halstead City 1W-1P","40","Harvey",,
+"Halstead City 1W-2P","40","Harvey",,
+"Hesston City 1W-1P","40","Harvey",,
+"Hesston City 1W-2P","40","Harvey",,
+"Newton City","40","Harvey",,
+"Newton City 1W-1P","40","Harvey",,
+"Newton City 1W-2P","40","Harvey",,
+"Newton City 1W-3P","40","Harvey",,
+"Newton City 2W-1P","40","Harvey",,
+"Newton City 2W-2P","40","Harvey",,
+"Newton City 3W-1P","40","Harvey",,
+"Newton City 3W-2P","40","Harvey",,
+"Newton City 3W-3P","40","Harvey",,
+"Newton City 3W-4P","40","Harvey",,
+"Newton City 4W-1P","40","Harvey",,
+"Newton City 4W-2P","40","Harvey",,
+"Newton City 4W-3P","40","Harvey",,
+"Newton City 4W-4P","40","Harvey",,
+"Newton Township AB","40","Harvey",,
+"Newton Township CDE","40","Harvey",,
+"Sat 1 124","41","Haskell",,
+"Sub 1 H124","41","Haskell",,
+"Sub 3 122","41","Haskell",,
+"Sub 3 H124","41","Haskell",,
+"City of Jetmore - NW/SW Center","42","Hodgeman",,
+"City of Jetmore - North","42","Hodgeman",,
+"City of Jetmore - South","42","Hodgeman",,
+"North Marena","42","Hodgeman",,
+"South Marena","42","Hodgeman",,
+"Southeast Center","42","Hodgeman",,
+"Ward 1","43","Jackson",,
+"Ward 2","43","Jackson",,
+"Ward 3","43","Jackson",,
+"precinct","43","Jackson",,
+"Jewell Ks","45","Jewell",,
+"Aubry Township 0-07","46","Johnson",,
+"De Soto 0-09","46","Johnson",,
+"Edgerton","46","Johnson",,
+"Edgerton 0-07","46","Johnson",,
+"Edgerton 0-08","46","Johnson",,
+"Edgerton 0-09","46","Johnson",,
+"Gardner 7","46","Johnson",,
+"Lake Quivira","46","Johnson",,
+"Leawood 3-07","46","Johnson",,
+"Lenexa 1-04","46","Johnson",,
+"Lenexa 1-08","46","Johnson",,
+"Lenexa 1-09","46","Johnson",,
+"Lenexa 2-09","46","Johnson",,
+"Lenexa 2-10","46","Johnson",,
+"Lenexa 2-11","46","Johnson",,
+"Lenexa 3-09","46","Johnson",,
+"Lenexa 4-01","46","Johnson",,
+"Lenexa 4-03","46","Johnson",,
+"Lenexa 4-10","46","Johnson",,
+"Lenexa 4-11","46","Johnson",,
+"Lenexa 4-12","46","Johnson",,
+"Lexexa 1-09","46","Johnson",,
+"McCamish Township 0-01","46","Johnson",,
+"McCamish Township 0-03","46","Johnson",,
+"Merriam 2-02","46","Johnson",,
+"Merriam 2-03","46","Johnson",,
+"Merriam 4-02","46","Johnson",,
+"Merriam 4-03","46","Johnson",,
+"Olathe 1-01","46","Johnson",,
+"Olathe 1-04","46","Johnson",,
+"Olathe 1-11","46","Johnson",,
+"Olathe 1-15","46","Johnson",,
+"Olathe 1-25","46","Johnson",,
+"Olathe 1-26","46","Johnson",,
+"Olathe 1-27","46","Johnson",,
+"Olathe 1-28","46","Johnson",,
+"Olathe 1-29","46","Johnson",,
+"Olathe 2-13","46","Johnson",,
+"Olathe 2-23","46","Johnson",,
+"Olathe 2-26","46","Johnson",,
+"Olathe 2-27","46","Johnson",,
+"Olathe 2-28","46","Johnson",,
+"Olathe 3-11","46","Johnson",,
+"Olathe 3-16","46","Johnson",,
+"Olathe 3-25","46","Johnson",,
+"Olathe 3-26","46","Johnson",,
+"Olathe 3-27","46","Johnson",,
+"Olathe 4-03","46","Johnson",,
+"Olathe 4-04","46","Johnson",,
+"Olathe 4-11","46","Johnson",,
+"Olathe 4-15","46","Johnson",,
+"Olathe 4-16","46","Johnson",,
+"Olathe 4-17","46","Johnson",,
+"Olathe 4-18","46","Johnson",,
+"Olathe Township 0-01","46","Johnson",,
+"Olathe Township 0-12","46","Johnson",,
+"Olathe Township 0-13","46","Johnson",,
+"Olathe Township 0-14","46","Johnson",,
+"Olathe Township 0-15","46","Johnson",,
+"Olathe Township 0-27","46","Johnson",,
+"Overland Park 1-04","46","Johnson",,
+"Overland Park 1-05","46","Johnson",,
+"Overland Park 1-09","46","Johnson",,
+"Overland Park 1-20","46","Johnson",,
+"Overland Park 1-21","46","Johnson",,
+"Overland Park 1-22","46","Johnson",,
+"Overland Park 2-10","46","Johnson",,
+"Overland Park 2-26","46","Johnson",,
+"Overland Park 3-21","46","Johnson",,
+"Overland Park 3-22","46","Johnson",,
+"Overland Park 4-08","46","Johnson",,
+"Overland Park 4-18","46","Johnson",,
+"Overland Park 4-19","46","Johnson",,
+"Overland Park 5-12","46","Johnson",,
+"Overland Park 5-15","46","Johnson",,
+"Overland Park 5-19","46","Johnson",,
+"Overland Park 6-16","46","Johnson",,
+"Overland Park 6-23","46","Johnson",,
+"Oxford Township 0-01","46","Johnson",,
+"Oxford Township 0-11","46","Johnson",,
+"Roeland Park 3-03","46","Johnson",,
+"Roeland Park 4-03","46","Johnson",,
+"Shawnee 1-10","46","Johnson",,
+"Shawnee 1-12","46","Johnson",,
+"Shawnee 2-10","46","Johnson",,
+"Shawnee 2-11","46","Johnson",,
+"Shawnee 2-12","46","Johnson",,
+"Shawnee 2-13","46","Johnson",,
+"Shawnee 4-01","46","Johnson",,
+"Shawnee 4-09","46","Johnson",,
+"Shawnee 4-11","46","Johnson",,
+"Shawnee 4-12","46","Johnson",,
+"Shawnee 4-13","46","Johnson",,
+"Lakin City 1","47","Kearny",,
+"Lakin City 2","47","Kearny",,
+"Kingman City Ward 1","48","Kingman",,
+"Kingman City Ward 2","48","Kingman",,
+"Kingman City Ward 3","48","Kingman",,
+"Kingman City Ward 4","48","Kingman",,
+"White","48","Kingman",,
+"White Township","48","Kingman",,
+"Center 1 Township","49","Kiowa",,
+"Center 11A","49","Kiowa",,
+"Center 1A Township","49","Kiowa",,
+"Center II City","49","Kiowa",,
+"Center IIA","49","Kiowa",,
+"Center IIA City","49","Kiowa",,
+"City of Oswego Ward 1","50","Labette",,
+"City of Oswego Ward 2","50","Labette",,
+"City of Oswego Ward 3","50","Labette",,
+"Osage","50","Labette",,
+"Richland 1A","50","Labette",,
+"Richland 1B","50","Labette",,
+"Richland 7","50","Labette",,
+"Ward 1 Precinct 1","50","Labette",,
+"Ward 1 Precinct 2","50","Labette",,
+"Ward 1 Precinct 3","50","Labette",,
+"Ward 2 Precinct 1","50","Labette",,
+"Ward 2 Precinct 2","50","Labette",,
+"Ward 2 Precinct 3","50","Labette",,
+"Ward 3 Precinct 1","50","Labette",,
+"Ward 3 Precinct 2","50","Labette",,
+"Ward 3 Precinct 3","50","Labette",,
+"Ward 3 Precinct 4","50","Labette",,
+"Ward 4 Precinct 1","50","Labette",,
+"Ward 4 Precinct 2","50","Labette",,
+"Ward 4 Precinct 3","50","Labette",,
+"Ward 4 Precinct 4","50","Labette",,
+"Delaware 1","52","Leavenworth",,
+"Delaware 4","52","Leavenworth",,
+"Fort Leavenworth, Precinct 41","52","Leavenworth",,
+"Fort Leavenworth, Precinct 42","52","Leavenworth",,
+"Glenwood/Fairmount","52","Leavenworth",,
+"Tonganoxie Rural","52","Leavenworth",,
+"Tonganoxie South","52","Leavenworth",,
+"Ward 1 Precinct 1","52","Leavenworth",,
+"Ward 2 Precinct 1","52","Leavenworth",,
+"Ward 2 Precinct 2","52","Leavenworth",,
+"Ward 2 Precinct 3","52","Leavenworth",,
+"Ward 3 Precinct 1","52","Leavenworth",,
+"Ward 4 Precinct 1","52","Leavenworth",,
+"Ward 5 Precinct 1","52","Leavenworth",,
+"Ward 5 Precinct 2","52","Leavenworth",,
+"Ward 5 Precinct 3","52","Leavenworth",,
+"Ward 5 Precinct 4","52","Leavenworth",,
+"Ward 6 Precinct 1","52","Leavenworth",,
+"Ward 6 Precinct 2","52","Leavenworth",,
+"Ward 6 Precinct 3","52","Leavenworth",,
+"Ward 6 Precinct 4","52","Leavenworth",,
+"Ward 6 Precinct 5","52","Leavenworth",,
+"Ward 7 Precinct 1","52","Leavenworth",,
+"Ward 7 Precinct 2","52","Leavenworth",,
+"Ward 7 Precinct 3","52","Leavenworth",,
+"Allender","55","Logan",,
+"Oakley Township 1","55","Logan",,
+"Oakley Township 2","55","Logan",,
+"Emporia 01.01","56","Lyon",,
+"Emporia 02.01","56","Lyon",,
+"Emporia 03.01","56","Lyon",,
+"Emporia 04.01","56","Lyon",,
+"Emporia 05.01","56","Lyon",,
+"Emporia 06.01","56","Lyon",,
+"Emporia 07.01","56","Lyon",,
+"Emporia 08.01","56","Lyon",,
+"Emporia 09.01","56","Lyon",,
+"Emporia 10.01","56","Lyon",,
+"Emporia 11.01","56","Lyon",,
+"Emporia 12.01","56","Lyon",,
+"Emporia 13.01","56","Lyon",,
+"Emporia 14.01","56","Lyon",,
+"Emporia 15.01","56","Lyon",,
+"Emporia 16.01","56","Lyon",,
+"Emporia 17.01","56","Lyon",,
+"Emporia 18.01","56","Lyon",,
+"Emporia 19.01","56","Lyon",,
+"Emporia 20.01","56","Lyon",,
+"Emporia 4A.01","56","Lyon",,
+"Emporia 4B.01","56","Lyon",,
+"Emporia 4C.01","56","Lyon",,
+"Precinct 29D.01","56","Lyon",,
+"Advance Voters","59","Marshall",,
+"Franklin Township-District 1","59","Marshall",,
+"Franklin Township-District 2","59","Marshall",,
+"Guittard Township-District 1","59","Marshall",,
+"Guittard Township-District 2","59","Marshall",,
+"Marysville City - Ward 2","59","Marshall",,
+"Marysville City - Ward 3","59","Marshall",,
+"Marysville City - Ward 4","59","Marshall",,
+"Vermillion Township-East Precinct","59","Marshall",,
+"Vermillion Township-West Precinct","59","Marshall",,
+"Bh","57","McPherson",,
+"Bon","57","McPherson",,
+"Del","57","McPherson",,
+"Gc","57","McPherson",,
+"Gr","57","McPherson",,
+"Jac","57","McPherson",,
+"Kc","57","McPherson",,
+"Lindsborg City 1","57","McPherson",,
+"Lindsborg City 2","57","McPherson",,
+"Lindsborg City 3","57","McPherson",,
+"Lindsborg City 4","57","McPherson",,
+"Lt","57","McPherson",,
+"Lv","57","McPherson",,
+"McPherson City 1","57","McPherson",,
+"McPherson City 2","57","McPherson",,
+"McPherson City 3","57","McPherson",,
+"McPherson City 4","57","McPherson",,
+"Md","57","McPherson",,
+"Mer","57","McPherson",,
+"Mp","57","McPherson",,
+"Mq","57","McPherson",,
+"Ng","57","McPherson",,
+"Sh","57","McPherson",,
+"Ssc","57","McPherson",,
+"Su","57","McPherson",,
+"Sv","57","McPherson",,
+"Tc","57","McPherson",,
+"EMC(2)","61","Miami",,
+"EMC(3)","61","Miami",,
+"Ev","61","Miami",,
+"Fc","61","Miami",,
+"LC 01","61","Miami",,
+"LC 02","61","Miami",,
+"LC 03","61","Miami",,
+"LC 04","61","Miami",,
+"NMV(2)","61","Miami",,
+"NMV(3)","61","Miami",,
+"NPE Prt1","61","Miami",,
+"NPE Prt2","61","Miami",,
+"Npw","61","Miami",,
+"Nw","61","Miami",,
+"OC 01","61","Miami",,
+"OC 02","61","Miami",,
+"OC 03","61","Miami",,
+"OC 04","61","Miami",,
+"PC 01","61","Miami",,
+"PC 02","61","Miami",,
+"PC 03","61","Miami",,
+"PC 04","61","Miami",,
+"SH 01","61","Miami",,
+"SH 02","61","Miami",,
+"SH 03","61","Miami",,
+"SMV(2)","61","Miami",,
+"SMV(3)","61","Miami",,
+"SPE Prt2","61","Miami",,
+"Sc","61","Miami",,
+"Spw","61","Miami",,
+"Sw","61","Miami",,
+"Tm","61","Miami",,
+"WMC 368","61","Miami",,
+"WMC 416","61","Miami",,
+"WV(12) 367","61","Miami",,
+"WV(12) 368","61","Miami",,
+"WV(5)","61","Miami",,
+"WV(6)","61","Miami",,
+"Ward 1","62","Mitchell",,
+"Ward 2","62","Mitchell",,
+"Ward 3","62","Mitchell",,
+"Ward 4","62","Mitchell",,
+"CANEY Ward 1 Precinct 1","63","Montgomery",,
+"CANEY Ward 1 Precinct 2 H12","63","Montgomery",,
+"CANEY Ward 2 Precinct 1","63","Montgomery",,
+"CANEY Ward 3 Precinct 1","63","Montgomery",,
+"CANEY Ward 3 Precinct 2","63","Montgomery",,
+"CANEY Ward 4 Precinct 1","63","Montgomery",,
+"CANEY Ward 4 Precinct 2","63","Montgomery",,
+"CANEY-TYRO","63","Montgomery",,
+"COFFEYVILLE 1","63","Montgomery",,
+"COFFEYVILLE 2","63","Montgomery",,
+"COFFEYVILLE 3","63","Montgomery",,
+"COFFEYVILLE 4","63","Montgomery",,
+"COFFEYVILLE 5","63","Montgomery",,
+"COFFEYVILLE 6","63","Montgomery",,
+"COFFEYVILLE 7","63","Montgomery",,
+"COFFEYVILLE 8","63","Montgomery",,
+"COFFEYVILLE 9","63","Montgomery",,
+"FAWN CREEK-DEARING","63","Montgomery",,
+"FAWN CREEK-TYRO","63","Montgomery",,
+"INDEPENDENCE Ward 3 Precinct 2 EX","63","Montgomery",,
+"INDEPENDENCE Ward 6 Precinct 2 H11A","63","Montgomery",,
+"INDEPENDENCE Ward 6 Precinct 2 H12A","63","Montgomery",,
+"PARKER 2 EX H11","63","Montgomery",,
+"Sycamore","63","Montgomery",,
+"Ward 1","64","Morris",,
+"Ward 2","64","Morris",,
+"Centralia-Illinois","66","Nemaha",,
+"Harrison-Goff","66","Nemaha",,
+"Harrison-Kelly","66","Nemaha",,
+"Sabetha City Ward 1","66","Nemaha",,
+"Sabetha City Ward 2","66","Nemaha",,
+"Sabetha City Ward 3","66","Nemaha",,
+"Sabetha City Ward 4","66","Nemaha",,
+"Seneca City Ward 1","66","Nemaha",,
+"Seneca City Ward 2","66","Nemaha",,
+"Seneca City Ward 3","66","Nemaha",,
+"Advance Ballots","69","Norton",,
+"Belle Plaine","69","Norton",,
+"Belle Plaine-Sol 1","69","Norton",,
+"Sandcreek-Sol 1","69","Norton",,
+"Provisional Osb 3","71","Osborne",,
+"Mpls 1","72","Ottawa",,
+"Mpls II","72","Ottawa",,
+"Mpls III","72","Ottawa",,
+"Browns Grove 4/Sawmill Township","73","Pawnee",,
+"Grant Township","73","Pawnee",,
+"Agra City","74","Phillips",,
+"Glade City","74","Phillips",,
+"Ward 1","74","Phillips",,
+"Ward 2","74","Phillips",,
+"Ward 3","74","Phillips",,
+"Advance Precinct","75","Pottawatomie",,
+"Clerk Creek","75","Pottawatomie",,
+"Federal Service Precinct","75","Pottawatomie",,
+"Provisional Precinct","75","Pottawatomie",,
+"St George 1","75","Pottawatomie",,
+"St George 17","75","Pottawatomie",,
+"Wamego City 17-7","75","Pottawatomie",,
+"Wamego City 18-4","75","Pottawatomie",,
+"Wamego Township 1-6","75","Pottawatomie",,
+"Wamego Township 17-7","75","Pottawatomie",,
+"Wamego Township 18-4","75","Pottawatomie",,
+"WARD 1","76","Pratt",,
+"WARD 2","76","Pratt",,
+"WARD 3","76","Pratt",,
+"WARD 4","76","Pratt",,
+"WARD 5","76","Pratt",,
+"CITY 01-H102","78","Reno",,
+"CITY 01-HII4","78","Reno",,
+"CITY 02","78","Reno",,
+"CITY 03","78","Reno",,
+"CITY 04","78","Reno",,
+"CITY 05","78","Reno",,
+"CITY 06","78","Reno",,
+"CITY 07","78","Reno",,
+"CITY 08","78","Reno",,
+"CITY 09","78","Reno",,
+"CITY 10","78","Reno",,
+"CITY 11","78","Reno",,
+"CITY 12","78","Reno",,
+"CITY 13","78","Reno",,
+"CITY 14","78","Reno",,
+"CITY 15","78","Reno",,
+"CITY 16","78","Reno",,
+"CITY 17","78","Reno",,
+"CITY 18","78","Reno",,
+"CITY 19","78","Reno",,
+"CITY 20","78","Reno",,
+"CITY 21","78","Reno",,
+"CITY 22","78","Reno",,
+"CITY 23","78","Reno",,
+"CITY 23 EX","78","Reno",,
+"CITY 24","78","Reno",,
+"CITY 25","78","Reno",,
+"CITY 26","78","Reno",,
+"CITY 26 EX","78","Reno",,
+"CITY 27","78","Reno",,
+"CITY 28","78","Reno",,
+"CITY 28 EX","78","Reno",,
+"CITY 29","78","Reno",,
+"CITY 30","78","Reno",,
+"CITY 31","78","Reno",,
+"CITY 32","78","Reno",,
+"CITY 33","78","Reno",,
+"CITY 34","78","Reno",,
+"CITY 34 EX","78","Reno",,
+"CITY 35","78","Reno",,
+"Clay North Township","78","Reno",,
+"Clay South 101 Township","78","Reno",,
+"Clay South H102A Township","78","Reno",,
+"Reno North Township","78","Reno",,
+"Ward 1","79","Republic",,
+"Ward 2","79","Republic",,
+"Ward 3","79","Republic",,
+"LYONS 1ST","80","Rice",,
+"LYONS 2ND","80","Rice",,
+"LYONS 3RD","80","Rice",,
+"LYONS 4TH","80","Rice",,
+"Stering","80","Rice",,
+"Sterling East","80","Rice",,
+"Hand Counted Paper Ballots","81","Riley",,
+"Mad/Fort Ril A","81","Riley",,
+"Mad/Fort Ril B","81","Riley",,
+"Mad/Fort Riley A","81","Riley",,
+"Mad/Fort Riley B","81","Riley",,
+"Man Township 1","81","Riley",,
+"Man Township 2","81","Riley",,
+"Man Township 3","81","Riley",,
+"Man Township 4","81","Riley",,
+"Ogden/Fort Ril","81","Riley",,
+"Ogden/Fort Ril A","81","Riley",,
+"W11P1B","81","Riley",,
+"Ward 06 Precinct 01","81","Riley",,
+"Ward 1 Precinct 1","81","Riley",,
+"Ward 10 Precinct 1","81","Riley",,
+"Ward 11 Precinct 1","81","Riley",,
+"Ward 11 Precinct 3","81","Riley",,
+"Ward 12 Precinct 01","81","Riley",,
+"Ward 2 Precinct 1","81","Riley",,
+"Ward 2 Precinct 2","81","Riley",,
+"Ward 2 Precinct 3","81","Riley",,
+"Ward 2 Precinct 4","81","Riley",,
+"Ward 3 Precinct 2","81","Riley",,
+"Ward 3 Precinct 3","81","Riley",,
+"Ward 4 Precinct 2","81","Riley",,
+"Ward 4 Precinct 3","81","Riley",,
+"Ward 4 Precinct 4","81","Riley",,
+"Ward 4 Precinct 5","81","Riley",,
+"Ward 4 Precinct 6","81","Riley",,
+"Ward 4 Precinct 7","81","Riley",,
+"Ward 5 Precinct 10","81","Riley",,
+"Ward 5 Precinct 11","81","Riley",,
+"Ward 5 Precinct 2","81","Riley",,
+"Ward 5 Precinct 3","81","Riley",,
+"Ward 5 Precinct 5","81","Riley",,
+"Ward 5 Precinct 6","81","Riley",,
+"Ward 5 Precinct 7","81","Riley",,
+"Ward 5 Precinct 8","81","Riley",,
+"Ward 5 Precinct 9","81","Riley",,
+"Ward 6 Precinct 1","81","Riley",,
+"Ward 8 Precinct 1","81","Riley",,
+"Ward 8 Precinct 2","81","Riley",,
+"Ward 8 Precinct 3","81","Riley",,
+"Ward 9 Precinct 1","81","Riley",,
+"Ward 9 Precinct 2","81","Riley",,
+"Ward 9 Precinct 3","81","Riley",,
+"Precinct 1","82","Rooks",,
+"Precinct 11-1","82","Rooks",,
+"Precinct 11-2","82","Rooks",,
+"Precinct 2","82","Rooks",,
+"Precinct 4","82","Rooks",,
+"Precinct 5","82","Rooks",,
+"Precinct 6","82","Rooks",,
+"Precinct 7","82","Rooks",,
+"Precinct 8","82","Rooks",,
+"Precinct 9","82","Rooks",,
+"14","85","Saline",,
+"15","85","Saline",,
+"20","85","Saline",,
+"21","85","Saline",,
+"31","85","Saline",,
+"ELM CREEK 69","85","Saline",,
+"ELM CREEK 71","85","Saline",,
+"Elm Creek","85","Saline",,
+"SMOKY HILL 71","85","Saline",,
+"Smoky Hill","85","Saline",,
+"Absentee","86","Scott",,
+"Ward 1","86","Scott",,
+"Ward 2","86","Scott",,
+"Ward 3","86","Scott",,
+"Ward 4","86","Scott",,
+"& 415 & 537","87","Sedgwick",,
+"& 428","87","Sedgwick",,
+"& 617","87","Sedgwick",,
+"104","87","Sedgwick",,
+"105","87","Sedgwick",,
+"117","87","Sedgwick",,
+"118","87","Sedgwick",,
+"123","87","Sedgwick",,
+"131","87","Sedgwick",,
+"21","87","Sedgwick",,
+"222","87","Sedgwick",,
+"223","87","Sedgwick",,
+"228","87","Sedgwick",,
+"231","87","Sedgwick",,
+"234","87","Sedgwick",,
+"239","87","Sedgwick",,
+"304","87","Sedgwick",,
+"305","87","Sedgwick",,
+"307","87","Sedgwick",,
+"311","87","Sedgwick",,
+"312","87","Sedgwick",,
+"313","87","Sedgwick",,
+"316","87","Sedgwick",,
+"323","87","Sedgwick",,
+"417","87","Sedgwick",,
+"419","87","Sedgwick",,
+"420","87","Sedgwick",,
+"513","87","Sedgwick",,
+"521","87","Sedgwick",,
+"533","87","Sedgwick",,
+"535","87","Sedgwick",,
+"606","87","Sedgwick",,
+"611","87","Sedgwick",,
+"613","87","Sedgwick",,
+"616","87","Sedgwick",,
+"617","87","Sedgwick",,
+"620","87","Sedgwick",,
+"625","87","Sedgwick",,
+"628","87","Sedgwick",,
+"AT06","87","Sedgwick",,
+"AT07","87","Sedgwick",,
+"ATTICA PRECINCT 06","87","Sedgwick",,
+"ATTICA PRECINCT 07","87","Sedgwick",,
+"DB11","87","Sedgwick",,
+"DB22","87","Sedgwick",,
+"DB31","87","Sedgwick",,
+"DB34","87","Sedgwick",,
+"DB35","87","Sedgwick",,
+"DB43","87","Sedgwick",,
+"DB44","87","Sedgwick",,
+"DERBY WARD 02 PRECINCT 06","87","Sedgwick",,
+"DERBY WARD 03 PRECINCT 04","87","Sedgwick",,
+"DERBY WARD 03 PRECINCT 05","87","Sedgwick",,
+"DERBY WARD 03 PRECINCT 06","87","Sedgwick",,
+"DERBY WARD 04 PRECINCT 03","87","Sedgwick",,
+"DERBY WARD 04 PRECINCT 04","87","Sedgwick",,
+"GY01","87","Sedgwick",,
+"GYPSUM PRECINCT 01","87","Sedgwick",,
+"GYPSUM PRECINCT 04","87","Sedgwick",,
+"Goddard","87","Sedgwick",,
+"Grant","87","Sedgwick",,
+"HA21 & HA23","87","Sedgwick",,
+"IJNION PRECINCT 01","87","Sedgwick",,
+"KE03","87","Sedgwick",,
+"KECHI PRECINCT 03","87","Sedgwick",,
+"KECHI PRECINCT 08","87","Sedgwick",,
+"MI01","87","Sedgwick",,
+"MI04 & MI05","87","Sedgwick",,
+"MINNEHA PRECINCT 03","87","Sedgwick",,
+"MINNEHA PRECINCT 07","87","Sedgwick",,
+"MINNEHA PRECINCT 08","87","Sedgwick",,
+"MINNEHA PRECINCT 09","87","Sedgwick",,
+"MINNEHA PRECINCT 12","87","Sedgwick",,
+"Ni","87","Sedgwick",,
+"PA01","87","Sedgwick",,
+"PA02","87","Sedgwick",,
+"PA09","87","Sedgwick",,
+"PARK PRECINCT 05","87","Sedgwick",,
+"PARK PRECINCT 06","87","Sedgwick",,
+"PAYNE PRECINCT 04","87","Sedgwick",,
+"PC12 & 14 & 15","87","Sedgwick",,
+"President","87","Sedgwick",,
+"RI04","87","Sedgwick",,
+"RIVERSIDE PRECINCT 04","87","Sedgwick",,
+"RIVERSIDE PRECINCT 06","87","Sedgwick",,
+"RIVERSIDE PRECINCT 07","87","Sedgwick",,
+"RO02","87","Sedgwick",,
+"ROCKFORD PRECINCT 02","87","Sedgwick",,
+"ROCKFORD PRECINCT 04","87","Sedgwick",,
+"VALLEY CENTER WARD 03 PRECINCT 01","87","Sedgwick",,
+"VALLEY CENTER WARD 03 PRECINCT 02","87","Sedgwick",,
+"VALLEY CENTER WARD 04 PRECINCT 01","87","Sedgwick",,
+"VC31","87","Sedgwick",,
+"VC32 & 42 & 43","87","Sedgwick",,
+"VC41","87","Sedgwick",,
+"WICHITA PRECINCT 103","87","Sedgwick",,
+"WICHITA PRECINCT 104","87","Sedgwick",,
+"WICHITA PRECINCT 105","87","Sedgwick",,
+"WICHITA PRECINCT 117","87","Sedgwick",,
+"WICHITA PRECINCT 118","87","Sedgwick",,
+"WICHITA PRECINCT 123","87","Sedgwick",,
+"WICHITA PRECINCT 131","87","Sedgwick",,
+"WICHITA PRECINCT 132","87","Sedgwick",,
+"WICHITA PRECINCT 211","87","Sedgwick",,
+"WICHITA PRECINCT 222","87","Sedgwick",,
+"WICHITA PRECINCT 223","87","Sedgwick",,
+"WICHITA PRECINCT 228","87","Sedgwick",,
+"WICHITA PRECINCT 231","87","Sedgwick",,
+"WICHITA PRECINCT 234","87","Sedgwick",,
+"WICHITA PRECINCT 304","87","Sedgwick",,
+"WICHITA PRECINCT 305","87","Sedgwick",,
+"WICHITA PRECINCT 307","87","Sedgwick",,
+"WICHITA PRECINCT 311","87","Sedgwick",,
+"WICHITA PRECINCT 312","87","Sedgwick",,
+"WICHITA PRECINCT 313","87","Sedgwick",,
+"WICHITA PRECINCT 316","87","Sedgwick",,
+"WICHITA PRECINCT 323","87","Sedgwick",,
+"WICHITA PRECINCT 417","87","Sedgwick",,
+"WICHITA PRECINCT 419","87","Sedgwick",,
+"WICHITA PRECINCT 420","87","Sedgwick",,
+"WICHITA PRECINCT 513","87","Sedgwick",,
+"WICHITA PRECINCT 521","87","Sedgwick",,
+"WICHITA PRECINCT 533","87","Sedgwick",,
+"WICHITA PRECINCT 535","87","Sedgwick",,
+"WICHITA PRECINCT 606","87","Sedgwick",,
+"WICHITA PRECINCT 611","87","Sedgwick",,
+"WICHITA PRECINCT 613","87","Sedgwick",,
+"WICHITA PRECINCT 616","87","Sedgwick",,
+"WICHITA PRECINCT 620","87","Sedgwick",,
+"WICHITA PRECINCT 625","87","Sedgwick",,
+"WICHITA PRECINCT 628","87","Sedgwick",,
+"ADVANCE VOTES HOUSE125","88","Seward",,
+"Advance Votes","88","Seward",,
+"Kismet City","88","Seward",,
+"PROVISIONAL VOTES HOUSE125","88","Seward",,
+"Provisional Votes","88","Seward",,
+"Ward 1 Precinct 1","88","Seward",,
+"Ward 1 Precinct 2","88","Seward",,
+"Ward 1 Precinct 3","88","Seward",,
+"Ward 2","88","Seward",,
+"Ward 3","88","Seward",,
+"Ward 4","88","Seward",,
+"Ward 5","88","Seward",,
+"Ward 6 Precinct 1","88","Seward",,
+"Ward 6 Precinct 2","88","Seward",,
+"45 Peck & 17 Croco","89","Shawnee",,
+"Apace","89","Shawnee",,
+"Elmot","89","Shawnee",,
+"Iroquis","89","Shawnee",,
+"Messltoss Creek","89","Shawnee",,
+"North Tecumseh","89","Shawnee",,
+"TOPEKA WARD 03 PRECINCT 05","89","Shawnee",,
+"Ward 1 Precinct I","89","Shawnee",,
+"Ward 12 Precinct 00","89","Shawnee",,
+"Ward 13 Precinct 30 & Ward 13 Precinct 08","89","Shawnee",,
+"Ward 15 Precinct 02 & Ward 15 Precinct 04","89","Shawnee",,
+"Ward 3 Precinct 8","89","Shawnee",,
+"Kenneth - East","90","Sheridan",,
+"Kenneth - West","90","Sheridan",,
+"Oak Precinct","92","Smith",,
+"South. St. John","93","Stafford",,
+"Hugoton Ward 3 Precinct 2","95","Stevens",,
+"Hugoton Ward 4 Precinct 2","95","Stevens",,
+"Hugoton Ward 5 Precinct 2","95","Stevens",,
+"Hugoton Ward 6 Precinct 2","95","Stevens",,
+"Hugoton Ward 7 Precinct 2","95","Stevens",,
+"Hugoton Ward 8 Precinct 2","95","Stevens",,
+"Belle Plaine H 79","96","Sumner",,
+"Belle Plaine H 82","96","Sumner",,
+"Gore H 79","96","Sumner",,
+"Gore H 82","96","Sumner",,
+"Mulvane","96","Sumner",,
+"SEVENTY-SIX","96","Sumner",,
+"WELLINGTON CITY 1 H80","96","Sumner",,
+"WELLINGTON CITY 2 116","96","Sumner",,
+"Wellington Township H 116","96","Sumner",,
+"Wellington Township H 80","96","Sumner",,
+"Write-ins","96","Sumner",,
+"Hale Township/Brewster","97","Thomas",,
+"Eskridge","99","Wabaunsee",,
+"Wabaunsee","99","Wabaunsee",,
+"Wabaunsee 17","99","Wabaunsee",,
+"Wabaunsee 18","99","Wabaunsee",,
+"Wabaunsee Township","99","Wabaunsee",,
+"Sharon Sprs 3","100","Wallace",,
+"Sharon Sprs 4","100","Wallace",,
+"PRECINCT 1","102","Wichita",,
+"PRECINCT 2","102","Wichita",,
+"PRECINCT 3","102","Wichita",,
+"OC 1-1","105","Wyandotte",,

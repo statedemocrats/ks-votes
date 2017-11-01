@@ -56,7 +56,7 @@ namespace :precincts do
         if !m.any?
           p = Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
           puts "[#{county.name}] Creating 2014 Precinct #{green(precinct_name)}"
-          puts "[#{county.name}] 2014 VTD Alias #{blue(precinct_name)} -> #{green(ct.precinct.name)}"
+          #puts "[#{county.name}] 2014 VTD Alias #{blue(precinct_name)} -> #{green(ct.precinct.name)}"
         elsif m && m.length > 1
           puts "[#{county.name}] too many matches for precinct name #{red(precinct_name)}"
           next
@@ -469,6 +469,31 @@ namespace :precincts do
     end
 
     county_2016_geosha_lookup('Johnson')
+
+    johnson.precincts.each do |p|
+      aliases = []
+      ward = nil
+      precinct = nil
+      if m = p.name.match(/(\d+)-(\d+)$/)
+        ward = sprintf("%02d", m[1].to_i)
+        precinct = sprintf("%02d", m[2].to_i)
+      else
+        next
+      end
+      if m = p.name.match(/^(Olathe|Shawnee) \d/)
+        aliases << "#{m[1]} City Ward #{ward} Precinct #{precinct}"
+      elsif ward == "00"
+        aliases << p.name.sub(/\d+-\d+$/, "Precinct #{precinct}")
+      else
+        aliases << p.name.sub(/\d+-\d+$/, "Ward #{ward} Precinct #{precinct}")
+      end
+      aliases.uniq.each do |n|
+        next if n == p.name
+        next if p.has_alias?(n)
+        curated_alias(p.id, n)
+        puts "[Johnson] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+    end
   end
 
   desc 'Wyandotte'

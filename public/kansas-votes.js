@@ -144,6 +144,7 @@ var getPrecinctColor = function(feature) {
   //console.log(results);
   var color = 'solid_r';
   if (!results || !results['m'] || !results['w']) {
+    console.log("no president2016 results", vtd, feature, president2016);
     return unknown;
   }
   var winner = results['w'];
@@ -166,6 +167,7 @@ var getPrecinctColor = function(feature) {
     color = 'solid_d';
   }
   else {
+    console.log('unknown winner', results);
     color = 'unknown';
   }
   return colors[color];
@@ -278,7 +280,8 @@ $('#search').on('click', function(e) {
     var props = layer.feature.properties;
     var name = (props.VTDNAME || props.NAME || props.PRECINCT || props.name || props.geosha);
     var sha = props.geosha || '';
-    if (name.match($str) || sha.match($str)) {
+    var vtd_2012 = props.VTD_2012;
+    if (name.match($str) || sha.match($str) || vtd_2012 == $str) {
       //console.log(layer);
       renderPolys([layer]);
       //layer.fireEvent('click');

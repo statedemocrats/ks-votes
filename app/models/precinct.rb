@@ -7,6 +7,16 @@ class Precinct < ApplicationRecord
   has_many :precinct_aliases
   has_many :results
 
+  def votes_cast
+    cast = 0
+    results.each { |r| cast += r.votes }
+    cast
+  end
+
+  def election_names
+    results.full.map { |r| r.election.name }.uniq
+  end
+
   def has_alias?(name)
     alias_names.any? { |n| n == name }
   end

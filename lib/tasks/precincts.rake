@@ -7,6 +7,7 @@ namespace :precincts do
   def county_tasks
     @county_tasks ||= [
       'riley',
+      'geary',
       'douglas',
       'saline',
       'shawnee',
@@ -97,12 +98,47 @@ namespace :precincts do
     end
   end
 
+  desc 'alias Geary county'
+  task geary: :environment do
+    geary = County.find_by(name: 'Geary')
+    geary.precincts.each do |p|
+      if p.name.match(/^Ward \d/)
+        curated_alias(p.id, "Junction City #{p.name}")
+      elsif p.name.match(/^Smokey/)
+        curated_alias(p.id, p.name.sub('Smokey', 'Smoky'))
+      end
+    end
+  end
+
   desc 'Saline'
   task saline: :environment do
     saline = County.find_by(name: 'Saline')
     saline.precincts.each do |p|
       if m = p.name.match(/^Salina Precinct (\d+)$/)
         curated_alias(p.id, m[1].to_i)
+      end
+    end
+  end
+
+  desc 'map manual orphan pairings'
+  task map_orphans: :environment do
+    csv_file = File.join(Rails.root, 'db/orphans.csv')
+    CSV.foreach(csv_file, headers: true) do |row|
+      next unless row['vtd_2012'] || row['census_tracts']
+      precinct = Precinct.find_by(name: row['precinct'], county_id: row['county_id'])
+      next if precinct && precinct.census_tract_id
+      if row['vtd_2012']
+        puts "looking for CensusTract #{row['vtd_2012']} in county #{row['county']}"
+        ct = CensusTract.find_by!(vtd_code: row['vtd_2012'], county_id: row['county_id'])
+        # if there's already a precinct, add this one as an alias
+        if ct.precincts.count == 1 && !ct.precinct.has_alias?(row['precinct'])
+          ct.precinct.precinct_aliases << PrecinctAlias.new(name: row['precinct'])
+          puts "[#{row['county']}] Add alias #{blue(row['precinct'])} to precinct #{green(ct.precinct.name)}"
+        else
+          puts "Not exactly one precinct for CensusTract #{ct.id}"
+        end
+      elsif row['census_tracts']
+        puts "TODO add CensusTracts for precinct #{row['precinct']}"
       end
     end
   end

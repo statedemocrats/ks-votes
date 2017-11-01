@@ -9,4 +9,8 @@ class County < ApplicationRecord
   def self.l(name)
     where('lower(name) = ?', [name.downcase]).first
   end
+
+  def vtd_for(vtd)
+    "20#{fips}#{vtd}"
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026212405) do
+ActiveRecord::Schema.define(version: 20171101194055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20171026212405) do
     t.integer "census_tract_id"
     t.index "lower((name)::text)", name: "precincts_lower_name_idx"
     t.index ["name", "county_id", "census_tract_id"], name: "index_precincts_on_name_and_county_id_and_census_tract_id", unique: true
+    t.index ["name", "county_id"], name: "index_precincts_on_name_and_county_id", unique: true
   end
 
   create_table "results", force: :cascade do |t|

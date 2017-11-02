@@ -474,16 +474,22 @@ namespace :precincts do
       aliases = []
       ward = nil
       precinct = nil
+      city = nil
       if m = p.name.match(/(\d+)-(\d+)$/)
         ward = sprintf("%02d", m[1].to_i)
         precinct = sprintf("%02d", m[2].to_i)
       else
         next
       end
-      if m = p.name.match(/^(Olathe|Shawnee) \d/)
-        aliases << "#{m[1]} City Ward #{ward} Precinct #{precinct}"
+      if m = p.name.match(/^(Gardner|Olathe|Shawnee) \d/)
+        city = "#{m[1]} City"
+      else
+        city = p.name.sub(/ \d+-\d+$/, '')
+      end
+      if ward != "00"
+        aliases << "#{city} Ward #{ward} Precinct #{precinct}"
       elsif ward == "00"
-        aliases << p.name.sub(/\d+-\d+$/, "Precinct #{precinct}")
+        aliases << "#{city} Precinct #{precinct}"
       else
         aliases << p.name.sub(/\d+-\d+$/, "Ward #{ward} Precinct #{precinct}")
       end
@@ -680,9 +686,12 @@ namespace :precincts do
         next unless p.map_id.length > 0
         if seen[p.map_id]
           puts "[#{county.name}] Duplicate map_id #{p.map_id} for #{p.id} #{green(p.name)} and #{seen[p.map_id].inspect}"
+          if p.census_tract.year == '2014'
+            puts " > [#{county.name}] #{green(p.name)} CensusTract is 2014"
+          end
           next
         end
-        seen[p.map_id] = {id: p.id, name: p.name}
+        seen[p.map_id] = {id: p.id, name: p.name, year: p.census_tract.year}
       end
     end
   end

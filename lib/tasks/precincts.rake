@@ -510,10 +510,13 @@ namespace :precincts do
       end
       if ward != "00"
         aliases << "#{city} Ward #{ward} Precinct #{precinct}"
+        aliases << "#{city} Ward #{ward.to_i} Precinct #{precinct.to_i}"
       elsif ward == "00"
         aliases << "#{city} Precinct #{precinct}"
+        aliases << "#{city} Precinct #{precinct.to_i}"
       else
         aliases << p.name.sub(/\d+-\d+$/, "Ward #{ward} Precinct #{precinct}")
+        aliases << p.name.sub(/\d+-\d+$/, "Ward #{ward.to_i} Precinct #{precinct.to_i}")
       end
       aliases.uniq.each do |n|
         next if n == p.name

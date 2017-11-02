@@ -55,9 +55,17 @@ namespace :precincts do
 
         m = Precinct.find_by_any_name(precinct_name, county.id)
         if !m.any?
-          p = Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
-          puts "[#{county.name}] Creating 2014 Precinct #{green(precinct_name)}"
-          #puts "[#{county.name}] 2014 VTD Alias #{blue(precinct_name)} -> #{green(ct.precinct.name)}"
+          # the name didn't match but perhaps there was a typo at some point.
+          # only create a precinct if we had to create the CensusTract.
+          if ct.year == '2014' || !ct.precinct
+            p = Precinct.create(census_tract_id: ct.id, name: precinct_name, county_id: county.id)
+            puts "[#{county.name}] Creating 2014 Precinct #{green(precinct_name)}"
+          elsif ct.precinct
+            curated_alias(ct.precinct.id, precinct_name)
+            puts "[#{county.name}] 2014 VTD Alias #{blue(precinct_name)} -> #{green(ct.precinct.name)}"
+          else
+            puts "[#{county.name}] No Precinct for CensusTract #{cyan(ct.name)}"
+          end
         elsif m && m.length > 1
           puts "[#{county.name}] too many matches for precinct name #{red(precinct_name)}"
           next

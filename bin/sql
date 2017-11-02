@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+sql_file = ARGV.shift
+if !sql_file
+  fail "#{$0} sql/file.sql [arg..argN]"
+end
+
+sql = File.read(sql_file)
+ARGV.each_with_index do |arg, idx|
+  sql.gsub!("{#{idx}}", arg)
+end
+
+puts sql
+system(%Q{psql -q -d ksvotes -c "#{sql}"})
+

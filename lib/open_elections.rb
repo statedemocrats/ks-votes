@@ -87,6 +87,7 @@ module OpenElections
 
       next if row['candidate'].match(/^(Ballots Cast|Registered)$/)
       next if row['candidate'].match(/^(Blank Votes|Over Votes)$/)
+      next if row['office'].downcase == 'voters'
 
       unless county = find_county(row['county'].downcase)
         puts "Can't find county for #{row.inspect}"

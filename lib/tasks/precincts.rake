@@ -7,6 +7,7 @@ namespace :precincts do
   def county_tasks
     @county_tasks ||= [
       'map_orphans', # master catch-all list FIRST
+      'barton',
       'riley',
       'geary',
       'douglas',
@@ -97,6 +98,27 @@ namespace :precincts do
       if m = p.name.match(/Manhattan Township Precinct (\d+)$/)
         curated_alias(p.id, sprintf('Manhattan Township %s', m[1]))
         curated_alias(p.id, sprintf('Manhattan twp %s', m[1]))
+      end
+    end
+  end
+
+  desc 'alias Barton county'
+  task barton: :environment do
+    barton = County.find_by(name: 'Barton')
+    barton.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/GBC (\d+)\w+ Prec - Ward (\d+)$/)
+        precinct = m[1]
+        ward = m[2]
+        aliases << "Great Bend City Ward #{ward.to_i} Precinct #{precinct.to_i}"
+      elsif m = p.name.match(/Great Bend City Ward (\d+) Precinct (\d+)$/)
+        ward = m[1]
+        precinct = m[2]
+        aliases << "GBC #{precinct.to_i.ordinalize} Prec - Ward #{ward.to_i}"
+      end
+      aliases.uniq.each do |n|
+        curated_alias(p.id, n)
+        puts "[Barton] Alias #{blue(n)} -> #{green(p.name)}"
       end
     end
   end

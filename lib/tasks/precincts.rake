@@ -696,8 +696,6 @@ namespace :precincts do
             cp = CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: c_tract.id)
             douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
           end
-        else
-          puts "[Douglas] no CensusPrecinct or census_names found for #{row.inspect}"
         end
         next
 
@@ -709,7 +707,9 @@ namespace :precincts do
 
     douglas.precincts.each do |p|
       next unless p.name.match(/^Lawrence Precinct/)
-      pa = curated_alias(p.id, p.name.sub(/^Lawrence Precinct /, ''))
+      n = p.name.sub(/^Lawrence Precinct /, '').gsub(/(\d+)/) { Regexp.last_match[1].to_i }
+      curated_alias(p.id, n)
+      puts "[Douglas] Alias #{blue(n)} -> #{green(p.name)}"
     end
   end
 

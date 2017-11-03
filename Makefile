@@ -11,6 +11,9 @@ clean:
 deploy:
 	rake map:setup
 
+report:
+	rake precincts:report:by_year
+
 publish-results:
 	scp -P 10022 public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 
@@ -20,7 +23,7 @@ publish-app:
 publish: publish-results publish-app
 
 check:
-	rake precincts:check
+	rake precincts:check:duplicate_map_ids precincts:check:duplicate_names
 
 orphans:
 	@psql -q -A -F '","' -d ksvotes < sql/orphan-precincts.sql | grep -v ' rows' | sed 's/\(.*\)/"\1"/g' | sed 's/""//g'

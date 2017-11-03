@@ -24,3 +24,4 @@
 
 # map artifacts
 /public/kansas-state-voting-precincts-2012*.geojson
+/public/all-precincts-by-year.json

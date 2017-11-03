@@ -156,6 +156,10 @@ namespace :precincts do
         new_p = Precinct.find_or_create_by(name: p.name.sub(/(Ward \d).+/, '\1'), county_id: butler.id)
         new_p.census_precincts << CensusPrecinct.new(precinct_id: new_p.id, census_tract_id: p.census_tract_id)
         puts "[Butler] Precinct #{green(new_p.name)} mapped to CensusTract #{cyan(p.name)}"
+      elsif p.name.match(/Bruno Township .+/)
+        new_p = Precinct.find_or_create_by(name: 'Bruno Township', county_id: butler.id)
+        new_p.census_precincts << CensusPrecinct.new(precinct_id: new_p.id, census_tract_id: p.census_tract_id)
+        puts "[Butler] Precinct #{green(new_p.name)} mapped to CensusTract #{cyan(p.name)}"
       end
     end
   end

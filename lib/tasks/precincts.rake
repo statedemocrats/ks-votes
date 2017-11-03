@@ -8,6 +8,7 @@ namespace :precincts do
     @county_tasks ||= [
       'map_orphans', # master catch-all list FIRST
       'barton',
+      'butler',
       'riley',
       'geary',
       'douglas',
@@ -129,6 +130,32 @@ namespace :precincts do
       aliases.uniq.each do |n|
         curated_alias(p.id, n)
         puts "[Barton] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+    end
+  end
+
+  desc 'Butler county'
+  task butler: :environment do
+    butler = County.find_by(name: 'Butler')
+    butler.precincts.each do |p|
+      aliases = []
+      if p.name.match(/\b0\d/)
+        aliases << p.name.gsub(/(\d+)/) { sprintf('%d', Regexp.last_match[1].to_i) }
+      end
+      if p.name.match(/\bH\d+/)
+        aliases << p.name.gsub(/ H(\d+)/, ' - \1')
+      end
+      aliases.uniq.each do |n|
+        next if n == p.name
+        curated_alias(p.id, n)
+        puts "[Butler] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+
+      # some results are just the plain Ward, so map all the precincts to that Ward record.
+      if p.name.match(/El Dorado Ward \d /)
+        new_p = Precinct.find_or_create_by(name: p.name.sub(/(Ward \d).+/, '\1'), county_id: butler.id)
+        new_p.census_precincts << CensusPrecinct.new(precinct_id: new_p.id, census_tract_id: p.census_tract_id)
+        puts "[Butler] Precinct #{green(new_p.name)} mapped to CensusTract #{cyan(p.name)}"
       end
     end
   end

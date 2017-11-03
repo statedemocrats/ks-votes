@@ -123,6 +123,8 @@ namespace :precincts do
         ward = m[1]
         precinct = m[2]
         aliases << "GBC #{precinct.to_i.ordinalize} Prec - Ward #{ward.to_i}"
+      elsif m = p.name.match(/^Hoisington Ward \d/)
+        aliases << p.name.sub('Hoisington', 'Hoisington City')
       end
       aliases.uniq.each do |n|
         curated_alias(p.id, n)

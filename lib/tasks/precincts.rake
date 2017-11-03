@@ -9,6 +9,7 @@ namespace :precincts do
       'map_orphans', # master catch-all list FIRST
       'barton',
       'butler',
+      'cowley',
       'riley',
       'geary',
       'douglas',
@@ -99,7 +100,7 @@ namespace :precincts do
 
   desc 'alias Riley county'
   task riley: :environment do
-    riley = County.find_by(name: 'Riley')
+    riley = County.n('Riley')
     riley.precincts.each do |p|
       if m = p.name.match(/Ward (\d+) Precinct (\d+)$/)
         curated_alias(p.id, sprintf('W%02dP%02d', m[1], m[2]))
@@ -113,7 +114,7 @@ namespace :precincts do
 
   desc 'alias Barton county'
   task barton: :environment do
-    barton = County.find_by(name: 'Barton')
+    barton = County.n('Barton')
     barton.precincts.each do |p|
       aliases = []
       if m = p.name.match(/GBC (\d+)\w+ Prec - Ward (\d+)$/)
@@ -136,7 +137,7 @@ namespace :precincts do
 
   desc 'Butler county'
   task butler: :environment do
-    butler = County.find_by(name: 'Butler')
+    butler = County.n('Butler')
     butler.precincts.each do |p|
       aliases = []
       if p.name.match(/\b0\d/)
@@ -160,6 +161,29 @@ namespace :precincts do
         new_p = Precinct.find_or_create_by(name: 'Bruno Township', county_id: butler.id)
         new_p.census_precincts << CensusPrecinct.new(precinct_id: new_p.id, census_tract_id: p.census_tract_id)
         puts "[Butler] Precinct #{green(new_p.name)} mapped to CensusTract #{cyan(p.name)}"
+      end
+    end
+  end
+
+  desc 'Cowley county'
+  task cowley: :environment do
+    cowley = County.n('Cowley')
+    cowley.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/^Winfield Ward (\d+)$/)
+        aliases << "WD#{m[1]}"
+        aliases << "Ward #{m[1]}"
+      elsif m = p.name.match(/^Winfield Ward (\d+) ([EWNSC])\w+$/)
+        aliases << "WD#{m[1]}#{m[2]}"
+        aliases << "Ward #{m[1]}#{m[2]}"
+      elsif m = p.name.match(/^Arkansas City Ward (\d+) (\w)$/)
+        aliases << "AC#{m[1]}#{m[2]}"
+      end
+ 
+      aliases.uniq.each do |n|
+        next if n == p.name
+        curated_alias(p.id, n)
+        puts "[Cowley] Alias #{blue(n)} -> #{green(p.name)}"
       end
     end
   end

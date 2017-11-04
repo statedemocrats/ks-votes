@@ -27,6 +27,10 @@
 "Med Lodge 2","4","Barber",00012A,
 "Barton rural","5","Barton",,
 "Great Bend City","5","Barton",,
+"Andover Ward 1","8","Butler",,
+"Andover Ward 2","8","Butler",140010,
+"Andover Ward 3","8","Butler",140020,
+"Andover Ward 4","8","Butler",140030,
 "Augusta Township","8","Butler",,120040|120050
 "Benton City/Benton Township","8","Butler",000070,
 "Latham/Union","8","Butler",000440,
@@ -57,6 +61,7 @@
 "Protection 116","17","Comanche",120030,
 "AC1A/AC1A Part A","18","Cowley",00001B,
 "AC2B Part A","18","Cowley",00006A,
+"AC2B","18","Cowley",,00006A|00006B
 "AC2B-2","18","Cowley",00006B,
 "Creek","18","Cowley",,
 "Creswell West","18","Cowley",00042A,

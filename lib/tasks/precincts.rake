@@ -146,6 +146,9 @@ namespace :precincts do
       if p.name.match(/\bH\d+/)
         aliases << p.name.gsub(/ H(\d+)/, ' - \1')
       end
+      if p.name.match(/\bS\d+/)
+        aliases << p.name.gsub(/ S(\d+)/, ' - \1')
+      end
       aliases.uniq.each do |n|
         next if n == p.name
         curated_alias(p.id, n)

@@ -127,7 +127,22 @@ namespace :precincts do
         puts "[Finney] Alias #{blue(n)} -> #{green(p.name)}"
       end
     end
-  end 
+  end
+
+  desc 'Harvey'
+  task harvey: :environment do
+    harvey = County.n('Harvey')
+    harvey.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/^Newton City Ward (\d+) Precinct (\d+)$/)
+        aliases << "Newton City #{m[1]}W-#{m[2]}P"
+      end
+      aliases.uniq.each do |n|
+        curated_alias(p.id, n)
+        puts "[Harvey] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+   end
+  end
 
   desc 'alias Barton county'
   task barton: :environment do

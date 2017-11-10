@@ -12,6 +12,7 @@ namespace :precincts do
       'cowley',
       'riley',
       'geary',
+      'finney',
       'douglas',
       'saline',
       'shawnee',
@@ -111,6 +112,22 @@ namespace :precincts do
       end
     end
   end
+
+  desc 'Finney'
+  task finney: :environment do
+    finney = County.n('Finney')
+    finney.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/^Garden City Ward (\d+)$/)
+        aliases << "1WARD #{m[1]}"
+        aliases << "WARD #{m[1]}"
+      end
+      aliases.uniq.each do |n|
+        curated_alias(p.id, n)
+        puts "[Finney] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+    end
+  end 
 
   desc 'alias Barton county'
   task barton: :environment do

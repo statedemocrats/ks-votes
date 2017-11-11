@@ -492,9 +492,13 @@ namespace :precincts do
         c = CensusTract.find_by(vtd_code: vtd_code, county_id: cty.id)
         fail "[#{cty.name}] No CensusTract for #{vtd_code}" unless c
         p = c.precinct
+        if !p
+          puts "[#{county_name}] No precinct for CensusTract #{vtd_code}"
+          next
+        end
         unless p.looks_like?(precinct_name_2016)
-          pa = curated_alias(precinct_name_2016, p.id)
-          puts "[#{county_name}] Created PrecinctAlias #{blue(precinct_name_2016)} -> #{green(p.name)}"
+          pa = curated_alias(p.id, precinct_name_2016)
+          puts "[#{county_name}] Created PrecinctAlias #{blue(precinct_name_2016)} (#{pa.id}) -> #{green(p.name)} (#{p.id})"
         end
       end
     end
@@ -572,13 +576,13 @@ namespace :precincts do
           pa = "#{abbr}#{m[1].to_i}#{m[2].to_i}"
           long_pa = "#{long_name} Ward #{m[1]} Precinct #{m[2]}"
           if p.has_alias?(pa) && !p.has_alias?(long_pa)
-            curated_alias(long_pa, p.id)
+            curated_alias(p.id, long_pa)
           end
         elsif m = p_name.match(/ Precinct (\d+) (.+)$/)
           pa = "#{abbr}#{sprintf("%02d", m[1].to_i)}"
           long_pa = "#{long_name} Precinct #{m[1]}"
           if p.has_alias?(pa) && !p.has_alias?(long_pa)
-            curated_alias(long_pa, p.id)
+            curated_alias(p.id, long_pa)
           end
         end
       # odd

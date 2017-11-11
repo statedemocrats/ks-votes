@@ -9,7 +9,9 @@ module TaskHelpers
   end
 
   def curated_alias(precinct_id, name)
-    PrecinctAlias.find_or_create_by(reason: :curated, precinct_id: precinct_id, name: name)
+    PrecinctAlias.find_or_create_by(precinct_id: precinct_id, name: name) do |pa|
+      pa.reason = :curated
+    end
   end
 
   def curated_precinct_with_aliases(precinct_name, county, census_tract_id=nil)

@@ -10,23 +10,32 @@ namespace :precincts do
       'barton',
       'butler',
       'cowley',
-      'riley',
-      'geary',
-      'finney',
       'douglas',
-      'saline',
-      'shawnee',
-      'sedgwick',
+      'finney',
+      'geary',
+      'harvey',
       'johnson',
+      'leavenworth',
+      'lyon',
+      'riley',
+      'saline',
+      'sedgwick',
+      'shawnee',
       'wyandotte',
-      'vtd2014', # LAST
+      'vtd2014', # LAST after all counties run once.
+      'johnson', # repeat some to catch new vtd2014 additions
+      'riley',
+      'sedgwick',
+      'shawnee',
     ]
   end
 
-  desc 'load precinct aliasese'
+  desc 'load precinct aliases'
   task aliases: :environment do
-    county_tasks.each do |t|
-      Rake::Task["precincts:#{t}"].invoke
+    county_tasks.each do |n|
+      t = Rake::Task["precincts:#{n}"]
+      t.invoke
+      t.reenable
     end
   end
 
@@ -56,6 +65,11 @@ namespace :precincts do
           puts "[#{county.name}] Creating 2014 CensusTract #{blue(vtd)} #{green(precinct_name)}"
         end
 
+        if !ct.name
+          ct.name = precinct_name
+          ct.save!
+        end
+
         m = Precinct.find_by_any_name(precinct_name, county.id)
         if !m.any?
           # the name didn't match but perhaps there was a typo at some point.
@@ -77,7 +91,7 @@ namespace :precincts do
           # warn if mapped to a different CensusTract
           precinct = m.first
           if precinct.census_tract_id && precinct.census_tract_id != ct.id
-            puts "[#{county.name}] Found Precinct #{green(precinct.name)} for #{blue(precinct_name)} but not in CensusTract #{cyan(ct.name)} (ct.id=#{ct.id} precinct.census_precinct_id=#{precinct.census_tract_id} precinct.id=#{precinct.id}"
+            puts "[#{county.name}] Found Precinct #{green(precinct.name)} for #{blue(precinct_name)} but not in CensusTract #{cyan(ct.name)} (ct.id=#{ct.id} precinct.census_precinct_id=#{precinct.census_tract_id} precinct.id=#{precinct.id} #{cyan(precinct.census_tract.name)}"
           end
         else
           puts "[#{county.name}] Found precinct #{blue(m.first.name)} for vtd #{green(vtd)} mismatch #{red(precinct_name)}"
@@ -129,6 +143,23 @@ namespace :precincts do
     end
   end
 
+  desc 'Lyon'
+  task lyon: :environment do
+    lyon = County.n('Lyon')
+    lyon.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/^Precinct (\d+)$/)
+        aliases << "Eudora #{m[1]}.01"
+      elsif m = p.name.match(/^Precinct (\d+) Part ([A-Z])$/)
+        aliases << "Eudora #{m[1]}#{m[2]}.01"
+      end
+      aliases.uniq.each do |n|
+        curated_alias(p.id, n)
+        puts "[Lyon] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+    end
+  end
+
   desc 'Harvey'
   task harvey: :environment do
     harvey = County.n('Harvey')
@@ -142,6 +173,21 @@ namespace :precincts do
         puts "[Harvey] Alias #{blue(n)} -> #{green(p.name)}"
       end
    end
+  end
+
+  desc 'Leavenworth'
+  task leavenworth: :environment do
+    leavenworth = County.n('Leavenworth')
+    leavenworth.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/^Leavenworth Ward \d+ Precinct \d+$/)
+        aliases << p.name.sub('Leavenworth ', '')
+      end
+      aliases.uniq.each do |n|
+        curated_alias(p.id, n)
+        puts "[Leavenworth] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+    end
   end
 
   desc 'alias Barton county'
@@ -267,24 +313,42 @@ namespace :precincts do
       next unless row['vtd_2012'] || row['census_tracts']
       precinct = Precinct.find_by(name: row['precinct'], county_id: row['county_id'])
       next if precinct && precinct.census_tract_id
+      county = find_county_by_id(row['county_id'])
       if row['vtd_2012']
         #puts "looking for CensusTract #{row['vtd_2012']} in county #{row['county']}"
-        ct = CensusTract.find_by!(vtd_code: row['vtd_2012'], county_id: row['county_id'])
+        ct = CensusTract.find_or_create_by(vtd_code: row['vtd_2012'], county_id: county.id) do |c|
+          c.reason = :curated
+          # do NOT set name, as vtd 2014 may map it.
+
+          # create Precinct if necessary
+          precinct ||= curated_precinct_with_aliases(row['precinct'], county)
+          puts "[#{county.name}] Creating CensusTract via orphan map #{green(row['precinct'])}"
+        end
+        if !ct.name && !precinct.census_tract_id
+          # connect what we just created
+          precinct.census_tract_id = ct.id
+          precinct.save!
+          puts "[#{county.name}] Connecting CensusTract and Precinct #{green(row['precinct'])}"
+        end
+
         # if there's already a precinct, add this one as an alias
-        if ct.precincts.count == 1 && !ct.precinct.has_alias?(row['precinct'])
+        if ct.precincts.count == 1 && !ct.precinct.looks_like?(row['precinct'])
           ct.precinct.precinct_aliases << PrecinctAlias.new(name: row['precinct'])
-          puts "[#{row['county']}] Add alias #{blue(row['precinct'])} to precinct #{green(ct.precinct.name)}"
+          puts "[#{county.name}] Add alias #{blue(row['precinct'])} to precinct #{green(ct.precinct.name)}"
         else
-          puts "Not exactly one precinct for CensusTract #{ct.id}"
+          puts "[#{county.name}] Not exactly one precinct for CensusTract #{ct.id}, or precinct already has alias"
         end
       elsif row['census_tracts']
         census_tract_vtds = row['census_tracts'].split('|')
         # probably need to create a Precinct
-        precinct ||= Precinct.create(name: row['precinct'], county_id: row['county_id'])
+        precinct ||= Precinct.create(name: row['precinct'], county_id: county.id)
         census_tract_vtds.each do |vtd|
-          ct = CensusTract.find_by!(vtd_code: vtd, county_id: row['county_id'])
+          ct = CensusTract.find_or_create_by(vtd_code: vtd, county_id: county.id) do |c|
+            c.reason = :curated
+            puts "[#{county.name}] Creating CensusTract via orphan map #{green(row['precinct'])}"
+          end
           precinct.census_tracts << ct
-          puts "[#{row['county']}] Add CensusTract #{cyan(ct.name)} to new Precinct #{green(precinct.name)}"
+          puts "[#{county.name}] Add CensusTract #{cyan(ct.name)} to new Precinct #{green(precinct.name)}"
         end
       end
     end
@@ -428,9 +492,9 @@ namespace :precincts do
         c = CensusTract.find_by(vtd_code: vtd_code, county_id: cty.id)
         fail "[#{cty.name}] No CensusTract for #{vtd_code}" unless c
         p = c.precinct
-        unless p.has_alias?(precinct_name_2016)
+        unless p.looks_like?(precinct_name_2016)
           pa = curated_alias(precinct_name_2016, p.id)
-          puts "[#{county_name}] Created PrecinctAlias #{precinct_name_2016} -> #{p.name}"
+          puts "[#{county_name}] Created PrecinctAlias #{blue(precinct_name_2016)} -> #{green(p.name)}"
         end
       end
     end
@@ -521,7 +585,7 @@ namespace :precincts do
       elsif p_name.match(/^Valley Center Township/)
         curated_alias(p.id, sedgwick_precinct_abbrs['Valley Center Township'])
       else
-        fail "Unexpected Sedgwick precinct name #{p_name}"
+        puts "[Sedgwick] Skipping #{red(p_name)}"
       end
     end
   end
@@ -577,16 +641,16 @@ namespace :precincts do
         # precinct with the reported name already exists (yes JoCo is crazy for re-using names)
         # when we see a result for this precinct, we want to use the precinct-as-reported
         # TODO
-        puts "[Johnson] Found existing precinct for #{reported_name}"
+        puts "[Johnson] Found existing precinct for #{blue(reported_name)}"
       elsif p
         pa = curated_alias(p.id, reported_name)
-        puts "[Johnson] Created PrecinctAlias #{pa.id} for #{reported_name} -> #{precinct}"
+        puts "[Johnson] Created PrecinctAlias #{pa.id} for #{blue(reported_name)} -> #{green(precinct)}"
       elsif c
         p = Precinct.create(name: reported_name, county_id: johnson.id)
         cp = CensusPrecinct.find_or_create_by(census_tract_id: c.id, precinct_id: p.id)
-        puts "[Johnson] Created Precinct #{reported_name} and CensusPrecinct #{c.id} for Tract #{census_tract}"
+        puts "[Johnson] Created Precinct #{green(reported_name)} and CensusPrecinct #{c.id} for Tract #{cyan(census_tract)}"
       else
-        $stderr.puts "[Johnson] Failed to find Precinct or CensusTract for #{reported_name}"
+        $stderr.puts "[Johnson] Failed to find Precinct or CensusTract for #{red(reported_name)}"
       end
     end
 

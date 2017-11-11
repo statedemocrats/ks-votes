@@ -12,6 +12,22 @@ module TaskHelpers
     PrecinctAlias.find_or_create_by(reason: :curated, precinct_id: precinct_id, name: name)
   end
 
+  def curated_precinct_with_aliases(precinct_name, county, census_tract_id=nil)
+    p = Precinct.find_or_create_by(name: precinct_name, county_id: county.id) do |pr|
+      pr.census_tract_id = census_tract_id
+    end
+    aliases = [
+      precinct_name.gsub(/(\d+)/) { Regexp.last_match[1].to_i },
+      precinct_name.gsub(/(\d+)/) { sprintf('%02d', Regexp.last_match[1].to_i) }
+    ]
+    aliases.uniq.each do |n|
+      next if n == precinct_name
+      curated_alias(p.id, n)
+      puts "[#{county.name}] Alias #{blue(n)} to new precinct #{precinct_name}"
+    end
+    p
+  end
+
   def county_by_fips(county_fips)
     @_cbyfips ||= {}
     @_cbyfips[county_fips] ||= County.find_by!(fips: county_fips)
@@ -46,6 +62,11 @@ module TaskHelpers
     @_tracts_by_vtd ||= {}
     k = "#{county.name}|#{vtd_code}"
     @_tracts_by_vtd[k] ||= CensusTract.find_by(vtd_code: vtd_code, county_id: county.id)
+  end
+
+  def find_tract_by_id(id)
+    @_tracts_by_id ||= {}
+    @_tracts_by_id[id] ||= CensusTract.find(id)
   end
 
   def debug?

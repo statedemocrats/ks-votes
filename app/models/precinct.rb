@@ -21,6 +21,10 @@ class Precinct < ApplicationRecord
     alias_names.any? { |n| n == name }
   end
 
+  def looks_like?(name)
+    has_alias?(name) || self.name == name
+  end
+
   def alias_names
     precinct_aliases.pluck(:name)
   end

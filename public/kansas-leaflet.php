@@ -13,7 +13,7 @@
 
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
 
-  <script src="https://statedemocrats.us/kansas/map/leaflet.ajax.min.js"></script>
+  <script src="leaflet.ajax.min.js"></script>
   <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

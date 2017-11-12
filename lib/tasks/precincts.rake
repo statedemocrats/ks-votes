@@ -167,7 +167,7 @@ namespace :precincts do
       if m = p.name.match(/^Precinct (\d+)$/)
         aliases << "Emporia #{m[1]}.01"
       elsif m = p.name.match(/^Precinct (\d+) Part ([A-Z])$/)
-        aliases << "Emporia #{m[1]}#{m[2]}.01"
+        aliases << "Emporia #{m[1].to_i}#{m[2]}.01"
       end
       aliases.uniq.each do |n|
         curated_alias(p.id, n)

@@ -49,4 +49,8 @@ class Precinct < ApplicationRecord
       matches
     end
   end
+
+  def self.find_best(name, county_id=nil)
+    find_by_any_name(name, county_id).first
+  end
 end

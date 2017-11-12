@@ -15,6 +15,7 @@ namespace :precincts do
       'geary',
       'harvey',
       'johnson',
+      'labette',
       'leavenworth',
       'lyon',
       'riley',
@@ -143,15 +144,30 @@ namespace :precincts do
     end
   end
 
+  desc 'Labette'
+  task labette: :environment do
+    labette = County.n('Labette')
+    labette.precincts.each do |p|
+      aliases = []
+      if m = p.name.match(/^Parsons Ward \d+ Precinct \d+$/)
+        aliases << p.name.sub('Parsons ', '')
+      end
+      aliases.uniq.each do |n|
+        curated_alias(p.id, n)
+        puts "[Labette] Alias #{blue(n)} -> #{green(p.name)}"
+      end
+    end
+  end
+
   desc 'Lyon'
   task lyon: :environment do
     lyon = County.n('Lyon')
     lyon.precincts.each do |p|
       aliases = []
       if m = p.name.match(/^Precinct (\d+)$/)
-        aliases << "Eudora #{m[1]}.01"
+        aliases << "Emporia #{m[1]}.01"
       elsif m = p.name.match(/^Precinct (\d+) Part ([A-Z])$/)
-        aliases << "Eudora #{m[1]}#{m[2]}.01"
+        aliases << "Emporia #{m[1]}#{m[2]}.01"
       end
       aliases.uniq.each do |n|
         curated_alias(p.id, n)

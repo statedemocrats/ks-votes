@@ -489,13 +489,21 @@ namespace :precincts do
         county_fips = m[1]
         vtd_code = m[2]
         cty = county_by_fips(county_fips)
-        c = CensusTract.find_by(vtd_code: vtd_code, county_id: cty.id)
+        c = find_tract_by_vtd(vtd_code, cty)
         fail "[#{cty.name}] No CensusTract for #{vtd_code}" unless c
         p = c.precinct
         if !p
           puts "[#{county_name}] No precinct for CensusTract #{vtd_code}"
           next
         end
+
+        # does a precinct already exist for this name? then the name was re-used.
+        precinct2016 = Precinct.find_by(name: precinct_name_2016, county_id: cty.id)
+        if precinct2016 && precinct2016 != p
+          puts "[#{county_name}] Found existing precinct #{green(precinct_name_2016)} (#{precinct2016.id}) with different VTD (#{vtd_code}) vs (#{precinct2016.try(:census_tract).try(:vtd_code)})"
+          next
+        end
+
         unless p.looks_like?(precinct_name_2016)
           pa = curated_alias(p.id, precinct_name_2016)
           puts "[#{county_name}] Created PrecinctAlias #{blue(precinct_name_2016)} (#{pa.id}) -> #{green(p.name)} (#{p.id})"

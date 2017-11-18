@@ -356,6 +356,9 @@ namespace :precincts do
         end
       elsif row['census_tracts']
         census_tract_vtds = row['census_tracts'].split('|')
+
+        next if census_tract_vtds.first.match(/#/)
+
         # probably need to create a Precinct
         precinct ||= Precinct.create(name: row['precinct'], county_id: county.id)
         census_tract_vtds.each do |vtd|

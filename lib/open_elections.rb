@@ -10,6 +10,7 @@ module OpenElections
     'Absent',
     'Adv/Prov',
     'Advance',
+    'Advance Ballots',
     'Advance Voters',
     'Advanced',
     'Ent Test',

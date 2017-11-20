@@ -19,4 +19,8 @@ class CensusTract < ApplicationRecord
     m = vtd.match(/^20(\d\d\d)(\w\w\w\w\w\w)$/)
     includes(:county).where(counties: {fips: m[1]}).where(vtd_code: m[2]).first
   end
+
+  def map_id
+    county.vtd_for(vtd_code)
+  end
 end

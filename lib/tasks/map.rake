@@ -15,4 +15,10 @@ namespace :map do
     geosha.create_digests
     geosha.write(out_file)
   end
+
+  desc 'dump census tract to json'
+  task census_tracts: :environment do
+    rep = CensusTractReporter.all_by_year
+    File.write('public/all-tracts-by-year.json', rep.to_json)
+  end
 end

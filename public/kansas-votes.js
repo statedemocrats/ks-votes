@@ -99,28 +99,38 @@ var polyEach = function(p, layer) {
 };
 
 // load election results first so they are available when we render precincts
-var elections, legend, president2016, districts;
+var elections, legend, statewideRace, districts;
 $.getJSON('all-precincts-by-year.json', function(data) {
   elections = data;
-  legend = elections['legend'];
-  var presId, g2016Id;
-  $.each(legend['races']['offices'], function(key, val) {
-    if (val['n'] == 'President') {
-      presId = key;
-      return false;
-    }
-  });
-  $.each(legend['races']['elections'], function(key, val) {
-    if (val == '2016 general') {
-      g2016Id = key;
-      return false;
-    }
-  });
-  president2016 = [g2016Id, presId].join(':');
 });
 $.getJSON('ksleg.json', function(data) {
   districts = data;
 });
+
+var getStatewideRaceId = function() {
+  var race = $('#election').val();
+  var legend = elections['legend'];
+  var matches = race.match(/^(\d\d\d\d) (.+)/)
+  var office, year, officeId, yearId;
+  office = matches[2];
+  year = matches[1];
+  console.log("race:", race, matches);
+
+  $.each(legend['races']['offices'], function(key, val) {
+    if (val['n'].match(office)) {
+      officeId = key;
+      return false;
+    }
+  });
+  $.each(legend['races']['elections'], function(key, val) {
+    if (val.match(year)) {
+      yearId = key;
+      return false;
+    }
+  });
+  console.log(office, officeId, year, yearId);
+  return [yearId, officeId].join(':');
+};
 
 var colors = {
   'solid_r': '#ff0000',
@@ -128,23 +138,26 @@ var colors = {
   'solid_d': '#0055ff',
   'light_b': '#8cb2ff',
   'purple' : '#c242f4',
+  'green'  : '#01c128',
   'unknown': '#f4e242',
 };
 
 var getPrecinctColor = function(feature) {
+  if (!statewideRace) {
+    return;
+  }
   var unknown = colors['unknown'];
   var vtd = feature.properties['VTD_2012'];
-  //console.log('vtd', vtd, president2016);
+  //console.log('vtd', vtd, statewideRace);
   var precinct_history = elections[vtd];
   if (!precinct_history) {
     return unknown;
   }
-  //console.log('pres2016', precinct_history);
-  var results = precinct_history[president2016];
+  var results = precinct_history[statewideRace];
   //console.log(results);
   var color = 'solid_r';
   if (!results || !results['m'] || !results['w']) {
-    console.log("no president2016 results", vtd, feature, president2016);
+    //console.log("no statewideRace results", vtd, feature, statewideRace);
     return unknown;
   }
   var winner = results['w'];
@@ -157,7 +170,7 @@ var getPrecinctColor = function(feature) {
       color = 'light_b';
     }
     else {
-      color = 'purple';
+      color = 'green';
     }
   }
   else if (winner == 'r') {
@@ -168,7 +181,7 @@ var getPrecinctColor = function(feature) {
   }
   else {
     console.log('unknown winner', results);
-    color = 'unknown';
+    color = 'green';
   }
   return colors[color];
 };
@@ -220,6 +233,16 @@ precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson',
     };
   }
 });
+
+var setPrecinctsColorByRace = function() {
+  statewideRace = getStatewideRaceId();
+  precincts.eachLayer(function(layer) {
+    layer.setStyle({ fillColor: getPrecinctColor(layer.feature) });
+  });
+};
+
+precincts.on('add', setPrecinctsColorByRace);
+$('#election').on('change', setPrecinctsColorByRace);
 
 var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +

@@ -114,16 +114,17 @@ var getStatewideRaceId = function() {
   var office, year, officeId, yearId;
   office = matches[2];
   year = matches[1];
+  var election = year + ' general'; // TODO specials? primaries?
   console.log("race:", race, matches);
 
   $.each(legend['races']['offices'], function(key, val) {
-    if (val['n'].match(office)) {
+    if (val['n'] == office) {
       officeId = key;
       return false;
     }
   });
   $.each(legend['races']['elections'], function(key, val) {
-    if (val.match(year)) {
+    if (val == election) {
       yearId = key;
       return false;
     }

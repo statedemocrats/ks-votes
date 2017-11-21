@@ -478,7 +478,7 @@ namespace :precincts do
   desc 'Sedgwick'
   task sedgwick: :environment do
     sedgwick = County.find_by(name: 'Sedgwick')
-
+    sedgwick_static_aliases(sedgwick) # call FIRST
     sedgwick_create_aliases(sedgwick) # call before geosha lookup, and again at end
     county_2016_geosha_lookup('Sedgwick') # MUST call before sedgwick_map_2016_precincts
     sedgwick_map_2016_precincts(sedgwick)
@@ -488,6 +488,15 @@ namespace :precincts do
   desc 'Sedgwick Geosha lookup'
   task sedgwick_geosha: :environment do
     county_2016_geosha_lookup('Sedgwick')
+  end
+
+  def sedgwick_static_aliases(sedgwick)
+    p = Precinct.find_by(name: 'Illinois Precinct 02', county_id: sedgwick.id)
+    # after 2012 they are combined and referred to as IL01
+    ['Illinois Precinct 01', 'Illinois Precinct 02'].each do |n|
+      ct = CensusTract.find_by(name: n, county_id: sedgwick.id)
+      cp = CensusPrecinct.find_or_create_by(precinct_id: p.id, census_tract_id: ct.id)
+    end
   end
 
   def county_2016_geosha_lookup(county_name)

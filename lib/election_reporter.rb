@@ -41,8 +41,8 @@ class ElectionReporter
     # for all the races in a given year or years,
     # calculate the totals for each office and the spread
     # between the top two candidates.
-    report = {S: {M: 0}, legend: self.class.legend}
-    return report unless reported.results
+    report = {S: {}, legend: self.class.legend}
+    return report unless reported
     reported.results.full.each do |r|
       next if year and r.election.date.year != year.to_i
 
@@ -52,23 +52,26 @@ class ElectionReporter
         puts "No election for #{r.inspect}"
         next
       end
-
-      k = [r.election_id, r.office_id].join(':')
+      eid = r.election_id.to_s
+      k = [eid, r.office_id.to_s].join(':')
       report[k] ||= {T: 0, P: {}}
       party = party_abbr(r.candidate)
       report[k][:P][party] ||= {V: 0, PC: 0}
       report[k][:P][party][:V] += r.votes
       report[k][:T] += r.votes
-      report[:S][:M] = report[k][:T] if report[k][:T] > report[:S][:M]
+      report[:S][eid] ||= {M: 0}
+      report[:S][eid][:M] = report[k][:T] if report[k][:T] > report[:S][eid][:M]
     end
     # compute percentages
     report.each do |k, v|
       next if k == :S
       next if k == :legend
-      v[:pcm] = (v[:T].fdiv(report[:S][:M]) * 100).round(1)
+      election_id = k.sub(/:\d+/, '')
+      max_votes_in_election = report.dig(:S, election_id, :M)
+      v[:pcm] = (v[:T].fdiv(max_votes_in_election) * 100).round(1)
       v[:P].each do |n, party_rep|
         # percentage of votes *available* (max) not total (since some races are un-opposed)
-        party_rep[:PC] = (party_rep[:V].fdiv(report[:S][:M]) * 100).round(1)
+        party_rep[:PC] = (party_rep[:V].fdiv(max_votes_in_election) * 100).round(1)
         party_rep[:PC] = 0.0 if party_rep[:PC].nan?
       end
       sorted_parties = v[:P].sort { |a, b| b[1][:PC] <=> a[1][:PC] }

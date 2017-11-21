@@ -101,3 +101,37 @@ nav > ul > li:hover > a {
 nav > ul > li:hover > a > .caret {
   border-top-color: rgb( 255, 255, 255 );
 }
+
+#races table caption {
+  text-align: left;
+  font-weight: bold;
+}
+
+#races table {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+#races table th, #races table td {
+  border-bottom: 1px solid #ddd;
+  text-align: right;
+}
+
+.party {
+  text-transform: capitalize;
+}
+.democratic {
+  color: blue;
+}
+.republican {
+  color: red;
+}
+.libertarian {
+  color: #444;
+}
+.independent {
+  color: green;
+}
+.winner {
+  background-color: #f7f28f;
+}

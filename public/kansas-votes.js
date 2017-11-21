@@ -1,6 +1,7 @@
 // KS Votes JS
 var map, counties, state_leg_lower, state_leg_upper, precincts, info;
 var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly;
+var listAllRaces;
 var style = { weight: 1, opacity: 1, fillOpacity: 0 };
 var renderPolys = function(polys) {
   //console.log('clicked on', polys);
@@ -47,6 +48,7 @@ var renderPolys = function(polys) {
       if (lastPrecinct && lastPrecinct != poly) {
         precincts.resetStyle(lastPrecinct);
       }
+      listAllRaces(props['VTD_2012']);
       lastPrecinct = poly;
     }
   });
@@ -115,7 +117,7 @@ var getStatewideRaceId = function() {
   office = matches[2];
   year = matches[1];
   var election = year + ' general'; // TODO specials? primaries?
-  console.log("race:", race, matches);
+  //console.log("race:", race, matches);
 
   $.each(legend['races']['offices'], function(key, val) {
     if (val['n'] == office) {
@@ -129,7 +131,7 @@ var getStatewideRaceId = function() {
       return false;
     }
   });
-  console.log(office, officeId, year, yearId);
+  //console.log(office, officeId, year, yearId);
   return [yearId, officeId].join(':');
 };
 
@@ -286,6 +288,39 @@ info.update = function (props) {
 };
 
 info.addTo(map);
+
+// list all race results per precinct (tract)
+listAllRaces = function(vtd) {
+  var results = elections[vtd];
+  //console.log(results);
+  var tables = [];
+  var legend = elections['legend'];
+  var parties = $.map(legend.parties, function(n, i) { return i }).sort();
+  $.each(results, function(electionKey, report) {
+    if (electionKey == 'S') {
+      return true;
+    }
+    var [electionId, officeId] = electionKey.split(':');
+    var election = legend['races']['elections'][electionId];
+    var office = legend['races']['offices'][officeId];
+    var votes = safe(report);
+    console.log(election, office, report, votes);
+    var table = $('<table>');
+    table.append('<caption>'+election.replace(' general', '')+': '+office['n']+' '+office['d']+'</caption>');
+    table.append('<tr><th>Ballots</th><td>'+results.S[electionId].M+'</td><td></td></tr>');
+    $.each(parties, function(idx, partyId) {
+      if (either(votes.P[partyId].V, 0) == 0) return true;
+      var n = legend.parties[partyId];
+      var cls = n;
+      if (votes.w == partyId) {
+        cls += ' winner';
+      }
+      table.append('<tr class="'+cls+'"><th class="party">'+n+'</th><td>'+either(votes.P[partyId].V, 0)+'</td><td>'+either(votes.P[partyId].PC, 0)+'%</td></tr>');
+    });
+    tables.push(table);
+  });
+  $('#races').html(tables);
+};
 
 // search by precinct name
 $('#search').on('click', function(e) {

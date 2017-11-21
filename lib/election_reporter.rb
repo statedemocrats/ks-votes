@@ -46,6 +46,17 @@ class ElectionReporter
         if !reports[id] # missing, alone
           reports[id] = reports[map_id]
           reports[id][:S][:f] = true
+        else
+          # merge in missing races
+          reports[map_id].each do |k, v|
+            next if k == :S
+            if !reports[id][k]
+              eid = k.sub(/:.+/, '')
+              reports[id][k] = v
+              reports[id][:S][eid] ||= reports[map_id][:S][eid]
+              reports[id][:S][eid][:f] = true
+            end
+          end
         end
       end
     end

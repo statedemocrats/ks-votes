@@ -84,7 +84,9 @@ class PrecinctFinder
       precinct_name.sub!(/^\d+ /, '')
     end
 
-    precinct_name = precinct_name.titlecase if precinct_name.match(/^[A-Z\ ]+$/)
+    if precinct_name.match(/^[A-Z\ ]+$/) && precinct_name.length > 2
+      precinct_name = precinct_name.titlecase
+    end
 
     # try with/without Township suffix
     if !county_tracts.dig(county.name, precinct_name)

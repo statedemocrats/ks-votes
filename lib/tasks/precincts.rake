@@ -637,7 +637,8 @@ namespace :precincts do
       precinct_name = row['precinct']      # primary 1:1 precinct
       census_tracts = (row['census_tracts'] || '').split('|') # secondary overlapping tracts
       if precinct_name
-        p = Precinct.find_by!(name: precinct_name, county_id: sedgwick.id)
+        p = Precinct.find_by(name: precinct_name, county_id: sedgwick.id)
+        fail "Can't find #{green(precinct_name)} Precinct" unless p
         pa = curated_alias(p.id, reported_name)
         puts "[Sedgwick] Alias #{reported_name} -> #{precinct_name}"
       elsif census_tracts.any?

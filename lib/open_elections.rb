@@ -158,6 +158,10 @@ module OpenElections
         r.reason = reason
       end
 
+      if debug?
+        pp result
+      end
+
     end
   end
 end

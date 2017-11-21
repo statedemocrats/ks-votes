@@ -18,6 +18,7 @@ class ElectionReporter
     pcm: :percent_of_max,
     m: :margin,
     w: :winner,
+    f: :fuzzy_boundary,
   }.freeze
 
   def party_abbr(candidate)
@@ -35,6 +36,20 @@ class ElectionReporter
         elections: Election.all.map { |e| [e.id, e.name] }.to_h,
       }
     end
+  end
+
+  def self.redistribute(reports)
+    reports.keys.each do |map_id|
+      next unless map_id.match(':')
+      ids = map_id.split(':')
+      ids.each do |id|
+        if !reports[id] # missing, alone
+          reports[id] = reports[map_id]
+          reports[id][:S][:f] = true
+        end
+      end
+    end
+    reports
   end
 
   def by_year(year=nil)

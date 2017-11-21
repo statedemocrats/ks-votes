@@ -12,7 +12,7 @@ deploy:
 	rake map:setup
 
 report:
-	rake precincts:report:by_year
+	rake precincts:report:by_year map:census_tracts
 
 publish-results:
 	scp -P 10022 public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/

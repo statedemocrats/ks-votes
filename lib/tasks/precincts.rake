@@ -497,6 +497,9 @@ namespace :precincts do
       ct = CensusTract.find_by(name: n, county_id: sedgwick.id)
       cp = CensusPrecinct.find_or_create_by(precinct_id: p.id, census_tract_id: ct.id)
     end
+
+    p = Precinct.find_by(name: 'Riverside Precinct 04 A', county_id: sedgwick.id)
+    curated_alias(p.id, 'Riverside Precinct 13')
   end
 
   def county_2016_geosha_lookup(county_name)

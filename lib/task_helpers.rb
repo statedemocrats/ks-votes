@@ -85,11 +85,11 @@ module TaskHelpers
 
   def find_office(office_name, district_name, election_file_id)
     @_offices ||= {}
-    office_name.strip.downcase!
-    district_name.strip.downcase!
-    office_name = 'president' if office_name.match(/president/)
-    k = "#{office_name},#{district_name}"
-    @_offices[k] ||= Office.find_or_create_by(name: office_name, district: district_name) do |o|
+    norm_office = office_name.strip.downcase
+    norm_district = district_name.strip.downcase.sub(/^h0?/, '')
+    norm_office = Office::NORMS[norm_office] || office_name
+    k = "#{norm_office},#{norm_district}"
+    @_offices[k] ||= Office.find_or_create_by(name: norm_office, district: norm_district) do |o|
       o.election_file_id = election_file_id
     end
   end

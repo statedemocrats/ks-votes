@@ -2,7 +2,8 @@
 var map, counties, state_leg_lower, state_leg_upper, precincts, info;
 var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly;
 var listAllRaces;
-var style = { weight: 1, opacity: 1, fillOpacity: 0 };
+const DEFAULT_WEIGHT = 0.5;
+var style = { weight: DEFAULT_WEIGHT, opacity: 1, fillOpacity: 0 };
 var renderPolys = function(polys) {
   //console.log('clicked on', polys);
   $.each(polys, function(idx, poly) {
@@ -102,7 +103,7 @@ var polyEach = function(p, layer) {
 
 // load election results first so they are available when we render precincts
 var elections, legend, statewideRace, districts;
-$.getJSON('all-precincts-by-year.json', function(data) {
+$.getJSON('all-tracts-by-year.json', function(data) {
   elections = data;
 });
 $.getJSON('ksleg.json', function(data) {
@@ -206,7 +207,7 @@ state_leg_lower = L.geoJson.ajax('cb_2016_20_sldl_500k.geojson', {
   onEachFeature: polyEach,
   style: function(feature) {
     return {
-      weight: 1,
+      weight: DEFAULT_WEIGHT,
       opacity: 1,
       fillOpacity: 0.3,
       fillColor: getDistrictColor(feature, 'house')
@@ -217,7 +218,7 @@ state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', {
   onEachFeature: polyEach,
   style: function(feature) {
     return {
-      weight: 1,
+      weight: DEFAULT_WEIGHT,
       opacity: 1,
       fillOpacity: 0.3,
       fillColor: getDistrictColor(feature, 'senate')
@@ -229,7 +230,7 @@ precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson',
   style: function(feature) {
     return {
       color: '#777',
-      weight: 1,
+      weight: DEFAULT_WEIGHT,
       opacity: 1,
       fillOpacity: 0.3,
       fillColor: getPrecinctColor(feature)
@@ -292,7 +293,7 @@ info.addTo(map);
 // list all race results per precinct (tract)
 listAllRaces = function(vtd) {
   var results = elections[vtd];
-  //console.log(results);
+  console.log('allRaces', results);
   var tables = [];
   var legend = elections['legend'];
   var parties = $.map(legend.parties, function(n, i) { return i }).sort();
@@ -304,10 +305,11 @@ listAllRaces = function(vtd) {
     var election = legend['races']['elections'][electionId];
     var office = legend['races']['offices'][officeId];
     var votes = safe(report);
+    var history = safe(results);
     console.log(election, office, report, votes);
     var table = $('<table>');
     table.append('<caption>'+election.replace(' general', '')+': '+office['n']+' '+office['d']+'</caption>');
-    table.append('<tr><th>Ballots</th><td>'+results.S[electionId].M+'</td><td></td></tr>');
+    table.append('<tr><th>Ballots</th><td>'+either(history.S[electionId].M, 'unknown')+'</td><td></td></tr>');
     $.each(parties, function(idx, partyId) {
       if (either(votes.P[partyId].V, 0) == 0) return true;
       var n = legend.parties[partyId];

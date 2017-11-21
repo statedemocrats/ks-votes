@@ -35,6 +35,7 @@ class PrecinctReporter < ElectionReporter
       end
     end
     pbar.finish
+    redistribute(report)
     report
   end
 

@@ -306,9 +306,13 @@ listAllRaces = function(vtd) {
     var office = legend['races']['offices'][officeId];
     var votes = safe(report);
     var history = safe(results);
-    console.log(election, office, report, votes);
+    //console.log(election, office, report, votes);
     var table = $('<table>');
-    table.append('<caption>'+election.replace(' general', '')+': '+office['n']+' '+office['d']+'</caption>');
+    var caption = election.replace(' general', '')+': '+office['n']+' '+office['d'];
+    if (either(history.S[electionId].f, false) == true || either(history.S.f, false) == true) {
+      caption += ' **fuzzy boundary';
+    }
+    table.append('<caption>'+caption+'</caption>');
     table.append('<tr><th>Ballots</th><td>'+either(history.S[electionId].M, 'unknown')+'</td><td></td></tr>');
     $.each(parties, function(idx, partyId) {
       if (either(votes.P[partyId].V, 0) == 0) return true;

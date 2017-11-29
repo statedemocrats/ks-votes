@@ -16,6 +16,7 @@ report:
 
 publish-results:
 	scp -P 10022 public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
+	scp -P 10022 public/all-tracts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 
 publish-app:
 	ssh -p 10022 statedemocrats.us 'cd /data/statedemocrats.us/kansas/map/ && git pull'

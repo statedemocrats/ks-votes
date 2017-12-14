@@ -55,8 +55,11 @@ namespace :voters do
         v.file_name = tsv
       end
 
-      election_codes.each do |ec|
-        vec = VoterElectionCode.find_or_create_by(election_code_id: election_code(ec).id, voter_id: voter.id)
+      VoterElectionCode.transaction do
+        election_codes.each do |ec|
+          vec = VoterElectionCode.new(election_code_id: election_code(ec).id, voter_id: voter.id)
+          vec.save!(validate: false)
+        end
       end
 
       pbar.inc

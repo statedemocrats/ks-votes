@@ -1,0 +1,7 @@
+default: &default
+  encoding: utf8
+  adapter: postgresql
+
+development:
+  <<: *default
+  database: voter_files

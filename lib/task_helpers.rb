@@ -1,4 +1,13 @@
 module TaskHelpers
+  def read_tsv_gz(filename, &block)
+    Zlib::GzipReader.open(filename) do |gzip|
+      tsv = CSV.new(gzip, col_sep: "\t", headers: true)
+      tsv.each do |row|
+        yield(row)
+      end
+    end
+  end
+
   def read_csv_gz(filename, &block)
     Zlib::GzipReader.open(filename) do |gzip|
       csv = CSV.new(gzip, headers: true)

@@ -19,11 +19,16 @@ namespace :voters do
       addr = [row['text_res_address_nbr'], row['text_street_name'], row['text_res_city'], row['text_res_zip5']].compact.join(' ')
       checksum = Digest::SHA256.hexdigest(name + row['date_of_birth'] + addr)
       districts = {}
+      election_codes = []
       row.each do |k,v|
         next unless k && v
-        next unless k.match(/^district_/)
         next unless v.match(/\S/)
-        districts[k.sub(/^district_/, '')] = v
+
+        if k.match(/^district_/)
+          districts[k.sub(/^district_/, '')] = v
+        elsif k.match(/^text_election_code/)
+          election_codes << v
+        end
       end
       voter = Voter.find_or_create_by(checksum: checksum) do |v|
         [
@@ -50,8 +55,17 @@ namespace :voters do
         v.file_name = tsv
       end
 
+      election_codes.each do |ec|
+        vec = VoterElectionCode.find_or_create_by(election_code_id: election_code(ec).id, voter_id: voter.id)
+      end
+
       pbar.inc
     end
     pbar.finish
+  end
+
+  def election_code(ec)
+    @_election_codes ||= {}
+    @_election_codes[ec] ||= ElectionCode.find_or_create_by(name: ec)
   end
 end

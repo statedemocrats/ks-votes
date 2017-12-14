@@ -55,5 +55,6 @@ create table voter_election_codes (
 
 CREATE UNIQUE INDEX voters_on_checksum ON voters USING btree (checksum);
 CREATE UNIQUE INDEX election_codes_names ON election_codes USING btree (name);
+create unique index voter_election_codes_idx ON voter_election_codes USING btree(voter_id,election_code_id);
 alter table only voter_election_codes add constraint vec_voter_id FOREIGN KEY (voter_id) REFERENCES voters(id);
 alter table only voter_election_codes add constraint vec_election_code_id FOREIGN KEY (election_code_id) REFERENCES election_codes(id);

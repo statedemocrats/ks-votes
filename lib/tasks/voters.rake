@@ -5,6 +5,7 @@ namespace :voters do
   desc 'load voter file dump'
   task load: :environment do
     tsv = ENV['VOTER_FILE'] or fail "VOTER_FILE not set"
+    voter_file = VoterFile.find_or_create_by(name: tsv)
     PARTIES = {
       'Republican'   => 1,
       'Democratic'   => 2,
@@ -37,7 +38,7 @@ namespace :voters do
           'name_last',
           'res_address_nbr',
           'res_address_nbr_suffix',
-          'res_street_name',
+          'street_name',
           'res_unit_nbr',
           'res_city',
           'res_zip5',
@@ -52,14 +53,20 @@ namespace :voters do
         v.precinct = row['precinct_part_text_name']
         v.party = PARTIES[row['desc_party']]
         v.reg_date = row['date_of_registration']
-        v.file_name = tsv
+        v.voter_file_id = voter_file.id
+        v.county = row['db_logid']
+        v.phone = "#{row['text_phone_area_code']}-#{row['text_phone_exchange']}-#{row['text_phone_last_four']}"
       end
 
-      VoterElectionCode.transaction do
-        election_codes.each do |ec|
-          vec = VoterElectionCode.new(election_code_id: election_code(ec).id, voter_id: voter.id)
-          vec.save!(validate: false)
+      begin
+        VoterElectionCode.transaction do
+          election_codes.uniq.each do |ec|
+            vec = VoterElectionCode.new(election_code_id: election_code(ec).id, voter_id: voter.id)
+            vec.save!(validate: false)
+          end
         end
+      rescue => ex # TODO why are there duplicate voters in the voter file?
+        STDERR.puts ex
       end
 
       pbar.inc

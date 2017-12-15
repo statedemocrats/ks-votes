@@ -45,7 +45,9 @@ namespace :voters do
           'res_zip4',
           'res_carrier_rte'
         ].each do |f|
-          v[f] = row['text_' + f]
+          key = 'text_' + f
+          next unless row[key]
+          v[f] = row[key]
         end
         v.districts = districts
         v.dob = row['date_of_birth']

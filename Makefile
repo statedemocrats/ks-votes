@@ -58,4 +58,7 @@ sedg2012:
 geosha-kansas:
 	rake map:geosha IN_FILE=public/kansas-state-voting-precincts-2012-min.geojson OUT_FILE=public/kansas-state-voting-precincts-2012-sha-min.geojson
 
+clean-voters:
+	psql -d voter_files < sql/voter_files.sql
+
 .PHONY: 2012 2014 2016 orphans

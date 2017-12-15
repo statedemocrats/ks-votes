@@ -1,10 +1,14 @@
 module TaskHelpers
   def read_tsv_gz(filename, &block)
-    Zlib::GzipReader.open(filename) do |gzip|
-      tsv = CSV.new(gzip, col_sep: "\t", headers: true)
-      tsv.each do |row|
-        yield(row)
-      end
+    fh = nil
+    if filename.match(/\.gz$/)
+      fh = Zlib::GzipReader.open(filename, encoding: "Windows-1252:UTF-8")
+    else
+      fh = File.open(filename, encoding: "Windows-1252:UTF-8")
+    end
+    tsv = CSV.new(fh, col_sep: "\t", headers: true, encoding: "Windows-1252:UTF-8")
+    tsv.each do |row|
+      yield(row)
     end
   end
 

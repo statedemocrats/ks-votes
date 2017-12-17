@@ -31,7 +31,7 @@ create table voters (
   dob character varying,
   phone character varying,
   reg_date character varying,
-  voter_file_id integer,
+  voter_files jsonb,
   ks_voter_id character varying,
   res_address_nbr character varying,
   res_address_nbr_suffix character varying,
@@ -44,6 +44,7 @@ create table voters (
   party integer,
   precinct character varying,
   districts jsonb,
+  election_codes jsonb,
   checksum character varying,
   created_at timestamp without time zone NOT NULL,
   updated_at timestamp without time zone NOT NULL

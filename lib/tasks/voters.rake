@@ -16,9 +16,7 @@ namespace :voters do
     pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
     pbar.bar_mark = '='
     read_tsv_gz(tsv) do |row|
-      checksum = Digest::SHA256.hexdigest(
-        row['text_registrant_id'].to_s + row['date_of_registration'].to_s + row['date_of_birth'].to_s
-      )
+      checksum = Digest::SHA256.hexdigest( row['text_registrant_id'].to_s + row['date_of_birth'].to_s )
       districts = {}
       election_codes = []
       row.each do |k,v|
@@ -53,8 +51,8 @@ namespace :voters do
         v.dob = row['date_of_birth']
         v.ks_voter_id = row['text_registrant_id']
         v.precinct = row['precinct_part_text_name']
-        v.party = PARTIES[row['desc_party']]
-        v.reg_date = row['date_of_registration']
+        v.party_history = {}
+        v.party_history[row['date_of_registration']] = PARTIES[row['desc_party']]
         v.county = row['db_logid']
         v.voter_files = {}
         v.election_codes = {}
@@ -69,6 +67,8 @@ namespace :voters do
       election_codes.uniq.each do |ec|
         voter.election_codes[election_code(ec).id] = true
       end
+
+      voter.party_history[row['date_of_registration']] = PARTIES[row['desc_party']]
 
       voter.save!
 

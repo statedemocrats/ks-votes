@@ -16,7 +16,9 @@ namespace :voters do
     pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
     pbar.bar_mark = '='
     read_tsv_gz(tsv) do |row|
-      checksum = Digest::SHA256.hexdigest( row['text_registrant_id'].to_s + row['date_of_birth'].to_s )
+      name = [row['text_name_first'], row['text_name_middle'], row['text_name_last']].compact.join(' ')
+      addr = [row['text_res_address_nbr'], row['text_street_name'], row['text_res_city'], row['text_res_zip5']].compact.join(';')
+      checksum = Digest::SHA256.hexdigest( row['text_registrant_id'].to_s )
       districts = {}
       election_codes = []
       row.each do |k,v|
@@ -56,12 +58,12 @@ namespace :voters do
         v.county = row['db_logid']
         v.voter_files = {}
         v.election_codes = {}
-        v.voter_files[voter_file.id] = true
+        v.voter_files[voter_file.id] = { dob: row['date_of_birth'], name: name, addr: addr }
         v.phone = "#{row['text_phone_area_code']}-#{row['text_phone_exchange']}-#{row['text_phone_last_four']}"
       end
 
       if !voter.voter_files[voter_file.id]
-        voter.voter_files[voter_file.id] = true
+        voter.voter_files[voter_file.id] = { dob: row['date_of_birth'], name: name, addr: addr }
       end
 
       election_codes.uniq.each do |ec|

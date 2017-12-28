@@ -21,7 +21,7 @@ gem 'ansi'
 gem 'httparty'
 
 gem 'rgeo-geojson'
-gem 'fuzzy_match', git: 'https://github.com/rlue/fuzzy_match.git'
+gem 'fuzzy_match', git: 'https://github.com/karpet/fuzzy_match.git'
 gem 'fuzzy_tools', github: 'statedemocrats/fuzzy_tools', branch: 'nan-fix'
 
 group :development, :test do

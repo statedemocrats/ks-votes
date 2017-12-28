@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/rlue/fuzzy_match.git
+  remote: https://github.com/karpet/fuzzy_match.git
   revision: cbc2185452dff9ec80d58d1906d0343000cdc9f7
   specs:
     fuzzy_match (2.1.0)
@@ -200,4 +200,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.16.0.pre.2
+   1.16.1

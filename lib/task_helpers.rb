@@ -6,7 +6,7 @@ module TaskHelpers
     else
       fh = File.open(filename, encoding: "Windows-1252:UTF-8")
     end
-    tsv = CSV.new(fh, col_sep: "\t", headers: true, encoding: "Windows-1252:UTF-8")
+    tsv = CSV.new(fh, quote_char: '|', col_sep: "\t", headers: true, encoding: "Windows-1252:UTF-8")
     tsv.each do |row|
       yield(row)
     end

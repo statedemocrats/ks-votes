@@ -23,4 +23,17 @@ class CensusTract < ApplicationRecord
   def map_id
     county.vtd_for(vtd_code)
   end
+
+  def voters
+    pt_code = "PT#{vtd_code}"
+    Voter.where(county: county.name).where(%Q(districts @> '{"pt":"#{pt_code}"}'::jsonb))
+  end
+
+  def each_voter(&block)
+    voters.find_in_batches do |vs|
+      vs.each do |voter|
+        yield(voter)
+      end
+    end
+  end
 end

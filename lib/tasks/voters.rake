@@ -86,4 +86,25 @@ namespace :voters do
     @_election_codes ||= {}
     @_election_codes[ec] ||= ElectionCode.find_or_create_by(name: ec)
   end
+
+  task count: :environment do
+    County.order('name').all.each do |county|
+      county_voters = Voter.where(county: county.name).count
+      puts "#{county.name} #{county_voters}"
+      county.census_tracts.each do |ct|
+        counts = ct.voters.count
+        puts "  >>  #{ct.name} = #{counts}"
+      end
+    end
+  end
+
+  task count_county: :environment do
+    county = County.l(ENV['COUNTY'])
+    county_voters = Voter.where(county: county.name).count
+    puts "#{county.name} #{county_voters}"
+    county.census_tracts.each do |ct|
+      counts = ct.voters.count
+      puts "  >>  #{ct.name} = #{counts}"
+    end
+  end
 end

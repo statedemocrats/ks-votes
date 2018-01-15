@@ -57,16 +57,13 @@ create table election_codes (
   updated_at timestamp without time zone NOT NULL
 );
 
-create table voter_election_codes (
-  id serial,
-  voter_id integer,
-  election_code_id integer
-);
-
 CREATE UNIQUE INDEX voters_on_ks_voter_id ON voters USING btree (ks_voter_id);
 CREATE UNIQUE INDEX voters_on_checksum ON voters USING btree (checksum);
 CREATE UNIQUE INDEX election_codes_names ON election_codes USING btree (name);
+create index voters_name_last on voters using btree (name_last);
+create index voters_name_first on voters using btree (name_first);
+create index voters_county on voters using btree (county);
+create index voters_precinct on voters using btree (precinct);
+create index voters_districts on voters using gin (districts);
+create index voters_election_codes on voters using gin (election_codes);
 CREATE UNIQUE INDEX voter_files_name on voter_files using btree (name);
-create unique index voter_election_codes_idx ON voter_election_codes USING btree(voter_id,election_code_id);
-alter table only voter_election_codes add constraint vec_voter_id FOREIGN KEY (voter_id) REFERENCES voters(id);
-alter table only voter_election_codes add constraint vec_election_code_id FOREIGN KEY (election_code_id) REFERENCES election_codes(id);

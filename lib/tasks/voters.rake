@@ -6,12 +6,6 @@ namespace :voters do
   task load: :environment do
     tsv = ENV['VOTER_FILE'] or fail "VOTER_FILE not set"
     voter_file = VoterFile.find_or_create_by(name: tsv)
-    PARTIES = {
-      'Republican'   => 1,
-      'Democratic'   => 2,
-      'Unaffiliated' => 3,
-      'Libertarian'  => 4,
-    }
     pbar = ::ANSI::Progressbar.new('Voters', 1_780_000, STDERR) # TODO count file??
     pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
     pbar.bar_mark = '='
@@ -56,7 +50,7 @@ namespace :voters do
           v.ks_voter_id = row['text_registrant_id']
           v.precinct = row['precinct_part_text_name']
           v.party_history = {}
-          v.party_history[row['date_of_registration']] = PARTIES[row['desc_party']]
+          v.party_history[row['date_of_registration']] = Voter::PARTIES[row['desc_party']]
           v.county = row['db_logid']
           v.voter_files = {}
           v.election_codes = {}
@@ -72,7 +66,7 @@ namespace :voters do
           voter.election_codes[election_code(ec).id] = true
         end
   
-        voter.party_history[row['date_of_registration']] = PARTIES[row['desc_party']]
+        voter.party_history[row['date_of_registration']] = Voter::PARTIES[row['desc_party']]
   
         voter.save!
   
@@ -85,6 +79,11 @@ namespace :voters do
   def election_code(ec)
     @_election_codes ||= {}
     @_election_codes[ec] ||= ElectionCode.find_or_create_by(name: ec)
+  end
+
+  def election_code_by_id(id)
+    @_election_codes_by_id ||= {}
+    @_election_codes_by_id[id] ||= ElectionCode.find(id)
   end
 
   task count: :environment do
@@ -105,6 +104,46 @@ namespace :voters do
     county.census_tracts.each do |ct|
       counts = ct.voters.count
       puts "  >>  #{ct.name} = #{counts}"
+    end
+  end
+
+  task precinct_stats: :environment do
+    precinct = ENV['PRECINCT']
+    county = ENV['COUNTY']
+    voters = Voter.where(county: county).where(precinct: precinct)
+    stats = {}
+    voter_count = 0
+    party_counts = {}
+    voters.find_in_batches do |vs|
+      vs.each do |voter|
+        voter_count += 1
+        party = voter.party_recent
+        party_counts[party] ||= 0
+        party_counts[party] += 1
+        # might change party between elections, so for each year, find
+        # the most recent party affiliation
+        voter.election_codes.keys.each do |election_code_id|
+          ec = election_code_by_id(election_code_id)
+          election = ec.name
+          party = voter.party_for_election(election)
+          if !party
+            # voter was not registered for this election
+            next
+          end
+          stats[election] ||= {}
+          stats[election][party] ||= 0
+          stats[election][party] += 1
+        end
+      end
+    end
+    puts "voter_count = #{voter_count}"
+    stats.keys.sort.each do |election|
+      print election
+      stats[election].keys.sort.each do |party|
+        count = stats[election][party]
+        printf(" | %s %d %0.1f%%", party, count, (count.to_f / party_counts[party]).to_f * 100)
+      end
+      puts " |"
     end
   end
 end

@@ -190,7 +190,7 @@ class PrecinctFinder
     end
   end
 
-  def precinct_for_county!(county, precinct_name, election_file)
+  def precinct_for_county(county, precinct_name, election_file)
     orig_precinct_name = precinct_name
 
     # common clean up first since we'll create from this string
@@ -237,6 +237,16 @@ class PrecinctFinder
 
     # one last try to find precinct based on normalized name (searches aliases too)
     precinct ||= Precinct.find_by_any_name(precinct_name, county.id).first
+
+    { census_tract_id: census_tract_id, precinct: precinct, precinct_name: precinct_name, election_file: election_file }
+  end
+
+  def precinct_for_county!(county, precinct_name, election_file)
+    orig_precinct_name = precinct_name
+    info = precinct_for_county(county, precinct_name, election_file)
+    precinct = info[:precinct]
+    census_tract_id = info[:census_tract_id]
+    precinct_name = info[:precinct_name]
 
     # make sure Precinct exists, no matter what.
     # NOTE we do NOT pass in census_precinct_id to create a new Precinct since we trust it is

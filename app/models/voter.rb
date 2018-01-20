@@ -13,7 +13,12 @@ class Voter < VoterFileBase
     [name_first, name_middle, name_last].compact.join(' ')
   end
 
+  def district_pt
+    districts['pt']
+  end
+
   def party_for_election(election_name)
+    return unless election_name.match(/\d+/)
     year = election_name.match(/(\d+)/)[1]
     party = nil
     party_history_sorted.each do |tuple|

@@ -26,7 +26,7 @@ class CensusTract < ApplicationRecord
 
   def voters
     pt_code = "PT#{vtd_code}"
-    Voter.where(county: county.name).where(%Q(districts @> '{"pt":"#{pt_code}"}'::jsonb))
+    Voter.where(county: county.name).where(%Q((vtd='#{vtd_code}' OR districts @> '{"pt":"#{pt_code}"}'::jsonb)))
   end
 
   def each_voter(&block)

@@ -45,6 +45,9 @@ namespace :voters do
             next unless row[key]
             v[f] = row[key]
           end
+          if row['cde_street_type']
+            v.street_name += ' ' + ['cde_street_dir_prefix', 'cde_street_type', 'cde_street_dir_suffix'].map { |k| row[k] }.compact.join(' ')
+          end
           v.districts = districts
           v.dob = row['date_of_birth']
           v.ks_voter_id = row['text_registrant_id']
@@ -71,6 +74,37 @@ namespace :voters do
         voter.save!
   
         pbar.inc
+      end
+    end
+    pbar.finish
+  end
+
+  task vtds: :environment do
+    election_file = ElectionFile.find_or_create_by(name: 'vtd_matcher_no_such_file')
+    voters = Voter.where(vtd: nil)
+    if ENV['COUNTY']
+      voters = voters.where(county: ENV['COUNTY'])
+    end
+    pbar = ::ANSI::Progressbar.new('Voters', voters.count, STDERR)
+    pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
+    pbar.bar_mark = '='
+    Voter.transaction do
+      voters.find_in_batches do |voters|
+        voters.each do |voter|
+          pbar.inc
+          if voter.precinct
+            info = precinct_finder.precinct_for_county(find_county(voter.county), voter.precinct, election_file)
+            precinct = info[:precinct]
+            if !precinct
+              puts "No precinct found for #{voter.id} #{blue(voter.precinct)}"
+              next
+            end
+            next unless precinct.census_tract
+            voter.update_column(:vtd, precinct.census_tract.vtd_code)
+          elsif voter.district_pt
+            voter.update_column(:vtd, voter.district_pt)
+          end
+        end
       end
     end
     pbar.finish
@@ -110,38 +144,17 @@ namespace :voters do
   task precinct_stats: :environment do
     precinct = ENV['PRECINCT']
     county = ENV['COUNTY']
-    voters = Voter.where(county: county).where(precinct: precinct)
-    stats = {}
-    voter_count = 0
-    party_counts = {}
-    voters.find_in_batches do |vs|
-      vs.each do |voter|
-        voter_count += 1
-        party = voter.party_recent
-        party_counts[party] ||= 0
-        party_counts[party] += 1
-        # might change party between elections, so for each year, find
-        # the most recent party affiliation
-        voter.election_codes.keys.each do |election_code_id|
-          ec = election_code_by_id(election_code_id)
-          election = ec.name
-          party = voter.party_for_election(election)
-          if !party
-            # voter was not registered for this election
-            next
-          end
-          stats[election] ||= {}
-          stats[election][party] ||= 0
-          stats[election][party] += 1
-        end
-      end
-    end
-    puts "voter_count = #{voter_count}"
+    reporter = VoterReporter.new(County.l(county))
+    report = reporter.precincts
+    pp report
+    precinct = Precinct.find(precinct)
+    stats = report[precinct.census_tract.map_id]
     stats.keys.sort.each do |election|
       print election
       stats[election].keys.sort.each do |party|
-        count = stats[election][party]
-        printf(" | %s %d %0.1f%%", party, count, (count.to_f / party_counts[party]).to_f * 100)
+        count = stats[election][party][:count]
+        percentage = stats[election][party][:percentage]
+        printf(" | %s %d %0.1f%%", party, count, percentage)
       end
       puts " |"
     end

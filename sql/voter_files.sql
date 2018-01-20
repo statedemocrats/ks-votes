@@ -45,6 +45,7 @@ create table voters (
   districts jsonb,
   election_codes jsonb,
   checksum character varying,
+  vtd character varying,
   created_at timestamp without time zone NOT NULL,
   updated_at timestamp without time zone NOT NULL
 );
@@ -64,6 +65,8 @@ create index voters_name_last on voters using btree (name_last);
 create index voters_name_first on voters using btree (name_first);
 create index voters_county on voters using btree (county);
 create index voters_precinct on voters using btree (precinct);
+create index voters_vtd on voters using btree (vtd);
+create index voters_null_vtd_idx on voters (vtd) where vtd is null;
 create index voters_districts on voters using gin (districts);
 create index voters_election_codes on voters using gin (election_codes);
 CREATE UNIQUE INDEX voter_files_name on voter_files using btree (name);

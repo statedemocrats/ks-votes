@@ -146,7 +146,6 @@ namespace :voters do
     county = ENV['COUNTY']
     reporter = VoterReporter.new(County.l(county))
     report = reporter.precincts
-    pp report
     precinct = Precinct.find(precinct)
     stats = report[precinct.census_tract.map_id]
     stats.keys.sort.each do |election|

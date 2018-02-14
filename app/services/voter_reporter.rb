@@ -7,7 +7,7 @@ class VoterReporter
   end
 
   def precincts
-    report = {}
+    report = {names: {}}
     county.census_tracts.each do |ct|
       stats = {}
       voter_count = 0
@@ -34,15 +34,26 @@ class VoterReporter
           end
         end
       end
-      puts "#{voter_count} voters in census tract #{ct.name}"
+      #puts "#{voter_count} voters in census tract #{ct.name}"
       stats.keys.sort.each do |election|
         stats[election].keys.sort.each do |party|
           count = stats[election][party]
-          stats[election][party] = { count: count, percentage: (count.to_f / party_counts[party]).to_f * 100 }
+          stats[election][party] = {
+            r: party_counts[party],
+            c: count,
+            p: (count.to_f / party_counts[party]).to_f * 100
+          }
         end
       end
 
       report[ct.map_id] = stats
+      report[:names][ct.name] = ct.map_id
+      # all the aliases
+      if ct.precinct
+        ct.precinct.alias_names.each do |n|
+          report[:names][n] = ct.map_id
+        end
+      end
     end
 
     report

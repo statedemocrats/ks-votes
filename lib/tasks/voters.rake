@@ -151,11 +151,20 @@ namespace :voters do
     stats.keys.sort.each do |election|
       print election
       stats[election].keys.sort.each do |party|
-        count = stats[election][party][:count]
-        percentage = stats[election][party][:percentage]
+        count = stats[election][party][:c]
+        percentage = stats[election][party][:p]
         printf(" | %s %d %0.1f%%", party, count, percentage)
       end
       puts " |"
     end
+  end
+
+  task county_stats: :environment do
+    county = ENV['COUNTY']
+    reporter = VoterReporter.new(County.l(county))
+    report = reporter.precincts
+    file = "public/#{county.downcase}-county-voters-stats.json"
+    File.write(file, report.to_json)
+    puts "Stats written to #{file}"
   end
 end

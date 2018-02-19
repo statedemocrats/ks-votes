@@ -9,4 +9,8 @@ class Result < ApplicationRecord
 
   # why the Precinct was chosen for this Result
   enum reason: { vtd: 0, finder: 1 }
+
+  def party
+    candidate.party
+  end
 end

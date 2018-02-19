@@ -46,7 +46,9 @@ namespace :voters do
             v[f] = row[key]
           end
           if row['cde_street_type']
-            v.street_name += ' ' + ['cde_street_dir_prefix', 'cde_street_type', 'cde_street_dir_suffix'].map { |k| row[k] }.compact.join(' ')
+            street_suffix = ['cde_street_dir_prefix', 'cde_street_type', 'cde_street_dir_suffix'].map { |k| row[k] }.compact.join(' ')
+            v.street_name ||= ''
+            v.street_name += ' ' + street_suffix
           end
           v.districts = districts
           v.dob = row['date_of_birth']
@@ -62,7 +64,12 @@ namespace :voters do
         end
   
         if !voter.voter_files[voter_file.id]
-          voter.voter_files[voter_file.id] = { dob: row['date_of_birth'], name: name, addr: addr }
+          voter.voter_files[voter_file.id] = {
+            dob: row['date_of_birth'],
+            name: name,
+            addr: addr,
+            status: row['cde_registrant_status'].strip,
+          }
         end
   
         election_codes.uniq.each do |ec|
@@ -113,11 +120,6 @@ namespace :voters do
   def election_code(ec)
     @_election_codes ||= {}
     @_election_codes[ec] ||= ElectionCode.find_or_create_by(name: ec)
-  end
-
-  def election_code_by_id(id)
-    @_election_codes_by_id ||= {}
-    @_election_codes_by_id[id] ||= ElectionCode.find(id)
   end
 
   task count: :environment do

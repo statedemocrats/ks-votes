@@ -18,8 +18,8 @@ class Voter < VoterFileBase
   end
 
   def party_for_election(election_name)
-    return unless election_name.match(/\d+/)
-    year = election_name.match(/(\d+)/)[1]
+    return unless election_name.match(/(19|20)\d\d$/)
+    year = election_name.match(/((19|20)\d\d)$/)[1]
     party = nil
     party_history_sorted.each do |tuple|
       ymd, party_name, date = tuple
@@ -35,6 +35,7 @@ class Voter < VoterFileBase
     party_history_sorted.first[1]
   end
 
+  # party_history as array, recent first
   def party_history_sorted
     history = []
     party_history.each do |mdy, party_id|

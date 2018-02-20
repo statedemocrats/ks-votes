@@ -10,7 +10,6 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 SET default_with_oids = false;
 
-drop table voter_election_codes;
 drop table voters;
 drop table election_codes;
 drop table voter_files;
@@ -70,5 +69,4 @@ create index voters_dob on voters using btree (dob);
 create index voters_null_vtd_idx on voters (vtd) where vtd is null;
 create index voters_districts on voters using gin (districts);
 create index voters_election_codes on voters using gin (election_codes);
-create index voters_voter_files on voters using gin (voter_files);
 CREATE UNIQUE INDEX voter_files_name on voter_files using btree (name);

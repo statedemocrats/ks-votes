@@ -6,7 +6,7 @@ namespace :voters do
   task load: :environment do
     tsv = ENV['VOTER_FILE'] or fail "VOTER_FILE not set"
     voter_file = VoterFile.find_or_create_by(name: tsv)
-    pbar = ::ANSI::Progressbar.new('Voters', 1_780_000, STDERR) # TODO count file??
+    pbar = ::ANSI::Progressbar.new('Voters', 1_800_000, STDERR) # TODO count file??
     pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
     pbar.bar_mark = '='
 

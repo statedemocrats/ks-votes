@@ -31,6 +31,10 @@ class VoterReporter
           y = year.to_s
           party = voter.party_for_election(y)
           next unless party
+          if voter.voter_files_for_year(y).any? && voter.voter_file_status_in_year(y) != 'A'
+            #puts "Skipping election year #{y} for voter #{voter.name} (not active)"
+            next
+          end
           party_counts[y] ||= { party => 0 }
           party_counts[y][party] ||= 0
           party_counts[y][party] += 1

@@ -9,12 +9,47 @@ class Voter < VoterFileBase
 
   PARTIES_BY_ID = PARTIES.invert
 
+  VF_STATUS = {
+    'A' => :active,
+    'I' => :inactive,
+    'S' => :suspended,
+  }
+
   def name
     [name_first, name_middle, name_last].compact.join(' ')
   end
 
   def district_pt
     districts['pt']
+  end
+
+  def voter_file_rec(vf_id)
+    @@_voter_files ||= {}
+    @@_voter_files[vf_id] ||= VoterFile.find(vf_id)
+  end
+
+  # sort by date of file
+  def voter_files_sorted
+    files = []
+    voter_files.each do |vf_id,payload|
+      vf = voter_file_rec(vf_id)
+      ymd = vf.name.match(/(\d{8})/)[1]
+      year = ymd.match(/^(\d\d\d\d)/)[1]
+      files << { year: year, ymd: ymd, file: vf.name }.merge(payload)
+    end
+    files.sort {|a, b| b[:ymd] <=> a[:ymd] }
+  end
+
+  def recent_voter_file_status
+    voter_files_sorted.first['status']
+  end
+
+  def voter_file_status_in_year(year)
+    voter_files_for_year(year).first['status']
+  end
+
+  def voter_files_for_year(year)
+    voter_files_sorted.select {|vf| vf[:year] == year }
   end
 
   def party_for_election(election_name)

@@ -259,7 +259,8 @@ var streets = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
 map = L.map('map', {
   center: [38.5138, -98.3200],
   zoom: 6,
-  layers: [grayscale, counties]
+  layers: [grayscale, counties],
+  fullscreenControl: true
 });
 
 var baseLayers = {

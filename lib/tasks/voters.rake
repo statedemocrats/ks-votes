@@ -12,8 +12,8 @@ namespace :voters do
 
     Voter.transaction do
       read_tsv_gz(tsv) do |row|
-        name = [row['text_name_first'], row['text_name_middle'], row['text_name_last']].compact.join(' ')
-        addr = [row['text_res_address_nbr'], row['text_street_name'], row['text_res_city'], row['text_res_zip5']].compact.join(';')
+        name = [row['text_name_first'], row['text_name_middle'], row['text_name_last']].compact.map(&:strip).join(' ')
+        addr = [row['text_res_address_nbr'], row['text_street_name'], row['text_res_city'], row['text_res_zip5']].compact.map(&:strip).join(';')
         checksum = Digest::SHA256.hexdigest( row['text_registrant_id'].to_s )
         districts = {}
         election_codes = []
@@ -43,7 +43,7 @@ namespace :voters do
           ].each do |f|
             key = 'text_' + f
             next unless row[key]
-            v[f] = row[key]
+            v[f] = row[key].strip
           end
           if row['cde_street_type']
             street_suffix = ['cde_street_dir_prefix', 'cde_street_type', 'cde_street_dir_suffix'].map { |k| row[k] }.compact.join(' ')

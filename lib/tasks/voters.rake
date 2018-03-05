@@ -117,6 +117,36 @@ namespace :voters do
     pbar.finish
   end
 
+  task address_csv: :environment do
+    voter_count = Voter.count
+    pbar = ::ANSI::Progressbar.new('Voters', voter_count, STDERR)
+    pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
+    pbar.bar_mark = '='
+    seen_addresses = {}
+    file = 'public/voter-addresses.csv'
+    CSV.open(file, 'wb') do |csv|
+      Voter.find_in_batches do |voters|
+        voters.each do |voter|
+          pbar.inc
+          next unless voter.res_address_nbr && voter.street_name && voter.res_zip5 && voter.res_city
+
+          street = voter.res_address_nbr.strip + ' ' + voter.street_name.strip
+          street.gsub!(/\ +/, ' ')
+          city = voter.res_city.strip
+          zip = voter.res_zip5.strip
+          sha = Digest::SHA256.hexdigest([street,city,zip].join(' '))
+          seen_addresses[sha] ||= 0
+          seen_addresses[sha] += 1
+          next if seen_addresses[sha] > 1
+
+          csv << [sha, street, city, 'KS', zip]
+        end
+      end
+    end
+    pbar.finish
+    puts "File written to #{file}"
+  end
+
   def election_code(ec)
     @_election_codes ||= {}
     @_election_codes[ec] ||= ElectionCode.find_or_create_by(name: ec)

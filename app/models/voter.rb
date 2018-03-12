@@ -1,4 +1,8 @@
+require 'elasticsearch/model'
+
 class Voter < VoterFileBase
+
+  include Elasticsearch::Model
 
   PARTIES = {
     'Republican'   => 1,
@@ -15,12 +19,29 @@ class Voter < VoterFileBase
     'S' => :suspended,
   }
 
+  def as_indexed_json(options={})
+    voter = as_json(except: [:party_history, :voter_files, :election_codes])
+    voter[:party_history] = party_history.to_a.map {|pair| [pair[0], PARTIES_BY_ID[pair[1]]] }
+    voter[:voter_files] = voter_files_sorted
+    voter[:election_codes] = election_code_names
+    voter
+  end
+
+  def election_code_names
+    election_codes.keys.map {|ec_id| election_code_rec(ec_id).name }
+  end
+
   def name
     [name_first, name_middle, name_last].compact.join(' ')
   end
 
   def district_pt
     districts['pt']
+  end
+
+  def election_code_rec(ec_id)
+    @@_election_codes ||= {}
+    @@_election_codes[ec_id] ||= ElectionCode.find(ec_id)
   end
 
   def voter_file_rec(vf_id)

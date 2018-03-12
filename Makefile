@@ -61,4 +61,7 @@ geosha-kansas:
 clean-voters:
 	psql -d voter_files < sql/voter_files.sql
 
+index:
+	rake environment elasticsearch:ha:import NPROCS=2 CLASS=Voter FORCE=1
+
 .PHONY: 2012 2014 2016 orphans

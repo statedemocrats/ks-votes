@@ -24,6 +24,11 @@ gem 'rgeo-geojson'
 gem 'fuzzy_match', git: 'https://github.com/karpet/fuzzy_match.git'
 gem 'fuzzy_tools', github: 'statedemocrats/fuzzy_tools', branch: 'nan-fix'
 
+gem 'elasticsearch'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem 'elasticsearch-rails-ha'
+
 group :development, :test do
   gem 'capybara', '~> 2.13'
 end

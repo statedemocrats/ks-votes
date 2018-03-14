@@ -1,6 +1,6 @@
 // KS Votes JS
-var map, counties, state_leg_lower, state_leg_upper, precincts, info;
-var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly;
+var map, counties, state_leg_lower, state_leg_upper, precincts, info, cong_distr;
+var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly, lastCD;
 var listAllRaces;
 const DEFAULT_WEIGHT = 0.5;
 var style = { weight: DEFAULT_WEIGHT, opacity: 1, fillOpacity: 0 };
@@ -25,6 +25,14 @@ var renderPolys = function(polys) {
         counties.resetStyle(lastPoly);
       }
       lastPoly = poly;
+    }
+    if (props['CD115FP']) {
+      $('#cd').html('<h3>Congressional District</h3>' + props['CD115FP']);
+      poly.setStyle({ weight: 1, color: '#444', fillOpacity: 0.1 });
+      if (lastCD && lastCD != poly) {
+        cong_distr.resetStyle(lastCD);
+      }
+      lastCD = poly;
     }
     if (props['SLDLST']) {
       $('#house').html('<h3>House District</h3>' + props['NAME']);
@@ -61,6 +69,7 @@ var polyClick = function(e) {
   var pip_counties = leafletPip.pointInLayer([lng,lat], counties);
   var pip_lower = leafletPip.pointInLayer([lng,lat], state_leg_lower);
   var pip_upper = leafletPip.pointInLayer([lng,lat], state_leg_upper);
+  var pip_cd = leafletPip.pointInLayer([lng,lat], cong_distr);
   var pip_precincts = leafletPip.pointInLayer([lng,lat], precincts);
   if (map.hasLayer(counties)) {
     polys_clicked.push(pip_counties[0]);
@@ -73,6 +82,9 @@ var polyClick = function(e) {
   }
   if (map.hasLayer(precincts)) {
     polys_clicked.push(pip_precincts[0]);
+  }
+  if (map.hasLayer(cong_distr)) {
+    polys_clicked.push(pip_cd[0]);
   }
   renderPolys(polys_clicked);
 };
@@ -225,6 +237,18 @@ state_leg_upper = L.geoJson.ajax('cb_2016_20_sldu_500k.geojson', {
     }
   }
 });
+cong_distr = L.geoJson.ajax('cb_2016_us_cd115_20m.geojson', {
+  onEachFeature: polyEach,
+  style: function(feature) {
+    return {
+      weight: DEFAULT_WEIGHT,
+      opacity: 1,
+      color: '#444',
+      fillOpacity: 0.0,
+      fillColor: 'none',
+    }
+  }
+});
 precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson', {
   onEachFeature: polyEach,
   style: function(feature) {
@@ -270,6 +294,7 @@ var baseLayers = {
 
 var overlays = {
   "Counties": counties,
+  "2016 Congressional Districts": cong_distr,
   "2016 State Senate": state_leg_upper,
   "2016 State House": state_leg_lower,
   "2012 Precincts": precincts

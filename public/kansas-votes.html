@@ -17,8 +17,10 @@
   <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://statedemocrats.us/js/p-loading.min.js"></script>
 
   <link rel="stylesheet" type="text/css" href="kansas-maps.css">
+  <link rel="stylesheet" type="text/css" href="https://statedemocrats.us/css/p-loading.min.css">
 
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
@@ -31,6 +33,8 @@
   <li><a href="./">Home</a></li>
  </ul>
 </nav>
+
+<div id="mask"></div>
 
 <div id='about'>
 <h1>Kansas Voting History</h1>
@@ -60,7 +64,15 @@ Use the controls in the upper right corner of the map to toggle map layers on/of
  <div id="races"></div>
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    var $mask = $('#mask');
+    $mask.show();
+    $mask.ploading({ action: 'show' });
+  });
+</script>
 <script src="safe-objects.js"></script>
 <script src="kansas-votes.js"></script>
+
 </body>
 </html>

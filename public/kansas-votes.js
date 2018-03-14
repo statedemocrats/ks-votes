@@ -261,6 +261,10 @@ precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson',
     };
   }
 });
+precincts.on('data:loaded', function() {
+  $('#mask').ploading({action: 'hide'});
+  $('#mask').hide();
+});
 
 var setPrecinctsColorByRace = function() {
   statewideRace = getStatewideRaceId();

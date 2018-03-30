@@ -133,7 +133,7 @@ var getStatewideRaceId = function() {
   //console.log("race:", race, matches);
 
   $.each(legend['races']['offices'], function(key, val) {
-    if (val['n'] == office) {
+    if (val['n'].match(office)) {
       officeId = key;
       return false;
     }

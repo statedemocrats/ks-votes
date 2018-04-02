@@ -21,6 +21,7 @@ class Office < ApplicationRecord
     '106' => 'Kansas House',
     '109' => 'Kansas House',
     'governor' => 'Governor',
+    'governor / lt. governor' => 'Governor',
     'u.s. house 1' => 'US House',
     'secretary of  state' => 'Secretary of State',
   }.freeze

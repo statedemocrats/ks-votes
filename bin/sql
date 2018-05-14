@@ -10,6 +10,12 @@ ARGV.each_with_index do |arg, idx|
   sql.gsub!("{#{idx}}", arg)
 end
 
+dbname = ENV.fetch('DB', 'ksvotes')
+
 puts sql
-system(%Q{psql -q -d ksvotes -c "#{sql}"})
+if ENV['CSV']
+  system(%Q{psql -q -A -F '","' -d #{dbname} -c "#{sql}"})
+else
+  system(%Q{psql -q -d #{dbname} -c "#{sql}"})
+end
 

@@ -22,6 +22,8 @@ class Voter < VoterFileBase
   def as_indexed_json(options={})
     voter = as_json(except: [:party_history, :voter_files, :election_codes])
     voter[:party_history] = party_history.to_a.map {|pair| [pair[0], PARTIES_BY_ID[pair[1]]] }
+    voter[:party_recent] = party_recent
+    voter[:status] = recent_voter_file_status
     voter[:voter_files] = voter_files_sorted
     voter[:election_codes] = election_code_names
     voter
@@ -88,7 +90,9 @@ class Voter < VoterFileBase
   end
 
   def party_recent
-    party_history_sorted.first[1]
+    phs = party_history_sorted.first
+    return 'Unknown' unless phs
+    phs[1]
   end
 
   # party_history as array, recent first
@@ -96,7 +100,12 @@ class Voter < VoterFileBase
     history = []
     party_history.each do |mdy, party_id|
       party = PARTIES_BY_ID[party_id.to_i]
-      date = Date.strptime(mdy, '%m/%d/%Y')
+      begin
+        date = Date.strptime(mdy, '%m/%d/%Y')
+      rescue => _err
+        puts "Bad date '#{mdy}' in Voter #{id}"
+        next
+      end
       history << [date.strftime('%F'), party, date]
     end
     history.sort {|a, b| b[0] <=> a[0] }

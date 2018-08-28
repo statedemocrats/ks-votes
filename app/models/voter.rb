@@ -22,7 +22,7 @@ class Voter < VoterFileBase
   def as_indexed_json(options={})
     voter = as_json(except: [:party_history, :voter_files, :election_codes])
     voter[:party_history] = party_history.to_a.map {|pair| [pair[0], PARTIES_BY_ID[pair[1]]] }
-    voter[:party_recent] = party_recent
+    voter[:current_party] = current_party
     voter[:status] = recent_voter_file_status
     voter[:current_county] = current_county
     voter[:voter_files] = voter_files_sorted
@@ -94,10 +94,10 @@ class Voter < VoterFileBase
     party
   end
 
-  def party_recent
-    phs = party_history_sorted.first
-    return 'Unknown' unless phs
-    phs[1]
+  def current_party
+    p = voter_files_sorted.first['party']
+    return 'Unknown' unless p
+    p
   end
 
   # party_history as array, recent first

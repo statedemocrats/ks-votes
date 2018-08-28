@@ -70,13 +70,16 @@ namespace :voters do
             name: name,
             addr: addr,
             status: row['cde_registrant_status'].strip,
+            party: row['desc_party'],
           }
         end
   
         election_codes.uniq.each do |ec|
           voter.election_codes[election_code(ec).id] = true
         end
-  
+
+        # bad upstream data means reg date does not always change when party changes.
+        # so rely more on voter_files.party for changes.
         voter.party_history[row['date_of_registration']] = Voter::PARTIES[row['desc_party']]
   
         voter.save!

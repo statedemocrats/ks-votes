@@ -12,8 +12,9 @@ namespace :voters do
 
     Voter.transaction do
       read_tsv_gz(tsv) do |row|
+        county = row['db_logid'].strip
         name = [row['text_name_first'], row['text_name_middle'], row['text_name_last']].compact.map(&:strip).join(' ')
-        addr = [row['text_res_address_nbr'], row['text_street_name'], row['text_res_city'], row['text_res_zip5']].compact.map(&:strip).join(';')
+        addr = [row['text_res_address_nbr'], row['text_street_name'], row['text_res_city'], row['text_res_zip5'], county].compact.map(&:strip).join(';')
         checksum = Digest::SHA256.hexdigest( row['text_registrant_id'].to_s )
         districts = {}
         election_codes = []
@@ -56,7 +57,7 @@ namespace :voters do
           v.precinct = row['precinct_part_text_name']
           v.party_history = {}
           v.party_history[row['date_of_registration']] = Voter::PARTIES[row['desc_party']]
-          v.county = row['db_logid']
+          v.county = county
           v.voter_files = {}
           v.election_codes = {}
           v.voter_files[voter_file.id] = { dob: row['date_of_birth'], name: name, addr: addr }

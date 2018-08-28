@@ -24,6 +24,7 @@ class Voter < VoterFileBase
     voter[:party_history] = party_history.to_a.map {|pair| [pair[0], PARTIES_BY_ID[pair[1]]] }
     voter[:party_recent] = party_recent
     voter[:status] = recent_voter_file_status
+    voter[:current_county] = current_county
     voter[:voter_files] = voter_files_sorted
     voter[:election_codes] = election_code_names
     voter
@@ -65,6 +66,10 @@ class Voter < VoterFileBase
 
   def recent_voter_file_status
     voter_files_sorted.first['status']
+  end
+
+  def current_county
+    voter_files_sorted.first['addr'].split(';').last
   end
 
   def voter_file_status_in_year(year)

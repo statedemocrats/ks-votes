@@ -811,7 +811,14 @@ namespace :precincts do
 
   desc 'load Douglas county'
   task douglas: :environment do
-    csv_file = File.join(Rails.root, 'db/douglas-county-precincts-2016.csv')
+    ['2016', '2018'].each do |year|
+      file = "db/douglas-county-precincts-#{year}.csv"
+      load_douglas_county_csv(file)
+    end
+  end
+
+  def load_douglas_county_csv(file)
+    csv_file = File.join(Rails.root, file)
     douglas = County.find_by(name: 'Douglas')
     CSV.foreach(csv_file, headers: true) do |row|
       name = row[0]

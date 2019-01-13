@@ -52,5 +52,25 @@ namespace :precincts do
         end
       end
     end
+
+    desc 'precincts missing census_track'
+    task missing_census_tract: :environment do
+      clean_up = ENV['CLEAN_UP']
+      Precinct.includes(:census_tract).find_in_batches do |precincts|
+        precincts.each do |p|
+          unless p.census_tract
+            county = find_county_by_id(p.county_id)
+            aliases = PrecinctAlias.l(p.name)
+            puts "[#{county.name}] Precinct '#{p.name}' (#{p.id}) missing census_tract"
+            if aliases
+              puts "[#{county.name}] Precinct #{p.id} exists as PrecinctAlias #{aliases.pretty_inspect}"
+            end
+            if clean_up
+              p.destroy
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -97,7 +97,7 @@ namespace :voters do
       voters = voters.where(county: ENV['COUNTY'])
     end
     pbar = ::ANSI::Progressbar.new('Voters', voters.count, STDERR)
-    pbar.format('Voters: %3d%% %s %s', :percentage, :bar, :stat)
+    pbar.format('Voter VTDs: %3d%% %s %s', :percentage, :bar, :stat)
     pbar.bar_mark = '='
     Voter.transaction do
       voters.find_in_batches do |voters|

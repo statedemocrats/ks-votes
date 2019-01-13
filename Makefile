@@ -24,7 +24,7 @@ publish-app:
 publish: publish-results publish-app
 
 check:
-	rake precincts:check:duplicate_map_ids precincts:check:duplicate_names
+	rake precincts:check:duplicate_map_ids precincts:check:duplicate_names precincts:check:missing_census_tract
 
 orphans:
 	@psql -q -A -F '","' -d ksvotes < sql/orphan-precincts.sql | grep -v ' rows' | sed 's/\(.*\)/"\1"/g' | sed 's/""//g'
@@ -66,5 +66,6 @@ index:
 
 douglas-stats:
 	rake voters:vtds voters:county_stats COUNTY=Douglas
+	scp public/douglas-county-voters-stats.json pekmac:~/projects/ks-douglas-county/
 
 .PHONY: 2012 2014 2016 orphans

@@ -5,7 +5,7 @@ class CensusTract < ApplicationRecord
   has_many :census_precincts
 
   # m2m target table
-  has_many :overlapping_precincts, through: :census_precincts
+  has_many :overlapping_precincts, through: :census_precincts, source: "precinct"
 
   # o2m primary assignment
   has_many :precincts
@@ -26,7 +26,7 @@ class CensusTract < ApplicationRecord
 
   def voters
     pt_code = "PT#{vtd_code}"
-    Voter.where(county: county.name).where(%Q((vtd='#{vtd_code}' OR districts @> '{"pt":"#{pt_code}"}'::jsonb)))
+    Voter.where(county: county.name).where(%Q((vtd='#{vtd_code}' OR districts @> '{"pt":"#{pt_code}"}'::jsonb) OR precinct IN (?)), alt_names)
   end
 
   def each_voter(&block)
@@ -35,5 +35,13 @@ class CensusTract < ApplicationRecord
         yield(voter)
       end
     end
+  end
+
+  def alt_names
+    [precinct&.name, precinct&.alias_names].flatten.uniq
+  end
+
+  def overlapping_names
+    overlapping_precincts.map { |p| p.alias_names }.flatten.uniq
   end
 end

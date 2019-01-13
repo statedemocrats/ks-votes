@@ -839,16 +839,23 @@ namespace :precincts do
       if !tract
         # if we have census_names, that means this precinct is new since the last census (2010)
         # so make sure we create a Precinct for it and map it to an existing CensusTract
-        if census_names
+        if census_names && census_names.length > 1
           census_names.each do |n|
             c_tract = CensusTract.find_by!(name: n, county_id: douglas.id)
             precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
             cp = CensusPrecinct.find_or_create_by(precinct_id: precinct.id, census_tract_id: c_tract.id)
             douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
+            douglas_make_precinct_aliases(n, precinctid, subprecinctid, c_tract.precinct.id)
+            douglas_make_precinct_aliases(name, precinctid, subprecinctid, c_tract.precinct.id)
           end
+        elsif census_names
+          c_tract = CensusTract.find_by!(name: census_names.first, county_id: douglas.id)
+          curated_alias(c_tract.precinct.id, name)
+          douglas_make_precinct_aliases(name, precinctid, subprecinctid, c_tract.precinct.id)
         else
-          precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
-          douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
+          # TODO this creates orphaned precincts with no census tract
+          #precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
+          #douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
         end
         next
 

@@ -74,11 +74,10 @@ class VoterReporter
 
       report[ct.map_id] = stats
       report[:names][ct.name] = ct.map_id
+
       # all the aliases
-      if ct.precinct
-        ct.precinct.alias_names.each do |n|
-          report[:names][n] = ct.map_id
-        end
+      ct.alt_names.each do |n|
+        report[:names][n] = ct.map_id
       end
     end
 

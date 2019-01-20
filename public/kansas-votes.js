@@ -6,6 +6,14 @@ const DEFAULT_WEIGHT = 0.5;
 var style = { weight: DEFAULT_WEIGHT, opacity: 1, fillOpacity: 0 };
 var renderPolys = function(polys) {
   //console.log('clicked on', polys);
+
+  // overlays may change between clicks, so always clear the info box each time.
+  $('#county').html('');
+  $('#cd').html('');
+  $('#house').html('');
+  $('#senate').html('');
+  $('#precinct').html('');
+
   $.each(polys, function(idx, poly) {
     if (!poly) {
       console.log("No poly for idx", idx);
@@ -298,9 +306,9 @@ var baseLayers = {
 
 var overlays = {
   "Counties": counties,
-  "2016 Congressional Districts": cong_distr,
-  "2016 State Senate": state_leg_upper,
-  "2016 State House": state_leg_lower,
+  "2018 Congressional Districts": cong_distr,
+  "2018 State Senate": state_leg_upper,
+  "2018 State House": state_leg_lower,
   "2012 Precincts": precincts
 };
 

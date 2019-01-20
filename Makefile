@@ -68,4 +68,6 @@ douglas-stats:
 	rake voters:vtds voters:county_stats COUNTY=Douglas
 	scp public/douglas-county-voters-stats.json pekmac:~/projects/ks-douglas-county/
 
+fresh: clean check years report publish-results
+
 .PHONY: 2012 2014 2016 orphans

@@ -9,6 +9,9 @@ namespace :openelections do
 
     year.split(/\ *,\ */).each do |y|
       dir = oe_dir + y + '/'
+      if Dir.exists?(dir + 'counties')
+        dir += 'counties/'
+      end
       puts "Loading files for #{y} from #{dir}"
       if !Dir.exists?(dir)
         raise "Can't find dir #{dir}"

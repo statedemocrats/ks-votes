@@ -41,8 +41,11 @@ orphans:
 2017:
 	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2017
 
+2018:
+	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2018
+
 years:
-	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2012,2014,2016,2017
+	rake openelections:load_files OE_DIR=../openelections-data-ks/ YEAR=2012,2014,2016,2017,2018
 
 joco:
 	rake openelections:load_file FILE=../openelections-data-ks/2016/20161108__ks__general__johnson__precinct.csv

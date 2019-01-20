@@ -54,6 +54,10 @@ module OpenElections
 
     # if file naming convention ever changes, this date munging will break.
     el_date, state, which, cty, prc = File.basename(file).split('__')
+    if which == 'primary' && !ENV['INCLUDE_PRIMARY']
+      puts "Skipping #{file} - set INCLUDE_PRIMARY to parse primary results"
+      return
+    end
     el_dt = DateTime.strptime("#{el_date}T000000", '%Y%m%dT%H%M%S')
     election = Election.find_or_create_by(name: "#{el_dt.year} #{which}") do |e|
       e.date = el_dt.to_date

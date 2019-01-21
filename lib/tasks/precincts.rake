@@ -752,13 +752,18 @@ namespace :precincts do
       precinct = row['PRECINCT']
       city = row['CITY']
       abbr = city_abbrs[city] or fail "Wyandotte - no city abbreviation for #{city}"
-      short = sprintf("%s %s-%s", abbr, ward, precinct)
+      short = sprintf("%s %s-%s", city, ward, precinct)
+      shorter = sprintf("%s %s-%s", abbr, ward, precinct)
       name = sprintf("%s Ward %d Precinct %02d", city, ward.to_i, precinct.to_i)
       alt_name = sprintf("%s Ward %02d Precinct %02d", city, ward.to_i, precinct.to_i)
       if p = Precinct.find_by(name: [name, alt_name], county_id: wyandotte.id)
         unless p.has_alias?(short)
           pa = curated_alias(p.id, short)
           puts "[Wyandotte] Alias short #{blue(short)} -> #{green(name)}"
+        end
+        unless p.has_alias?(shorter)
+          pa = curated_alias(p.id, shorter)
+          puts "[Wyandotte] Alias shorter #{blue(shorter)} -> #{green(name)}"
         end
         if p.name != alt_name && !p.has_alias?(alt_name)
           pa = curated_alias(p.id, alt_name)
@@ -769,6 +774,10 @@ namespace :precincts do
         unless p.has_alias?(short)
           pa = curated_alias(p.id, short)
           puts "[Wyandotte] Alias short #{blue(short)} -> #{green(p.name)} (via CensusTract #{vtd_code})"
+        end
+        unless p.has_alias?(shorter)
+          pa = curated_alias(p.id, shorter)
+          puts "[Wyandotte] Alias shorter #{blue(shorter)} -> #{green(name)}"
         end
         if alt_name != name && !p.has_alias?(alt_name)
           pa = curated_alias(p.id, alt_name)
@@ -781,7 +790,9 @@ namespace :precincts do
         puts "[Wyandotte] Created CensusTract and Precinct #{green(name)} with VTD #{vtd_code}"
         curated_alias(p.id, alt_name)
         curated_alias(p.id, short)
+        curated_alias(p.id, shorter)
         puts "[Wyandotte] Alias short #{blue(short)} -> #{green(p.name)}"
+        puts "[Wyandotte] Alias shorter #{blue(shorter)} -> #{green(p.name)}"
         puts "[Wyandotte] Alias alt #{blue(alt_name)} -> #{green(p.name)}"
       else
         puts "[Wyandotte] cannot locate Precinct #{name} or CensusTract #{vtd_code} for #{row.inspect}"

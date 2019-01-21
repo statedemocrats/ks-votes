@@ -13,11 +13,13 @@ module OpenElections
     'Advance Ballots',
     'Advance Voters',
     'Advanced',
+    'Ballots Cast',
     'Ent Test',
     'President',
     'Prov',
     'Provisional',
     'Paper Ballots',
+    'Registered Voters',
     'Supplemental Votes',
     'Total',
     'Totals',
@@ -72,6 +74,8 @@ module OpenElections
       if debug?
         puts "Line #{line_n} #{row.inspect}"
       end
+
+      next if row['office'].match(/^(Ballots Cast|Registered Voters)$/)
 
       # some required fields
       missing_field = false

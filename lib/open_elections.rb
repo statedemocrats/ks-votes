@@ -75,7 +75,7 @@ module OpenElections
         puts "Line #{line_n} #{row.inspect}"
       end
 
-      next if row['office'].match(/^(Ballots Cast|Registered Voters)$/)
+      next if !row['office'] or row['office'].match(/^(Ballots Cast|Registered Voters)$/)
 
       # some required fields
       missing_field = false

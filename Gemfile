@@ -8,14 +8,14 @@ git_source(:github) do |repo_name|
 end
 
 
-gem 'rails', '~> 5.1.3'
+gem 'rails', '>= 5.1.3'
 gem 'pg'
 #gem 'puma', '~> 3.7'
-gem 'sass-rails', '~> 5.0'
-gem 'jbuilder', '~> 2.5'
-gem 'jsonapi-resources'
-gem "font-awesome-rails"
-gem 'jquery-rails'
+#gem 'sass-rails', '~> 5.0'
+#gem 'jbuilder', '~> 2.5'
+#gem 'jsonapi-resources'
+#gem "font-awesome-rails"
+#gem 'jquery-rails'
 gem 'term-ansicolor'
 gem 'ansi'
 gem 'httparty'

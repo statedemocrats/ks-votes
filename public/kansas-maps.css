@@ -146,3 +146,9 @@ nav > ul > li:hover > a > .caret {
 .winner {
   background-color: #f7f28f;
 }
+
+footer {
+  clear: both;
+  border-top: 1px solid #eee;
+  padding: 1em;
+}

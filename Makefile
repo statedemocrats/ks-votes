@@ -71,6 +71,7 @@ douglas-stats:
 	rake precincts:douglas
 	rake voters:vtds voters:county_stats COUNTY=Douglas
 	cp public/douglas-county-voters-stats.json ../ks-douglas-county/
+	scp public/douglas-county-voters-stats.json pekmac:~/projects/ks-douglas-county/
 
 fresh: clean check years report publish-results
 

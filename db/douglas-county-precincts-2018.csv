@@ -45,7 +45,7 @@ Lawrence Precinct 37,37,1,
 Lawrence Precinct 34 Part 1,34,1,
 Lawrence Precinct 47,47,1,
 Lawrence Precinct 27,27,1,
-South Eudora Precinct 53 Part 2,53,2,
+South Eudora Precinct 53 Part 2,53,2,South Eudora Precinct 53 H10
 Lawrence Precinct 28,28,1,
 Lawrence Precinct 30 Part 2,30,2,Lawrence Precinct 30 S3
 West Eudora Precinct 50 Part 1,50,1,
@@ -68,7 +68,7 @@ Lawrence Precinct 68,68,1,
 Lawrence Precinct 69,69,1,
 East Wakarusa Precinct 65 Part 4 H46,65,4,
 Central Eudora Precinct 54,54,1,
-Marion Township Precinct 59 Part 7,59,7,
+Marion Township Precinct 59 Part 7,59,7,Marion Township Precinct 59 H54
 Clinton Township Precinct 51 Part 1,51,1,
 Kanwaka Township Precinct 56 Part 1,56,1,
 Kanwaka Township Precinct 56 Part 3,56,3,
@@ -79,18 +79,18 @@ Northwest Baldwin Precinct 60 Part 2,60,2,
 Northwest Baldwin Precinct 60 Part 3,60,3,
 Willow Springs Township Precinct 67 Part 2,67,2,
 Willow Springs Township Precinct 67 Part 3,67,3,
-Marion Township Precinct 59 Part 3,59,3,
-Marion Township Precinct 59 Part 4,59,4,
+Marion Township Precinct 59 Part 3,59,3,Marion Township Precinct 59 H45
+Marion Township Precinct 59 Part 4,59,4,Marion Township Precinct 59 H54
 South Baldwin Precinct 62 Part 1,62,1,
 Vinland Precinct 63 Part 1,63,1,
-South Eudora Precinct 53 Part 1,53,1,
+South Eudora Precinct 53 Part 1,53,1,South Eudora Precinct 53 H10
 East Wakarusa Precinct 65 Part 3 H10,65,3,
 East Wakarusa Precinct 65 Part 1 H10,65,1,
 South Baldwin Precinct 62 Part 3,62,3,
 Northeast Baldwin Precinct 61 Part 2,61,2,
 South Baldwin Precinct 62 Part 6,62,6,
 Vinland Precinct 63 Part 3,63,3,
-South Eudora Precinct 53 Part 3,53,3,
+South Eudora Precinct 53 Part 3,53,3,South Eudora Precinct 53 H10
 North Eudora Precinct 52 Part 2,52,2,
 West Eudora Precinct 50 Part 3,50,3,
 Big Springs Township Precinct 58 Part 2,58,2,
@@ -108,17 +108,17 @@ Lawrence Precinct 41 Part 1,41,1,Lawrence Precinct 41 S3 H46
 Lawrence Precinct 42 Part 1,42,1,Lawrence Precinct 42 Part 1 H46
 Lawrence Precinct 44 Part 2,44,2,
 Lawrence Precinct 46 Part 1,46,1,
-South Eudora Precinct 53 Part 5,53,5,
+South Eudora Precinct 53 Part 5,53,5,South Eudora Precinct 53 H42
 Grant Township Precinct 55 Part 3,55,3,
 Grant Township Precinct 55 Part 1,55,1,
 Grant Township Precinct 55 Part 2,55,2,
 Kanwaka Township Precinct 56 Part 4,56,4,
 Kanwaka Township Precinct 56 Part 5,56,5,
 Lecompton Township Precinct 57 Part 4,57,4,Lecompton Township Precinct 57 S2
-Marion Township Precinct 59 Part 6,59,6,
-Marion Township Precinct 59 Part 2,59,2,
-Marion Township Precinct 59 Part 1,59,1,
-Marion Township Precinct 59 Part 5,59,5,
+Marion Township Precinct 59 Part 6,59,6,Marion Township Precinct 59 H45
+Marion Township Precinct 59 Part 2,59,2,Marion Township Precinct 59 H54
+Marion Township Precinct 59 Part 1,59,1,Marion Township Precinct 59 H54
+Marion Township Precinct 59 Part 5,59,5,Marion Township Precinct 59 H45
 North Wakarusa Precinct 64 Part 2,64,2,
 North Wakarusa Precinct 64 Part 3,64,3,
 West Wakarusa Precinct 66 Part 5,66,5,
@@ -134,7 +134,7 @@ Lawrence Precinct 78,78,1,
 Lawrence Precinct 76,76,1,
 Lawrence Precinct 75,75,1,
 Lawrence Precinct 74 Part 2,74,2,
-South Eudora Precinct 53 Part 4,53,4,
+South Eudora Precinct 53 Part 4,53,4,South Eudora Precinct 53 H42
 West Eudora Precinct 50 Part 2,50,2,
 South Baldwin Precinct 62 Part 5,62,5,
 Northeast Baldwin Precinct 61 Part 3,61,3,
@@ -144,8 +144,8 @@ Lawrence Precinct 38,38,1,
 Lawrence Precinct 17,17,1,
 North Eudora Precinct 52 Twp Part 4,52,4,
 North Eudora Precinct 52 Twp Part 5,52,5,
-South Eudora Precinct 53 H42 Twp Part 6,53,6,
-South Eudora Precinct 53 Part 7,53,7,
+South Eudora Precinct 53 H42 Twp Part 6,53,6,South Eudora Precinct 53 H42
+South Eudora Precinct 53 Part 7,53,7,South Eudora Precinct 53 H42
 Kanwaka Township Precinct 56 Part 6,56,6,
 Clinton Township Precinct 51 Part 4,51,4,
 North Wakarusa Precinct 64 H45 Part 4,64,4,

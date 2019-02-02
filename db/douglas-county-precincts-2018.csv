@@ -1,5 +1,5 @@
 name,precinctid,subprecinc,census_names
-Lecompton Township Precinct 57 Part 3,57,3,
+Lecompton Township Precinct 57 Part 3,57,3,Lecompton Township Precinct 57 S19
 Lawrence Precinct 42 Part 3,42,3,
 Lawrence Precinct 42 Part 4,42,4,
 Lawrence Precinct 42 Part 2,42,2,
@@ -47,7 +47,7 @@ Lawrence Precinct 47,47,1,
 Lawrence Precinct 27,27,1,
 South Eudora Precinct 53 Part 2,53,2,
 Lawrence Precinct 28,28,1,
-Lawrence Precinct 30 Part 2,30,2,
+Lawrence Precinct 30 Part 2,30,2,Lawrence Precinct 30 S3
 West Eudora Precinct 50 Part 1,50,1,
 Lawrence Precinct 29,29,1,
 Lawrence Precinct 14,14,1,
@@ -73,8 +73,8 @@ Clinton Township Precinct 51 Part 1,51,1,
 Kanwaka Township Precinct 56 Part 1,56,1,
 Kanwaka Township Precinct 56 Part 3,56,3,
 Big Springs Township Precinct 58 Part 1,58,1,
-Lecompton Township Precinct 57 Part 1,57,1,
-Lecompton Township Precinct 57 Part 2,57,2,
+Lecompton Township Precinct 57 Part 1,57,1,Lecompton Township Precinct 57 S2
+Lecompton Township Precinct 57 Part 2,57,2,Lecompton Township Precinct 57 S2
 Northwest Baldwin Precinct 60 Part 2,60,2,
 Northwest Baldwin Precinct 60 Part 3,60,3,
 Willow Springs Township Precinct 67 Part 2,67,2,
@@ -99,13 +99,13 @@ WAK 000657,65,7,
 Lawrence Precinct 71,71,1,
 Lawrence Precinct 72,72,1,
 North Eudora Precinct 52 Part 3,52,3,
-Lawrence Precinct 30 Part 1,30,1,
+Lawrence Precinct 30 Part 1,30,1,Lawrence Precinct 30 S2
 Lawrence Precinct 34 Part 2,34,2,
 Lawrence Precinct 35 Part 2,35,2,
-Lawrence Precinct 41 Part 4,41,4,
-Lawrence Precinct 41 Part 3,41,3,
-Lawrence Precinct 41 Part 1,41,1,
-Lawrence Precinct 42 Part 1,42,1,
+Lawrence Precinct 41 Part 4,41,4,Lawrence Precinct 41 S2 H45
+Lawrence Precinct 41 Part 3,41,3,Lawrence Precinct 41 S3 H46
+Lawrence Precinct 41 Part 1,41,1,Lawrence Precinct 41 S3 H46
+Lawrence Precinct 42 Part 1,42,1,Lawrence Precinct 42 Part 1 H46
 Lawrence Precinct 44 Part 2,44,2,
 Lawrence Precinct 46 Part 1,46,1,
 South Eudora Precinct 53 Part 5,53,5,
@@ -114,7 +114,7 @@ Grant Township Precinct 55 Part 1,55,1,
 Grant Township Precinct 55 Part 2,55,2,
 Kanwaka Township Precinct 56 Part 4,56,4,
 Kanwaka Township Precinct 56 Part 5,56,5,
-Lecompton Township Precinct 57 Part 4,57,4,
+Lecompton Township Precinct 57 Part 4,57,4,Lecompton Township Precinct 57 S2
 Marion Township Precinct 59 Part 6,59,6,
 Marion Township Precinct 59 Part 2,59,2,
 Marion Township Precinct 59 Part 1,59,1,
@@ -157,9 +157,9 @@ East Wakarusa Precinct 65 Part 2 H10,65,2,
 East Wakarusa Precinct 65 H10,65,5,
 WAK 000659,65,9,
 WAK 000658,65,8,
-Lawrence Precinct 41 Part 6,41,6,
-Lawrence Precinct 41 Part 2,41,2,
-Lawrence Precinct 41 Part 5,41,5,
+Lawrence Precinct 41 Part 6,41,6,Lawrence Precinct 41 S3 H45
+Lawrence Precinct 41 Part 2,41,2,Lawrence Precinct 41 S3 H45
+Lawrence Precinct 41 Part 5,41,5,Lawrence Precinct 41 S3 H45
 Kanwaka Township Precinct 56 Part 7,56,7,
 Clinton Township Precinct 51 Part 3,51,5,
 Clinton Township Precinct 51 Part 5,51,5,

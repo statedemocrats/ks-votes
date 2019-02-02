@@ -103,7 +103,9 @@ namespace :voters do
       voters.find_in_batches do |voters|
         voters.each do |voter|
           pbar.inc
-          if voter.precinct
+          if voter.district_pt
+            voter.update_column(:vtd, voter.district_pt)
+          elsif voter.precinct
             info = precinct_finder.precinct_for_county(find_county(voter.county), voter.precinct, election_file)
             precinct = info[:precinct]
             if !precinct
@@ -112,8 +114,6 @@ namespace :voters do
             end
             next unless precinct.census_tract
             voter.update_column(:vtd, precinct.census_tract.vtd_code)
-          elsif voter.district_pt
-            voter.update_column(:vtd, voter.district_pt)
           end
         end
       end

@@ -68,8 +68,9 @@ index:
 	rake environment elasticsearch:ha:import NPROCS=2 CLASS=Voter FORCE=1
 
 douglas-stats:
+	rake precincts:douglas
 	rake voters:vtds voters:county_stats COUNTY=Douglas
-	scp public/douglas-county-voters-stats.json pekmac:~/projects/ks-douglas-county/
+	cp public/douglas-county-voters-stats.json ../ks-douglas-county/
 
 fresh: clean check years report publish-results
 

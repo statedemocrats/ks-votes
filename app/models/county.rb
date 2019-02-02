@@ -13,4 +13,12 @@ class County < ApplicationRecord
   def vtd_for(vtd)
     "20#{fips}#{vtd}"
   end
+
+  def precinct_matching(str)
+    Precinct.find_by_any_name(str, id)
+  end
+
+  def precinct_names
+    precincts.map(&:name)
+  end
 end

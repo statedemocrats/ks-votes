@@ -860,13 +860,15 @@ namespace :precincts do
             douglas_make_precinct_aliases(name, precinctid, subprecinctid, c_tract.precinct.id)
           end
         elsif census_names
+          puts "census_names:#{census_names}"
           c_tract = CensusTract.find_by!(name: census_names.first, county_id: douglas.id)
           curated_alias(c_tract.precinct.id, name)
           douglas_make_precinct_aliases(name, precinctid, subprecinctid, c_tract.precinct.id)
         else
           # TODO this creates orphaned precincts with no census tract
-          #precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
-          #douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
+          # often this is because the precinct is newly carved since the last census
+          precinct = Precinct.find_or_create_by(county_id: douglas.id, name: name)
+          douglas_make_precinct_aliases(name, precinctid, subprecinctid, precinct.id)
         end
         next
 
@@ -898,6 +900,7 @@ namespace :precincts do
     if subprecinctid.to_i == 1
       aliases << "Precinct #{precinctid}"
       aliases << "Prec #{precinctid}"
+      aliases << precinctid
     end
     if precinctid.to_i < 10 && precinctid.match(/^\d$/)
       aliases << "Precinct 0#{precinctid}-#{subprecinctid}"

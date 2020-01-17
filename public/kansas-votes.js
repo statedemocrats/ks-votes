@@ -4,6 +4,9 @@ var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly, lastCD;
 var listAllRaces;
 const DEFAULT_WEIGHT = 0.5;
 var style = { weight: DEFAULT_WEIGHT, opacity: 1, fillOpacity: 0 };
+
+var initial_page_state = getJsonFromUrl(true);
+
 var renderPolys = function(polys) {
   //console.log('clicked on', polys);
 
@@ -292,10 +295,43 @@ var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</
 var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
 var streets = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
 
+var initialLayers = [grayscale];
+if (!initial_page_state) {
+  initialLayers.push(counties);
+}
+else {
+  //console.log(initial_page_state);
+  if (!initial_page_state.layers) {
+    initialLayers.push(counties);
+  }
+  else {
+    let layers = initial_page_state.layers;
+    layers.forEach(function(name, idx, arr) {
+      if (name == "counties") {
+        initialLayers.push(counties);
+      }
+      else if (name == "cong_distr") {
+        initialLayers.push(cong_distr);
+      }
+      else if (name == "state_leg_upper") {
+        initialLayers.push(state_leg_upper);
+      }
+      else if (name == "state_leg_lower") {
+        initialLayers.push(state_leg_lower);
+      }
+      else if (name == "precincts") {
+        initialLayers.push(precincts);
+      }
+    });
+  }
+}
+
+//console.log(initialLayers);
+
 map = L.map('map', {
   center: [38.5138, -98.3200],
   zoom: 7,
-  layers: [grayscale, counties],
+  layers: initialLayers,
   fullscreenControl: true
 });
 

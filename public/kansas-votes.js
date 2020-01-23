@@ -1,4 +1,7 @@
 // KS Votes JS
+// Yes, this is old school js in major need of a rewrite. If you're reading this,
+// I'd be happy to collaborate on that project.
+
 var map, counties, state_leg_lower, state_leg_upper, precincts, info, cong_distr;
 var lastCounty, lastSenate, lastHouse, lastPrecinct, lastPoly, lastCD;
 var listAllRaces;

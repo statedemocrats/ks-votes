@@ -131,6 +131,7 @@ var polyEach = function(p, layer) {
 var elections, legend, statewideRace, districts;
 $.getJSON('all-tracts-by-year.json', function(data) {
   elections = data;
+  statewideRace = getStatewideRaceId(); // set initial state
 });
 $.getJSON('ksleg.json', function(data) {
   districts = data;
@@ -174,6 +175,7 @@ var colors = {
 
 var getPrecinctColor = function(feature) {
   if (!statewideRace) {
+    console.log("statewideRace not yet set");
     return;
   }
   var unknown = colors['unknown'];
@@ -278,6 +280,7 @@ precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson',
 precincts.on('data:loaded', function() {
   $('#mask').ploading({action: 'hide'});
   $('#mask').hide();
+  precincts.on('add', setPrecinctsColorByRace);
 });
 
 var setPrecinctsColorByRace = function() {
@@ -287,7 +290,6 @@ var setPrecinctsColorByRace = function() {
   });
 };
 
-precincts.on('add', setPrecinctsColorByRace);
 $('#election').on('change', setPrecinctsColorByRace);
 
 var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +

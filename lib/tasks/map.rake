@@ -24,17 +24,20 @@ namespace :map do
 
   desc 'mimic kansas-votes.js data handling to build single .csv'
   task csv: :environment do
-    require 'rgeo'
-    require 'rgeo/geo_json'
     require 'csv_builder'
 
+    puts "Reading .json"
     tracts_json = File.join(Rails.root, 'public/all-tracts-by-year.json')
     tracts_geojson = File.join(Rails.root, 'public/kansas-state-voting-precincts-2012-sha-min.geojson')
     builder = CsvBuilder.new(
       elections: JSON.parse(File.read(tracts_json)),
-      tracts: RGeo::GeoJSON.decode(File.read(tracts_geojson), json_parser: :json)
+      tracts: JSON.parse(File.read(tracts_geojson)),
+      counties: Hash[County.all.map { |c| [c.fips, c.name] }],
     )
 
-    builder.to_csv('public/election-results-combined.csv')
+    puts "Writing .csv"
+    csvfile = 'public/election-results-combined.csv'
+    rows = builder.to_csv(csvfile)
+    puts "Wrote #{rows} rows, #{builder.header.size} columns to #{csvfile}"
   end
 end

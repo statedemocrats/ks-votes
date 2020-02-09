@@ -17,7 +17,7 @@ GEM
   specs:
     RubyInline (3.12.4)
       ZenTest (~> 4.3)
-    ZenTest (4.11.1)
+    ZenTest (4.12.0)
     actioncable (5.2.2)
       actionpack (= 5.2.2)
       nio4r (~> 2.0)
@@ -207,4 +207,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.16.1
+   1.17.3

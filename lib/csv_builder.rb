@@ -45,17 +45,25 @@ class CsvBuilder
       :geosha,
       :fuzzy_boundary
     ]
-    legend.dig("races", "elections").each do |election_id, election|
-      legend.dig("races", "offices").each do |office_id, office|
-        race = [election, office["n"], office["d"]].reject(&:empty?).join(" ")
-        header << "#{race} Ballots"
-        header << "#{race} Winner"
-        legend.dig("parties").each do |party_key, party_name|
-          party = party_name.titlecase
-          header << "#{race} #{party} Votes"
-          header << "#{race} #{party} %"
-        end
+    legend.dig("races", "elections").each do |election_id, election_name|
+      election = Election.find_by(name: election_name)
+      election.offices.each do |office|
+        race = "#{election_name} #{office}"
+        header << "#{race} District" if office =~ /House|Senate/
+        header << headers_for_race(race)
       end
+    end
+    header.flatten
+  end
+
+  def headers_for_race(race)
+    header = []
+    header << "#{race} Ballots"
+    header << "#{race} Winner"
+    legend.dig("parties").each do |party_id, party_name|
+      party = party_name.titlecase
+      header << "#{race} #{party} Votes"
+      header << "#{race} #{party} %"
     end
     header
   end
@@ -64,9 +72,9 @@ class CsvBuilder
     tracts["features"].map do |precinct|
       props = precinct["properties"]
       name = props['VTDNAME']
-      vtd = props['VTD_S']
+      vtd = props['VTD_S'] + "\003"
       elections_key = props['VTD_2012'] # state + county + vtd
-      county_fips = elections_key.match(/^..(...)/)[1]
+      county_fips = elections_key.match(/^..(...)/)[1] + "\003"
       results = elections[elections_key]
       #puts "name:#{name} vtd:#{vtd} elections:#{results.pretty_inspect}"
       row = {
@@ -87,11 +95,13 @@ class CsvBuilder
           office = legend.dig("races", "offices", office_id)
           office_name = office["n"]
           office_district = office["d"]
-          #puts "election:#{election} office_name:#{office_name} district:#{office_district} votes:#{votes}"
-          race = [election, office_name, office_district].reject(&:empty?).join(" ")
+          race = "#{election} #{office_name}"
+          if office_district.present?
+            row["#{race} District"] = office_district
+          end
           #pp votes
           row["#{race} Ballots"] = votes["T"]
-          row[:fuzzy_boundary] = votes["f"].present?
+          row[:fuzzy_boundary] = votes["f"].present? ? "TRUE" : "FALSE"
           row["#{race} Winner"] = legend.dig("parties", votes["w"])&.titlecase
           votes["P"].each do |party_key, vp|
             party = legend.dig("parties", party_key)&.titlecase

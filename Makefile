@@ -1,5 +1,11 @@
 # common tasks too simple for Rakefile
 
+c:
+	bundle exec rails console
+
+db:
+	bundle exec rails dbconsole
+
 setup:
 	bundle install
 	rake db:setup map:setup
@@ -17,6 +23,7 @@ report:
 publish-results:
 	scp public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 	scp public/all-tracts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
+	scp public/election-results-combined.csv statedemocrats.us:/data/statedemocrats.us/kansas/map/
 
 publish-app:
 	ssh statedemocrats.us 'cd /data/statedemocrats.us/kansas/map/ && git pull'

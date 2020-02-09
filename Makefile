@@ -8,7 +8,7 @@ clean:
 	rm -f log/development.log
 	rake db:reset precincts:aliases
 
-deploy:
+install:
 	rake map:setup
 
 report:
@@ -22,6 +22,8 @@ publish-app:
 	ssh statedemocrats.us 'cd /data/statedemocrats.us/kansas/map/ && git pull'
 
 publish: publish-results publish-app
+
+deploy: publish
 
 check:
 	rake precincts:check:duplicate_map_ids precincts:check:duplicate_names precincts:check:missing_census_tract

@@ -1,5 +1,11 @@
 # common tasks too simple for Rakefile
 
+c:
+	bundle exec rails console
+
+db:
+	bundle exec rails dbconsole
+
 setup:
 	bundle install
 	rake db:setup map:setup
@@ -8,20 +14,25 @@ clean:
 	rm -f log/development.log
 	rake db:reset precincts:aliases
 
-deploy:
+install:
 	rake map:setup
 
 report:
-	rake precincts:report:by_year map:census_tracts
+	rake precincts:report:by_year map:census_tracts map:csv
 
 publish-results:
 	scp public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 	scp public/all-tracts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 
+publish-csv:
+	scp public/election-results-combined.csv statedemocrats.us:/data/statedemocrats.us/kansas/map/
+
 publish-app:
 	ssh statedemocrats.us 'cd /data/statedemocrats.us/kansas/map/ && git pull'
 
-publish: publish-results publish-app
+publish: publish-results publish-csv publish-app
+
+deploy: publish
 
 check:
 	rake precincts:check:duplicate_map_ids precincts:check:duplicate_names precincts:check:missing_census_tract

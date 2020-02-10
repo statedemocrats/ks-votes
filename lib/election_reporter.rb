@@ -67,7 +67,7 @@ class ElectionReporter
     # for all the races in a given year or years,
     # calculate the totals for each office and the spread
     # between the top two candidates.
-    report = {S: {}, legend: self.class.legend}
+    report = {S: {}, legend: self.class.legend.merge(built: Time.zone.now.iso8601)}
     return report unless reported
     reported.results.full.each do |r|
       next if year and r.election.date.year != year.to_i

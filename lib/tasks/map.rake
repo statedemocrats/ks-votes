@@ -21,4 +21,23 @@ namespace :map do
     rep = CensusTractReporter.all_by_year
     File.write('public/all-tracts-by-year.json', rep.to_json)
   end
+
+  desc 'mimic kansas-votes.js data handling to build single .csv'
+  task csv: :environment do
+    require 'csv_builder'
+
+    puts "Reading .json"
+    tracts_json = File.join(Rails.root, 'public/all-tracts-by-year.json')
+    tracts_geojson = File.join(Rails.root, 'public/kansas-state-voting-precincts-2012-sha-min.geojson')
+    builder = CsvBuilder.new(
+      elections: JSON.parse(File.read(tracts_json)),
+      tracts: JSON.parse(File.read(tracts_geojson)),
+      counties: Hash[County.all.map { |c| [c.fips, c.name] }],
+    )
+
+    puts "Writing .csv"
+    csvfile = 'public/election-results-combined.csv'
+    rows = builder.to_csv(csvfile)
+    puts "Wrote #{rows} rows, #{builder.header.size} columns to #{csvfile}"
+  end
 end

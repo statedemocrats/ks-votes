@@ -34,7 +34,7 @@
 </div>
 
 <div id='find'>
- <input id='precinct' placeholder='Precinct Name' size='80'></input>
+ <input id='precinct' placeholder='Shape Name' size='80'></input>
  <button id='search'>Search</button>
 </div>
 <div id='map'></div>
@@ -44,8 +44,8 @@
   var map, geojson, lastPoly, info;
   var style = { weight: 1, opacity: 1, fillOpacity: 0 };
   var polyClick = function(e) {
-    var lat = e.latlng.lat;
-    var lng = e.latlng.lng;
+    var lat = e.latlng ? e.latlng.lat : null;
+    var lng = e.latlng ? e.latlng.lng : null;
     var poly = e.target;
     var props = poly.feature.properties;
     $('#details').html(JSON.stringify(props, null, '<br/>') + '<p>[' + lat + ',' + lng + ']</p>');
@@ -103,7 +103,7 @@
 
   map = L.map('map', {
     center: mapCenters[county] || [38.5138, -98.3200],
-    zoom: 10,
+    zoom: mapCenters[county] ? 10 : 7,
     layers: [grayscale, geojson]
   });
 
@@ -116,7 +116,7 @@
   };
 
   info.update = function (props) {
-    this._div.innerHTML = '<h4>Precinct</h4>' +  (props ?  (props.NAME || props.PRECINCT || props.name) : 'Hover over a precinct');
+    this._div.innerHTML = '<h4>Shape</h4>' +  (props ?  (props.NAME || props.PRECINCT || props.name) : 'Hover over a shape');
   };
 
   info.addTo(map);

@@ -17,7 +17,8 @@
 
 <?php
 $files = scandir(dirname($_SERVER['SCRIPT_FILENAME']));
-$geojson_files = preg_grep('/^.+-county-precincts-.+\.geojson$/', $files);
+$geojson_files = preg_grep('/^.+\.geojson$/', $files);
+//$geojson_files = preg_grep('/^.+-county-precincts-.+\.geojson$/', $files);
 //print_r($geojson_files);
 foreach ($geojson_files as $f) {
   echo "<li><a href='kansas-leaflet.php?f=$f'>$f</a></li>";

@@ -72,15 +72,15 @@ class CsvBuilder
     tracts["features"].map do |precinct|
       props = precinct["properties"]
       name = props['VTDNAME']
-      vtd = props['VTD_S'] + "\003"
+      vtd = props['VTD_S']
       elections_key = props['VTD_2012'] # state + county + vtd
-      county_fips = elections_key.match(/^..(...)/)[1] + "\003"
+      county_fips = elections_key.match(/^..(...)/)[1]
       results = elections[elections_key]
       #puts "name:#{name} vtd:#{vtd} elections:#{results.pretty_inspect}"
       row = {
-        county: counties[county_fips],
+        county: counties[county_fips] + "\003",
         vtdname: name,
-        vtd: vtd,
+        vtd: vtd + "\003",
         fips: elections_key,
         area: props['DATA'],
         population: props['POPULATION'],

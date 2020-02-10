@@ -18,17 +18,19 @@ install:
 	rake map:setup
 
 report:
-	rake precincts:report:by_year map:census_tracts
+	rake precincts:report:by_year map:census_tracts map:csv
 
 publish-results:
 	scp public/all-precincts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
 	scp public/all-tracts-by-year.json statedemocrats.us:/data/statedemocrats.us/kansas/map/
+
+publish-csv:
 	scp public/election-results-combined.csv statedemocrats.us:/data/statedemocrats.us/kansas/map/
 
 publish-app:
 	ssh statedemocrats.us 'cd /data/statedemocrats.us/kansas/map/ && git pull'
 
-publish: publish-results publish-app
+publish: publish-results publish-csv publish-app
 
 deploy: publish
 

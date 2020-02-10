@@ -44,9 +44,11 @@
   var map, geojson, lastPoly, info;
   var style = { weight: 1, opacity: 1, fillOpacity: 0 };
   var polyClick = function(e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
     var poly = e.target;
     var props = poly.feature.properties;
-    $('#details').html(JSON.stringify(props, null, '<br/>'));
+    $('#details').html(JSON.stringify(props, null, '<br/>') + '<p>[' + lat + ',' + lng + ']</p>');
     poly.setStyle({ weight: 3, color: '#666', fillOpacity: 0.1 });
     if (lastPoly && lastPoly != poly) {
       geojson.resetStyle(lastPoly);
@@ -76,7 +78,9 @@
   };
   var opts = { style: style, onEachFeature: polyEach };
 
-  geojson = L.geoJson.ajax('<?php echo $_GET['f'] ?>', opts);
+  var geojsonFile = '<?php echo $_GET['f'] ?>';
+
+  geojson = L.geoJson.ajax(geojsonFile, opts);
 
   var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -86,9 +90,20 @@
   var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
   var streets = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
 
+  var fileParts = geojsonFile.split(/\-/);
+  var county = fileParts[0];
+
+  let mapCenters = {
+    'johnson': [38.8849,-94.8010],
+    'douglas': [38.8829,-95.2692],
+    'sedgwick': [37.6887,-97.4580],
+    'shawnee': [39.0503,-95.7517],
+    'wyandotte': [39.1094,-94.7497]
+  };
+
   map = L.map('map', {
-    center: [38.5138, -98.3200],
-    zoom: 7,
+    center: mapCenters[county] || [38.5138, -98.3200],
+    zoom: 10,
     layers: [grayscale, geojson]
   });
 

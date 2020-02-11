@@ -18,27 +18,33 @@
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
+  <link rel="stylesheet" href="/assets/main.css">
   <link rel="stylesheet" type="text/css" href="kansas-maps.css">
 
 </head>
 <body>
 
+<div id="mask"></div>
+
 <nav class="menu">
  <ul>
-  <li><a href="./">Home</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a href="./">Maps</a></li>
+  <li class="active"><a href="#" class="active">Kansas Map <?php echo htmlspecialchars($_GET['f']) ?></a></li>
  </ul>
 </nav>
 
 <div id='about'>
-<h1>Kansas Map <?php echo htmlspecialchars($_GET['f']) ?></h1>
 </div>
 
 <div id='find'>
  <input id='precinct' placeholder='Shape Name' size='80'></input>
  <button id='search'>Search</button>
 </div>
-<div id='map'></div>
-<div id='details'></div>
+<div class="map-container">
+  <div id='map'></div>
+  <div id='details'></div>
+</div>
 
 <script>
   var map, geojson, lastPoly, info;

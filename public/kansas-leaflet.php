@@ -38,6 +38,7 @@
 </div>
 
 <div id='find'>
+ <!-- adjust size based on @media -->
  <input id='precinct' placeholder='Search for shape name' size='60'></input>
  <button id='search'>Search</button>
 </div>

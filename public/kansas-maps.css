@@ -75,9 +75,8 @@ footer {
 }
 
 /* smaller on small screens */
-@media screen and (max-width: 480px) and (orientation: landscape) {
+@media screen and (orientation: landscape) {
   #details {
-    display: none;
     max-height: 100px;
     max-width: 40%;
   }

@@ -26,6 +26,7 @@
 
 <div id="mask"></div>
 
+<header class="site-header">
 <nav class="menu">
  <ul>
   <li><a href="/">Home</a></li>
@@ -38,13 +39,20 @@
 </div>
 
 <div id='find'>
- <input id='precinct' placeholder='Shape Name' size='80'></input>
+ <input id='precinct' placeholder='Search for shape name' size='60'></input>
  <button id='search'>Search</button>
 </div>
+</header>
+
+<div id="content">
 <div class="map-container">
   <div id='map'></div>
   <div id='details'></div>
 </div>
+</div>
+
+<footer>
+</footer>
 
 <script>
   var map, geojson, lastPoly, info;

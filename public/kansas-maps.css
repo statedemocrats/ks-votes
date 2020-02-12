@@ -8,6 +8,31 @@
   display: none;
   z-index: 1001;
 }
+
+header {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  border-top: 1px solid #eee;
+}
+
+#content {
+  position: fixed;
+  top: 67px;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+}
+
 #about {
   margin: 4px 8px;
   font-size: 80%;
@@ -23,7 +48,7 @@
 #map {
   border: 1px solid #ddd;
   width: 100%;
-  height: 80%;
+  height: 100%;
   position: absolute;
 }
 
@@ -179,8 +204,3 @@ nav > ul > li:hover > a > .caret {
   background-color: #f7f28f;
 }
 
-footer {
-  clear: both;
-  border-top: 1px solid #eee;
-  padding: 1em;
-}

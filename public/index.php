@@ -6,12 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans">
+  <link rel="stylesheet" href="/assets/main.css">
   <link rel="stylesheet" type="text/css" href="kansas-maps.css">
 
 </head>
 <body>
 
-<h2>Kansas Maps</h2>
+<header class="site-header">
+<nav class="menu">
+ <ul>
+  <li><a href="/">Home</a></li>
+  <li class="active"><a href="#" class="active">Kansas Maps</a></li>
+ </ul>
+</nav>
+</header>
+
 <ul>
  <li><a href="kansas-votes.html">Combined 2012 County, Legislative, Precinct</a></li>
 

@@ -31,7 +31,6 @@
  <ul>
   <li><a href="/">Home</a></li>
   <li><a href="./">Maps</a></li>
-  <li class="active"><a href="#" class="active">Kansas Map <?php echo htmlspecialchars($_GET['f']) ?></a></li>
  </ul>
 </nav>
 
@@ -52,6 +51,7 @@
 </div>
 
 <footer>
+<a href="#" class="active">Kansas Map <?php echo htmlspecialchars($_GET['f']) ?></a>
 </footer>
 
 <script>

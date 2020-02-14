@@ -67,11 +67,7 @@ footer {
   min-width: 100px;
   max-width: 50%;
   overflow: auto;
-}
-
-#details p,
-#details div {
-  font-size: 70%;
+  font-size: 11px;
 }
 
 /* smaller on small screens */

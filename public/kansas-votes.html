@@ -17,10 +17,13 @@
   <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <script src="https://statedemocrats.us/js/p-loading.min.js"></script>
 
+  <link rel="stylesheet" href="/assets/main.css">
   <link rel="stylesheet" type="text/css" href="kansas-maps.css">
   <link rel="stylesheet" type="text/css" href="https://statedemocrats.us/css/p-loading.min.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
@@ -40,25 +43,25 @@
 </head>
 <body>
 
+<div id="mask"></div>
+
+<header class="site-header">
 <nav class="menu">
  <ul>
-  <li><a href="./">Home</a></li>
+  <li><a href="/">Home</a></li>
+  <li><a href="./">Maps</a></li>
+  <li class="active"><a class="active" href="#">Kansas Voting History</a></li>
+  <li><a href="/about">About</a></li>
  </ul>
 </nav>
 
-<div id="mask"></div>
-
 <div id='about'>
-<h1>Kansas Voting History</h1>
 <p>
 Use the controls in the upper right corner of the map to toggle map layers on/off.
-</p>
-<p>
-Precinct boundaries are from 2012 (originally 2010 census), the most recent state-wide shapefile available.
+<a href=#" title="Precinct boudaries are from 2012 (originally 2010 census), the most recent state-wide shapefile available.
 As a result, when viewing precinct results from more recent elections, the color yellow is used to indicate
 a precinct that has changed boundary and/or name since 2012 and can no longer be neatly aligned with
-the precinct at election time.
-See <a href="../map/">list of more recent shapefiles</a> without election results.
+the precinct at election time.">About precinct boundaries</a>
 </p>
 </div>
 
@@ -66,9 +69,16 @@ See <a href="../map/">list of more recent shapefiles</a> without election result
  <input id='iprecinct' placeholder='Precinct Name' size='80'></input>
  <button id='search'>Search</button>
 </div>
-<div id='map'></div>
-<div id='details'>
- When 2012 Precincts are displayed, use colors from results:
+
+</header>
+
+<div id="content">
+ <div class="map-container">
+  <div id='map'></div>
+  <div id='details'>
+ <p>
+  When 2012 Precincts are displayed, use colors from results:
+  <br/>
  <select id="election">
   <option value="2012 President">2012 President</option>
   <option value="2014 Governor">2014 Governor</option>
@@ -79,29 +89,31 @@ See <a href="../map/">list of more recent shapefiles</a> without election result
   <option value="2018 Governor">2018 Governor</option>
   <option value="2018 Secretary of State">2018 Secretary of State</option>
  </select>
+ </p>
  <div id="county"></div>
  <div id="cd"></div>
  <div id="house"></div>
  <div id="senate"></div>
  <div id="precinct"></div>
  <div id="races"></div>
+  </div>
+ </div>
 </div>
+
+<footer>
+</footer>
 
 <script type="text/javascript">
   $(document).ready(function() {
     var $mask = $('#mask');
     $mask.show();
     $mask.ploading({ action: 'show' });
+    $( function() { $( document ).tooltip(); } );
   });
 </script>
 <script src="safe-objects.js"></script>
 <script src="url-query-parser.js"></script>
 <script src="kansas-votes.js"></script>
-
-<footer>
- <div>This map is <a href="https://github.com/statedemocrats/ks-votes">open source</a> and produced using all open source materials.</div>
- <div>For more information, <a href="/about">read about this site</a>.</div>
-</footer>
 
 </body>
 </html>

@@ -7,7 +7,6 @@
   * State House
   * State Senate
   * Congressional
-  * Precinct VTD
 
 */
 
@@ -81,21 +80,26 @@ foreach($geo_files as $key => $file) {
   $pointLocation = new pointLocation();
 
   foreach($geo['features'] as $feature) {
-    $coords = $feature['geometry']['coordinates'];
+    $id = $feature['properties'][$property];
+    $coords = $feature['geometry']['coordinates'][0];
     $polygon = array();
     foreach($coords as $pair) {
-      array_push($polygon, "$pair[0] $pair[1]");
+      $polygon[] = "$pair[1] $pair[0]";
     }
 
-    if ($pointLocation->pointInPolygon($point, $polygon)) {
-      $result[$key] = $feature['properties'][$property];
+    //error_log("$key $file $id looking for '$point' in " . var_export($polygon, true));
+
+    $r = $pointLocation->pointInPolygon($point, $polygon);
+
+    if ($r == 'inside' || $r == 'boundary' || $r == 'vertex') {
+      $result[$key] = $id;
       break;
     }
   }
 }
 
 foreach($district_courts as $district => $counties) {
-  if (in_array($result['county'], $counties)) {
+  if (in_array($result['c'], $counties)) {
     $result['dc'] = $district;
     break;
   }

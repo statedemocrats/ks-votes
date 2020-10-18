@@ -27,7 +27,7 @@ $geo_files = array(
   'sd' => 'cb_2016_20_sldu_500k.geojson',
   'cd' => 'KS_Cong_2012.geojson',
   'sbe' => 'Ks_SBOE_2012.geojson',
-  'county' => 'ks-counties.geojson',
+  'c' => 'ks-counties.geojson',
 );
 
 $property_keys = array(

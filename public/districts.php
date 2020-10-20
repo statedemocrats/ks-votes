@@ -10,6 +10,8 @@
 
 */
 
+header('Content-Type: application/json');
+
 $lat = isset($_GET['lat']) ? $_GET['lat'] : null;
 $lng = isset($_GET['lng']) ? $_GET['lng'] : null;
 

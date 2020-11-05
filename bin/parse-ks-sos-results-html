@@ -1,0 +1,56 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use HTML::TreeBuilder::XPath;
+use File::Slurper qw( read_text );
+use Text::CSV_XS;
+use Data::Dump qw( dump );
+
+# example for fetching html file
+#  curl -k https://ent.sos.ks.gov/kssos_ent.html > kssos_ent.html-`date  '+%F%H%M%S'`
+#
+#
+# example usage:
+#  perl bin/parse-ks-sos-results-html kssos_ent.html-2020-11-05134736 > kssos_ent-2020-11-05134736.csv
+
+my $usage = "$0 path/to/file.html";
+my $html_file = shift @ARGV or die $usage;
+
+my $html = read_text($html_file);
+
+my $html_tree = HTML::TreeBuilder::XPath->new_from_content($html);
+my $races     = $html_tree->findnodes('//div[@class="race"]');
+
+my $csv = Text::CSV_XS->new( { binary => 1, auto_diag => 1 } );
+
+for my $race ( $races->get_nodelist ) {
+
+    #warn "=============================================================";
+    #warn $race->as_HTML;
+
+    my $office = $race->find_by_tag_name('h3')->as_trimmed_text;
+
+    #warn "office=$office";
+    my $candidate_list
+        = $race->find_by_attribute( 'class', 'race-candidate-list' );
+    for my $c ( $candidate_list->find_by_attribute( 'class', 'row' ) ) {
+        next if $c->as_HTML =~ /col-12/;
+
+        #warn "candidate=" . $c->as_HTML;
+        my $candidate
+            = $c->find_by_attribute( 'class', 'col-6' )->as_trimmed_text;
+        my $votes
+            = $c->find_by_attribute( 'class', 'col-2' )->as_trimmed_text;
+        my $percent
+            = $c->find_by_attribute( 'class', 'col-1' )->as_trimmed_text;
+        my ( $party, $name ) = ( $candidate =~ /^(\w)-(.+)$/ );
+
+        $name ||= $candidate;
+
+        #warn "party=$party name=$name votes=$votes percent=$percent";
+
+        $csv->say( *STDOUT, [ $office, $party, $name, $votes, $percent ] );
+    }
+
+}

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  ks-votes-postgres:
+    image: postgres:11.7
+    container_name: ks-votes-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgresdata:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  postgresdata:

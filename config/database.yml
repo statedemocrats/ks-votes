@@ -1,4 +1,7 @@
 default: &default
+  username: postgres
+  password: postgres
+  host: localhost
   adapter: postgresql
   database: ksvotes
   timeout: 5000

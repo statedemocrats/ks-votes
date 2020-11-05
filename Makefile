@@ -1,5 +1,11 @@
 # common tasks too simple for Rakefile
 
+start-services:
+	docker-compose up -d
+
+stop-services:
+	docker-compose down
+
 c:
 	bundle exec rails console
 
@@ -86,4 +92,4 @@ douglas-stats:
 
 fresh: clean check years report publish-results
 
-.PHONY: 2012 2014 2016 orphans
+.PHONY: 2012 2014 2016 orphans db

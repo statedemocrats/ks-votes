@@ -1,0 +1,10 @@
+#!/bin/sh
+
+make clean-voters
+rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20201201.txt.gz
+rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20181215.txt.gz
+rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20180806.txt.gz
+rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20180419.txt.gz
+rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20171102.txt.gz
+rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20161006.txt.gz
+make index

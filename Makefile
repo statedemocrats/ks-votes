@@ -15,6 +15,7 @@ db:
 setup:
 	bundle install
 	rake db:setup map:setup
+	createdb voter_files -h localhost -U postgres
 
 clean:
 	rm -f log/development.log
@@ -79,7 +80,7 @@ geosha-kansas:
 	rake map:geosha IN_FILE=public/kansas-state-voting-precincts-2012-min.geojson OUT_FILE=public/kansas-state-voting-precincts-2012-sha-min.geojson
 
 clean-voters:
-	psql -d voter_files < sql/voter_files.sql
+	psql -U postgres -h localhost -d voter_files < sql/voter_files.sql
 
 index:
 	rake environment elasticsearch:ha:import NPROCS=2 CLASS=Voter FORCE=1

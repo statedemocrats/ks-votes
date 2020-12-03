@@ -19,8 +19,8 @@ gem 'fuzzy_match', git: 'https://github.com/karpet/fuzzy_match.git'
 gem 'fuzzy_tools', github: 'statedemocrats/fuzzy_tools', branch: 'nan-fix'
 
 gem 'elasticsearch'
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
+gem 'elasticsearch-model', '~> 6'
+gem 'elasticsearch-rails', '~> 6'
 gem 'elasticsearch-rails-ha'
 
 group :development, :test do

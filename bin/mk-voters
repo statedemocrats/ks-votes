@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -euxo pipefail
+
 make clean-voters
 rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20201201.txt.gz
 rake voters:load VOTER_FILE=../voter-files/kssos_voterfile_20181215.txt.gz

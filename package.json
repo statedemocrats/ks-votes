@@ -1,5 +1,7 @@
 {
   "name": "ksvotes",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@mapbox/geojson-merge": "^1.1.1"
+  }
 }

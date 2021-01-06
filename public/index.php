@@ -25,13 +25,23 @@
  <li><a href="kansas-votes.html">Combined 2012 County, Legislative, Precinct</a></li>
 
 <?php
-$files = scandir(dirname($_SERVER['SCRIPT_FILENAME']));
-$geojson_files = preg_grep('/^.+\.geojson$/', $files);
-//$geojson_files = preg_grep('/^.+-county-precincts-.+\.geojson$/', $files);
-//print_r($geojson_files);
-foreach ($geojson_files as $f) {
-  echo "<li><a href='kansas-leaflet.php?f=$f'>$f</a></li>";
+
+function list_geojson_files($dirname) {
+  $files = scandir($dirname);
+  $geojson_files = preg_grep('/^.+\.geojson$/', $files);
+  $server_root = dirname($_SERVER['SCRIPT_FILENAME']);
+  $basename = basename($dirname);
+  $prefix = '';
+  if ($server_root != $dirname) {
+    $prefix = "$basename/";
+  }
+  foreach ($geojson_files as $f) {
+    echo "<li><a href='kansas-leaflet.php?f=$prefix$f'>$f</a></li>";
+  }
 }
+
+list_geojson_files(dirname($_SERVER['SCRIPT_FILENAME']));
+list_geojson_files(dirname($_SERVER['SCRIPT_FILENAME']) . '/PVS_19_v2/');
 ?>
 
 </ul>

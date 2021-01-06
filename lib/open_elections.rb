@@ -14,6 +14,7 @@ module OpenElections
     'Advance Voters',
     'Advanced',
     'Ballots Cast',
+    'County Totals',
     'Ent Test',
     'President',
     'Prov',
@@ -24,6 +25,7 @@ module OpenElections
     'Total',
     'Totals',
     'Write-ins',
+    'Zzz',
   ].freeze
 
   def self.clean_csv_file(file)

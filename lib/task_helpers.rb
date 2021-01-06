@@ -114,4 +114,10 @@ module TaskHelpers
       p.election_file_id = election_file_id
     end
   end
+
+  def system_try(cmd)
+    unless system(cmd)
+      fail "#{cmd} exited with #{$?}"
+    end
+  end
 end

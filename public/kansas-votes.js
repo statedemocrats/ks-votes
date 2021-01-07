@@ -64,14 +64,15 @@ var renderPolys = function(polys) {
       }
       lastSenate = poly;
     }
-    if (props['VTDNAME']) {
-      $('#precinct').html('<h3>Precinct</h3>' + props['VTDNAME'] + ' [' + props['VTD_S'] + ']');
+    if (props['VTDST']) {
+      let fips_vtd = '20' + props['COUNTYFP'] + props['VTDST'];
+      $('#precinct').html('<h3>Precinct</h3>' + props['NAME'] + ' [' + props['VTDST'] + ']');
       $('#precinct').append(JSON.stringify(props, null, '<br/>'));
       poly.setStyle({ weight: 3, color: '#222' });
       if (lastPrecinct && lastPrecinct != poly) {
         precincts.resetStyle(lastPrecinct);
       }
-      listAllRaces(props['VTD_2012']);
+      listAllRaces(fips_vtd);
       lastPrecinct = poly;
     }
   });
@@ -179,7 +180,8 @@ var getPrecinctColor = function(feature) {
     return;
   }
   var unknown = colors['unknown'];
-  var vtd = feature.properties['VTD_2012'];
+  var props = feature.properties;
+  let vtd = '20' + props['COUNTYFP'] + props['VTDST'];
   //console.log('vtd', vtd, statewideRace);
   var precinct_history = elections[vtd];
   if (!precinct_history) {
@@ -265,7 +267,7 @@ cong_distr = L.geoJson.ajax('cb_2016_us_cd115_20m.geojson', {
     }
   }
 });
-precincts = L.geoJson.ajax('kansas-state-voting-precincts-2012-sha-min.geojson', {
+precincts = L.geoJson.ajax('PVS_19_v2-kansas-sha-min.geojson', {
   onEachFeature: polyEach,
   style: function(feature) {
     return {
@@ -422,9 +424,9 @@ $('#search').on('click', function(e) {
   precincts.eachLayer(function(layer) {
     if (found) return;
     var props = layer.feature.properties;
-    var name = (props.VTDNAME || props.NAME || props.PRECINCT || props.name || props.geosha);
+    var name = (props.VTDNAME || props.VTDST || props.NAMELSAD || props.NAME || props.PRECINCT || props.name || props.geosha);
     var sha = props.geosha || '';
-    var vtd_2012 = props.VTD_2012;
+    var vtd_2012 = '20' + props.COUNTYFP + props.VTDST;
     if (name.match($str) || sha.match($str) || vtd_2012 == $str) {
       //console.log(layer);
       renderPolys([layer]);

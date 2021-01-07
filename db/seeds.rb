@@ -122,7 +122,7 @@ cty_map = {}
 ks_counties.each do |line|
   state, state_fips, cty_fips, name, fips_class = line.split(',')
   cty = County.create(name: name.gsub(' County', ''), fips: cty_fips)
-  cty_map[cty_fips] = cty.id
+  cty_map[cty_fips] = cty
 end
 
 puts "Loading 2012 Census tracts"
@@ -137,7 +137,7 @@ CensusTract.transaction do
     #puts "#{name} #{code} #{matches.to_a.inspect}"
     cty_fips = matches[1]
     precinct_code = matches[2]
-    cty_id = cty_map[cty_fips]
+    cty_id = cty_map[cty_fips].id
 
     # dupe check
     seen_names[cty_id] ||= {}
@@ -148,6 +148,36 @@ CensusTract.transaction do
 
     # not .create() because we want to skip validations for speed.
     c = CensusTract.new(county_id: cty_id, vtd_code: precinct_code, name: name, year: '2012', reason: :census)
+    c.save!(validate: false)
+    p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
+    p.save!(validate: false)
+  end
+end
+
+puts "Loading 2020 VTDs"
+CensusTract.transaction do
+  vtds = File.join(Rails.root, 'db/kansas-2020-vtds-shas.csv')
+  CSV.foreach(vtds, headers: true) do |row|
+    name = row['name']
+    vtd = row['vtdst']
+    cty_fips = row['countyfp']
+    sha = row['geosha']
+    cty = cty_map[cty_fips]
+    cty_id = cty.id
+
+    # dupe check
+    seen_names[cty_id] ||= {}
+    if seen_names[cty_id][name]
+      if seen_names[cty_id][name] != vtd
+        STDERR.puts "WARNING: VTD changed for #{cty.name} #{cty_fips} :: #{name}"
+      end
+
+      next # TODO we probably do not need/want to save lots of dupes differing only by year
+    else
+      STDERR.puts "New VTD: #{cty.name} #{cty_fips} :: #{name}"
+    end
+
+    c = CensusTract.new(county_id: cty_id, vtd_code: vtd, name: name, year: '2020', reason: :census)
     c.save!(validate: false)
     p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
     p.save!(validate: false)

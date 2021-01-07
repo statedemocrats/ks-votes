@@ -5,6 +5,8 @@ namespace :map do
     precincts_geojson = File.join(Rails.root, 'public/kansas-state-voting-precincts-2012-sha-min.geojson.gz')
     precincts_plain = precincts_geojson.gsub('.gz', '')
     system("gunzip -c #{precincts_geojson} > #{precincts_plain}")
+    precincts_2020 = File.join(Rails.root, "public/PVS_19_v2-kansas-sha-min.geojson.gz")
+    system("gunzip -c #{precincts_2020} > #{precincts_2020.gsub('.gz', '')}")
   end
 
   desc 'Apply Geosha tagging to a geojson file'

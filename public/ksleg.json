@@ -6,7 +6,7 @@
       },
       "10" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_horn_eileen_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_haswood_christina_1/"
       },
       "100" : {
          "party" : "Republican",
@@ -34,7 +34,7 @@
       },
       "106" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_pannbacker_bill_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_moser_lisa_1/"
       },
       "107" : {
          "party" : "Republican",
@@ -66,11 +66,11 @@
       },
       "113" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_lewis_greg_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_fairchild_brett_1/"
       },
       "114" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_thimesch_jack_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_murphy_michael_1/"
       },
       "115" : {
          "party" : "Republican",
@@ -82,11 +82,11 @@
       },
       "117" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_mastroni_leonard_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_leehahn_tatum_1/"
       },
       "118" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_hineman_don_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_minnix_jim_1/"
       },
       "119" : {
          "party" : "Republican",
@@ -122,7 +122,7 @@
       },
       "13" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_hibbard_larry_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_newland_joe_1/"
       },
       "14" : {
          "party" : "Republican",
@@ -134,11 +134,11 @@
       },
       "16" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_holscher_cindy_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_featherston_linda_1/"
       },
       "17" : {
-         "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_cox_tom_1/"
+         "party" : "Democrat",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_hoye_jo_ella_1/"
       },
       "18" : {
          "party" : "Democrat",
@@ -153,8 +153,8 @@
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_collins_kenneth_1/"
       },
       "20" : {
-         "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_kessinger_jan_1/"
+         "party" : "Democrat",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_poskin_mari_lynn_1/"
       },
       "21" : {
          "party" : "Democrat",
@@ -162,7 +162,7 @@
       },
       "22" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_lusk_nancy_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_vaughn_lindsay_1/"
       },
       "23" : {
          "party" : "Democrat",
@@ -186,15 +186,15 @@
       },
       "28" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_warren_kellie_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_turner_carl_1/"
       },
       "29" : {
          "party" : "Democrat",
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_parker_brett_1/"
       },
       "3" : {
-         "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_murnan_monica_1/"
+         "party" : "Republican",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_smith_charles_1/"
       },
       "30" : {
          "party" : "Democrat",
@@ -226,11 +226,11 @@
       },
       "37" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_frownfelter_stan_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_coleman_aaron_1/"
       },
       "38" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_dove_willie_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_johnson_timothy_1/"
       },
       "39" : {
          "party" : "Republican",
@@ -245,12 +245,12 @@
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_french_david_1/"
       },
       "41" : {
-         "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_pittman_jeff_1/"
+         "party" : "Republican",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_proctor_pat_1/"
       },
       "42" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_karleskint_jim_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_neelly_lance_1/"
       },
       "43" : {
          "party" : "Republican",
@@ -274,7 +274,7 @@
       },
       "48" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_benson_david_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_day_jennifer_1/"
       },
       "49" : {
          "party" : "Republican",
@@ -294,7 +294,7 @@
       },
       "52" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_dietrich_brenda_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_borjon_jesse_1/"
       },
       "53" : {
          "party" : "Democrat",
@@ -318,7 +318,7 @@
       },
       "58" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_warfield_freda_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_miller_vic_1/"
       },
       "59" : {
          "party" : "Republican",
@@ -326,7 +326,7 @@
       },
       "6" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_vickrey_jene_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_poetter_samantha_1/"
       },
       "60" : {
          "party" : "Republican",
@@ -358,7 +358,7 @@
       },
       "67" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_phillips_thomas_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_dodson_michael_1/"
       },
       "68" : {
          "party" : "Republican",
@@ -366,7 +366,7 @@
       },
       "69" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_claeys_j_r_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_sanders_clarke_1/"
       },
       "7" : {
          "party" : "Republican",
@@ -378,11 +378,11 @@
       },
       "71" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_dierks_diana_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_howe_steven_1/"
       },
       "72" : {
-         "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_hodge_tim_1/"
+         "party" : "Republican",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_anderson_avery_1/"
       },
       "73" : {
          "party" : "Republican",
@@ -438,15 +438,15 @@
       },
       "85" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_capps_michael_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_penn_patrick_1/"
       },
       "86" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_ward_jim_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_byers_stephanie_1/"
       },
       "87" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_erickson_renee_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_estes_susan_2/"
       },
       "88" : {
          "party" : "Democrat",
@@ -474,7 +474,7 @@
       },
       "93" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_moore_jc_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_bergkamp_brian_1/"
       },
       "94" : {
          "party" : "Republican",
@@ -485,8 +485,8 @@
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_sawyer_tom_1/"
       },
       "96" : {
-         "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_whipple_brandon_1/"
+         "party" : "Republican",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/rep_kessler_tom_1/"
       },
       "97" : {
          "party" : "Republican",
@@ -508,11 +508,11 @@
       },
       "10" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_pilcher_cook_mary_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_thompson_mike_1/"
       },
       "11" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_skubal_john_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_warren_kellie_1/"
       },
       "12" : {
          "party" : "Republican",
@@ -524,11 +524,11 @@
       },
       "14" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_givens_bruce_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_fagg_michael_1/"
       },
       "15" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_goddard_dan_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_peck_virgil_1/"
       },
       "16" : {
          "party" : "Republican",
@@ -539,12 +539,12 @@
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_longbine_jeff_1/"
       },
       "18" : {
-         "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_miller_vic_1/"
+         "party" : "Republican",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_oshea_kristen_1/"
       },
       "19" : {
-         "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_hensley_anthony_1/"
+         "party" : "Republican",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_kloos_rick_1/"
       },
       "2" : {
          "party" : "Democrat",
@@ -552,7 +552,7 @@
       },
       "20" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_rucker_eric_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_dietrich_brenda_1/"
       },
       "21" : {
          "party" : "Democrat",
@@ -568,7 +568,7 @@
       },
       "24" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_hardy_randall_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_claeys_jr_1/"
       },
       "25" : {
          "party" : "Democrat",
@@ -596,7 +596,7 @@
       },
       "30" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_wagle_susan_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_erickson_renee_1/"
       },
       "31" : {
          "party" : "Republican",
@@ -608,11 +608,11 @@
       },
       "33" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_taylor_mary_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_straub_alicia_1/"
       },
       "34" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_berger_ed_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_steffen_mark_1/"
       },
       "35" : {
          "party" : "Republican",
@@ -631,7 +631,7 @@
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_estes_bud_1/"
       },
       "39" : {
-         "party" : "Independent",
+         "party" : "Republican",
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_doll_john_1/"
       },
       "4" : {
@@ -643,8 +643,8 @@
          "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_billinger_rick_1/"
       },
       "5" : {
-         "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_braun_kevin_1/"
+         "party" : "Democrat",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_pittman_jeff_1/"
       },
       "6" : {
          "party" : "Democrat",
@@ -652,15 +652,15 @@
       },
       "7" : {
          "party" : "Democrat",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_bollier_barbara_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_corson_ethan_1/"
       },
       "8" : {
-         "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_denning_jim_1/"
+         "party" : "Democrat",
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_holscher_cindy_1/"
       },
       "9" : {
          "party" : "Republican",
-         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_lynn_julia_1/"
+         "uri" : "http://www.kslegislature.org/li/api/v7/rev-1/members/sen_gossage_beverly_1/"
       }
    }
 }

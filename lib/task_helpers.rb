@@ -49,7 +49,7 @@ module TaskHelpers
   end
 
   def county_tracts
-    @_tracts ||= precinct_finder.county_tracts
+    @_tracts ||= precinct_finder.county_tract_matcher.county_tracts
   end
 
   def precinct_for_tract(tract)

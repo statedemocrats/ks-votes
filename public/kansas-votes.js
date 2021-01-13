@@ -352,7 +352,7 @@ var overlays = {
   "2018 Congressional Districts": cong_distr,
   "2018 State Senate": state_leg_upper,
   "2018 State House": state_leg_lower,
-  "2012 Precincts": precincts
+  "2020 Precincts": precincts
 };
 
 L.control.layers(baseLayers, overlays).addTo(map);

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_07_190258) do
+ActiveRecord::Schema.define(version: 2021_01_08_211456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,10 @@ ActiveRecord::Schema.define(version: 2021_01_07_190258) do
     t.datetime "updated_at", null: false
     t.integer "reason"
     t.string "year"
+    t.string "geosha"
+    t.index ["geosha"], name: "index_census_tracts_on_geosha"
     t.index ["vtd_code", "county_id", "year"], name: "index_census_tracts_on_vtd_code_and_county_id_and_year", unique: true
+    t.index ["vtd_code"], name: "index_census_tracts_on_vtd_code"
   end
 
   create_table "counties", force: :cascade do |t|
@@ -108,7 +111,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_190258) do
     t.integer "census_tract_id"
     t.index "lower((name)::text)", name: "precincts_lower_name_idx"
     t.index ["name", "county_id", "census_tract_id"], name: "index_precincts_on_name_and_county_id_and_census_tract_id", unique: true
-    t.index ["name", "county_id"], name: "index_precincts_on_name_and_county_id", unique: true
   end
 
   create_table "results", force: :cascade do |t|

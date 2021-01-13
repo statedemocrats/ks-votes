@@ -9,11 +9,20 @@ class PrecinctFinder
     old_logger = ActiveRecord::Base.logger
     ActiveRecord::Base.logger = nil
     @@counties = County.all.map { |cty| [cty.id, cty.name] }.to_h
-    @@county_tracts = County.all.map { |cty| [cty.name, cty.census_tracts.pluck(:name, :id).to_h ] }.to_h
+    @@county_tracts = {}
+    County.all.each do |cty|
+      tract_hash = {}
+      cty.census_tracts.pluck(:year, :name, :id).each do |tuple|
+        tract_hash[tuple[0]] ||= {}
+        tract_hash[tuple[0]][tuple[1]] = tuple[2]
+      end
+      @@county_tracts[cty.name] = tract_hash
+    end
     PrecinctAlias.curated.includes(:precinct).order(:created_at).each do |pa|
       cty_name = @@counties[pa.precinct.county_id]
       cti = pa.precinct.census_tract_id
-      existing_cti = @@county_tracts.dig(cty_name, pa.name)
+      year = cti ? pa.precinct.year : nil
+      existing_cti = @@county_tracts.dig(cty_name, year, pa.name)
       if existing_cti
         puts "[#{cty_name}] PrecinctAlias #{green(pa.name)} #{blue(pa.precinct.name)} #{cti} pre-defined as #{existing_cti}"
         next # TODO overwrite??
@@ -73,7 +82,7 @@ class PrecinctFinder
       .gsub(/([1-9])(st|nd|rd|th) (Ward|Precinct)/i, '\3 \1')
   end
 
-  def likely_name(county, precinct_name)
+  def likely_name(county, precinct_name, election_year)
     precinct_name = normalize(precinct_name)
 
     # leading digits are never part of census tract
@@ -89,40 +98,40 @@ class PrecinctFinder
     end
 
     # try with/without Township suffix
-    if !county_tracts.dig(county.name, precinct_name)
-      if county_tracts.dig(county.name, "#{precinct_name} Township")
+    if !county_tracts.dig(election_year, county.name, precinct_name)
+      if county_tracts.dig(election_year, county.name, "#{precinct_name} Township")
         precinct_name += ' Township'
       elsif precinct_name.match(/ Township$/)
         maybe_precinct_name = precinct_name.sub(/ Township$/, '')
-        precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+        precinct_name = maybe_precinct_name if county_tracts.dig(election_year, county.name, maybe_precinct_name)
       end
     end
 
     if precinct_name.match(/twp [\-\d]+$/)
       maybe_precinct_name = precinct_name.sub(/twp ([\d\-]+)$/i, 'Township Precinct \1')
-      precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+      precinct_name = maybe_precinct_name if county_tracts.dig(election_year, county.name, maybe_precinct_name)
     elsif precinct_name.match(/\w, \w/)
       parts = precinct_name.split(', ')
       maybe_precinct_name = parts[1] + ' ' + parts[0]
-      precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+      precinct_name = maybe_precinct_name if county_tracts.dig(election_year, county.name, maybe_precinct_name)
     elsif precinct_name.match(/^[A-Z\d\ ]+$/)
       maybe_precinct_name = precinct_name.titlecase
-      precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+      precinct_name = maybe_precinct_name if county_tracts.dig(election_year, county.name, maybe_precinct_name)
     elsif precinct_name.match(/\ 0(\d)/)
       # strip leading zero
       maybe_precinct_name = precinct_name.gsub(/\ 0(\d)/, ' \1')
-      precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+      precinct_name = maybe_precinct_name if county_tracts.dig(election_year, county.name, maybe_precinct_name)
 
     # MUST be last
     elsif precinct_name.match(/Precinct/)
       maybe_precinct_name = precinct_name.sub(/^.+?Precinct/, 'Precinct')
-      precinct_name = maybe_precinct_name if county_tracts.dig(county.name, maybe_precinct_name)
+      precinct_name = maybe_precinct_name if county_tracts.dig(election_year, county.name, maybe_precinct_name)
     end
 
     # if we still don't have an exact match, try a fuzzy match
-    if !county_tracts.dig(county.name, precinct_name)
+    if !county_tracts.dig(election_year, county.name, precinct_name)
       before = precinct_name
-      precinct_name = fuzzy_match(county.name, precinct_name)
+      precinct_name = fuzzy_match(county.name, precinct_name, election_year)
       if before != precinct_name and debug?
         puts "[#{county.name}] Fuzzy match #{cyan(before)} -> #{blue(precinct_name)}"
       end
@@ -140,8 +149,8 @@ class PrecinctFinder
     )
   end
 
-  def do_fuzzy_match(county_name, precinct_name)
-    county_precincts = county_tracts.dig(county_name).keys
+  def do_fuzzy_match(county_name, precinct_name, election_year)
+    county_precincts = county_tracts.dig(election_year, county_name).keys
     simple_name = precinct_name
       .gsub(/[\.\,\-\/]/, ' ') # help word tokenization
       .gsub(/\ \ +/, ' ')
@@ -150,8 +159,8 @@ class PrecinctFinder
     { simple: simple_name, precinct: precinct_name, matches: m }
   end
 
-  def fuzzy_match(county_name, precinct_name)
-    m = do_fuzzy_match(county_name, precinct_name)
+  def fuzzy_match(county_name, precinct_name, election_year)
+    m = do_fuzzy_match(election_year, county_name, precinct_name)
     return precinct_name unless m[:matches].any?
     first_match = m[:matches][0][0]
     pp m if debug?
@@ -191,6 +200,7 @@ class PrecinctFinder
   end
 
   def precinct_for_county(county, precinct_name, election_file)
+    election_year = election_file.year
     orig_precinct_name = precinct_name
 
     # common clean up first since we'll create from this string
@@ -199,7 +209,7 @@ class PrecinctFinder
     puts "Orig precinct '#{orig_precinct_name}' cleaned '#{precinct_name}'" if debug?
 
     # check cache of tract names
-    census_tract_id = county_tracts.dig(county.name, precinct_name)
+    census_tract_id = county_tracts.dig(election_year, county.name, precinct_name)
 
     # we might find it along the way
     precinct = nil
@@ -220,7 +230,7 @@ class PrecinctFinder
       # no alias? look for common permutations
       else
         before = precinct_name
-        precinct_name = likely_name(county, precinct_name)
+        precinct_name = likely_name(county, precinct_name, election_year)
         if debug?
           puts "[#{county.name}] Likely #{cyan(precinct_name)} from #{red(before)} [#{magenta(orig_precinct_name)}]"
         end
@@ -233,7 +243,7 @@ class PrecinctFinder
     end
 
     # if we still don't have a census_tract, try again with the altered name.
-    census_tract_id ||= county_tracts.dig(county.name, precinct_name) || nil
+    census_tract_id ||= county_tracts.dig(election_year, county.name, precinct_name) || nil
 
     # one last try to find precinct based on normalized name (searches aliases too)
     precinct ||= Precinct.find_by_any_name(precinct_name, county.id).first

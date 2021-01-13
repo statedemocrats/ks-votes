@@ -129,6 +129,17 @@ puts "Loading 2012 Census tracts"
 # run in a single transaction for speed.
 seen_names = {}
 CensusTract.transaction do
+  # build sha hash
+  geoshas = {}
+  CSV.foreach(File.join(Rails.root, 'db/kansas-2012-vtd-shas.csv'), headers: true) do |row|
+    v = row['vtd_2012']
+    s = row['sha']
+    if geoshas.dig(v)
+      STDERR.puts "VTD #{v} exists multiple times in geoshas for 2012"
+    end
+    geoshas[v] = s
+  end
+
   precinct_names = File.join(Rails.root, 'db/kansas-2012-precinct-names.csv')
   CSV.foreach(precinct_names, headers: true) do |row|
     name = row['name']
@@ -147,18 +158,26 @@ CensusTract.transaction do
     seen_names[cty_id][name] = precinct_code
 
     # not .create() because we want to skip validations for speed.
-    c = CensusTract.new(county_id: cty_id, vtd_code: precinct_code, name: name, year: '2012', reason: :census)
+    c = CensusTract.new(
+      county_id: cty_id,
+      vtd_code: precinct_code,
+      name: name,
+      year: '2012',
+      reason: :census,
+      geosha: geoshas[precinct_code]
+    )
     c.save!(validate: false)
     p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
     p.save!(validate: false)
   end
 end
 
+# we rely on created_at timestamps to determine "age" vis-a-vis year, so important that we load 2020 after 2012.
 puts "Loading 2020 VTDs"
 CensusTract.transaction do
   vtds = File.join(Rails.root, 'db/kansas-2020-vtds-shas.csv')
   CSV.foreach(vtds, headers: true) do |row|
-    name = row['name']
+    name = row['name'].gsub(/ Voting District$/, '')
     vtd = row['vtdst']
     cty_fips = row['countyfp']
     sha = row['geosha']
@@ -170,16 +189,53 @@ CensusTract.transaction do
     if seen_names[cty_id][name]
       if seen_names[cty_id][name] != vtd
         STDERR.puts "WARNING: VTD changed for #{cty.name} #{cty_fips} :: #{name}"
+        STDERR.puts "         old VTD #{seen_names[cty_id][name]} new vtd #{vtd}"
+        old_ct = CensusTract.where(county_id: cty.id, vtd_code: vtd, year: '2012').first
+        STDERR.puts "         new VTD already exists for #{old_ct.name}" if old_ct
       end
-
-      next # TODO we probably do not need/want to save lots of dupes differing only by year
     else
       STDERR.puts "New VTD: #{cty.name} #{cty_fips} :: #{name}"
     end
 
-    c = CensusTract.new(county_id: cty_id, vtd_code: vtd, name: name, year: '2020', reason: :census)
+    c = CensusTract.new(
+      county_id: cty_id,
+      vtd_code: vtd,
+      name: name,
+      year: '2020',
+      reason: :census,
+      geosha: row['geosha']
+    )
     c.save!(validate: false)
     p = Precinct.new(county_id: cty_id, name: name, census_tract_id: c.id)
+    p.save!(validate: false)
+  end
+end
+
+# some one-offs that do not (yet) have VTDs
+puts "Loading JoCo 2020"
+CensusTract.transaction do
+  precincts = File.join(Rails.root, 'db/johnson-county-precincts-2020.csv')
+  joco = County.l('johnson')
+  CSV.foreach(precincts, headers: true) do |row|
+    name = row['name']
+    vtd = row['aimsfid']
+
+    # only create census tract if we cannot find a matching precinct
+    existing_precinct = Precinct.find_best(name, joco.id)
+
+    next if existing_precinct
+
+    puts "[JoCo] Adding #{name}"
+
+    c = CensusTract.new(
+      county_id: joco.id,
+      vtd_code: vtd,
+      name: name,
+      year: '2020',
+      reason: :county_shapefile,
+    )
+    c.save!(validate: false)
+    p = Precinct.new(county_id: joco.id, name: name, census_tract_id: c.id)
     p.save!(validate: false)
   end
 end

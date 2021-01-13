@@ -44,3 +44,11 @@ and then run the relevant rake task to load the results:
 ```bash
  % rake map:setup
 ```
+
+### Per county shapefiles
+
+Lacking up-to-date state-wide files, you can convert per-county shapefiles to GeoJSON like:
+
+```bash
+ % shp2geojson VOTINGPRECINCT_PL.shp EPSG:3419
+```

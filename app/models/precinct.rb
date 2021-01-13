@@ -29,6 +29,10 @@ class Precinct < ApplicationRecord
     precinct_aliases.pluck(:name)
   end
 
+  def year
+    census_tract ? census_tract.year : census_tracts.map(&:year)
+  end
+
   def census_tract_vtds
     vtds = census_tracts.map { |ct| ct.vtd_code }
     vtds << census_tract.vtd_code if census_tract

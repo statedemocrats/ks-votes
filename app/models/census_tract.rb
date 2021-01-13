@@ -13,7 +13,7 @@ class CensusTract < ApplicationRecord
   # most common primary assignment (< 1% have 2+)
   has_one :precinct
 
-  enum reason: { census: 0, curated: 1, sos: 2 }
+  enum reason: { census: 0, curated: 1, sos: 2, county_shapefile: 3 }
 
   def self.find_by_vtd_2012(vtd)
     m = vtd.match(/^20(\d\d\d)(\w\w\w\w\w\w)$/)

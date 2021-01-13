@@ -30,18 +30,20 @@ function list_geojson_files($dirname) {
   $files = scandir($dirname);
   $geojson_files = preg_grep('/^.+\.geojson$/', $files);
   $server_root = dirname($_SERVER['SCRIPT_FILENAME']);
-  $basename = basename($dirname);
+  $basename = substr($dirname, strlen($server_root) + 1);
   $prefix = '';
   if ($server_root != $dirname) {
-    $prefix = "$basename/";
+    $prefix = "$basename";
   }
   foreach ($geojson_files as $f) {
-    echo "<li><a href='kansas-leaflet.php?f=$prefix$f'>$f</a></li>";
+    echo "<li><a href='kansas-leaflet.php?f=$prefix$f'>$prefix$f</a></li>";
   }
 }
 
 list_geojson_files(dirname($_SERVER['SCRIPT_FILENAME']));
 list_geojson_files(dirname($_SERVER['SCRIPT_FILENAME']) . '/PVS_19_v2/');
+list_geojson_files(dirname($_SERVER['SCRIPT_FILENAME']) . '/2020/johnson/');
+list_geojson_files(dirname($_SERVER['SCRIPT_FILENAME']) . '/2020/wyandotte/');
 ?>
 
 </ul>

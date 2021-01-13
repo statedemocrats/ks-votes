@@ -85,7 +85,7 @@ namespace :precincts do
             puts "[#{county.name}] No Precinct for CensusTract #{cyan(ct.name)}"
           end
         elsif m && m.length > 1
-          puts "[#{county.name}] too many matches for precinct name #{red(precinct_name)}"
+          #puts "[#{county.name}] too many matches for precinct name #{red(precinct_name)}"
           next
         elsif m.first.name == precinct_name || m.first.has_alias?(precinct_name)
           # there existed a Precinct or Alias already for this name.
@@ -548,6 +548,7 @@ namespace :precincts do
       'Afton' => 'AF',
       'Attica' => 'AT',
       'Bel Aire' => 'BA',
+      'Bel Air' => 'BA',
       'Delano' => 'DL',
       'Derby' => 'DB',
       'Eagle' => 'EA',
@@ -627,6 +628,8 @@ namespace :precincts do
       # odd
       elsif p_name.match(/^Valley Center Township/)
         curated_alias(p.id, sedgwick_precinct_abbrs['Valley Center Township'])
+      elsif p_name.match(/Precinct$/)
+        curated_alias(p.id, p_name.gsub(/ Precinct$/, ''))
       else
         puts "[Sedgwick] Skipping #{red(p_name)}"
       end
@@ -711,17 +714,24 @@ namespace :precincts do
       else
         next
       end
+      name_no_nums = p.name.sub(/ \d+-\d+$/, '')
       if m = p.name.match(/^(Gardner|Olathe|Shawnee) \d/)
         city = "#{m[1]} City"
       else
-        city = p.name.sub(/ \d+-\d+$/, '')
+        city = name_no_nums
       end
       if ward != "00"
         aliases << "#{city} Ward #{ward} Precinct #{precinct}"
         aliases << "#{city} Ward #{ward.to_i} Precinct #{precinct.to_i}"
+        aliases << "#{name_no_nums} Ward #{ward} Precinct #{precinct}"
+        aliases << "#{name_no_nums} Ward #{ward.to_i} Precinct #{precinct.to_i}"
+        aliases << sprintf("%s Ward %d Precinct %02d", name_no_nums, ward.to_i, precinct.to_i)
+        aliases << sprintf("%s Ward %02d Precinct %d", name_no_nums, ward.to_i, precinct.to_i)
       elsif ward == "00"
         aliases << "#{city} Precinct #{precinct}"
         aliases << "#{city} Precinct #{precinct.to_i}"
+        aliases << "#{name_no_nums} Precinct #{precinct}"
+        aliases << "#{name_no_nums} Precinct #{precinct.to_i}"
       else
         aliases << p.name.sub(/\d+-\d+$/, "Ward #{ward} Precinct #{precinct}")
         aliases << p.name.sub(/\d+-\d+$/, "Ward #{ward.to_i} Precinct #{precinct.to_i}")

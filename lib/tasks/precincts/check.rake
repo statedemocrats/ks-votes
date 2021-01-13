@@ -1,5 +1,30 @@
 namespace :precincts do
   namespace :check do
+    include TaskHelpers
+
+    desc 'lookup names from openelections csv to compare against db'
+    task openelections_file: :environment do
+      file = ENV.fetch('FILE')
+      fail "FILE= env var required" unless file
+      county = nil
+      seen = {}
+      CSV.foreach(file, headers: true) do |row|
+        os_precinct = row['precinct']
+        next if os_precinct.downcase == 'totals'
+        next if os_precinct.downcase == 'county totals'
+        next if seen[os_precinct]
+
+        county ||= County.l(row['county'])
+        precinct = Precinct.find_best(os_precinct, county.id)
+        if precinct
+          puts "#{os_precinct} [#{row['vtd']}] => #{precinct.name} [#{precinct.census_tract_vtds.join(',')}] #{precinct.year}"
+        else
+          puts "NO MATCH: #{os_precinct} [#{row['vtd']}] #{row['votes']} votes"
+        end
+        seen[os_precinct] = true
+      end
+    end
+
     desc 'duplicate map ids'
     task duplicate_map_ids: :environment do
       seen = {}
@@ -11,10 +36,10 @@ namespace :precincts do
           end
           next unless p.census_tract_id # for now, skip those without 1:1 mapping
           next unless p.map_id.length > 0
-          if seen[p.map_id]
+          if seen[p.map_id] and seen[p.map_id][:year] == p.year
             d = seen[p.map_id].inspect
             puts "[#{county.name}] Duplicate map_id #{p.map_id} for #{p.id} #{green(p.name)} and #{d}"
-            if p.census_tract.year == '2014'
+            if p.year == '2014'
               puts " > [#{county.name}] #{green(p.name)} CensusTract is 2014"
             end
             next

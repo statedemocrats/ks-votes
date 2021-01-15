@@ -22,7 +22,7 @@
 </header>
 
 <ul>
- <li><a href="kansas-votes.html">Combined 2012 County, Legislative, Precinct</a></li>
+ <li><a href="kansas-votes.html">Combined County, Legislative, Precinct</a></li>
 
 <?php
 

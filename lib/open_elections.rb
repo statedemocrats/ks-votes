@@ -12,6 +12,7 @@ module OpenElections
     'Advance',
     'Advance Ballots',
     'Advance Voters',
+    'Advance Vote',
     'Advanced',
     'Ballots Cast',
     'County Totals',

@@ -94,6 +94,6 @@ douglas-stats:
 	cp public/douglas-county-voters-stats.json ../ks-douglas-county/
 	scp public/douglas-county-voters-stats.json pekmac:~/projects/ks-douglas-county/
 
-fresh: clean check years report publish-results
+fresh: clean check years report
 
 .PHONY: 2012 2014 2016 2020 orphans db

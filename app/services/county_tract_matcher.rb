@@ -38,8 +38,15 @@ class CountyTractMatcher
   end
 
   def match(county_name, election_year, precinct_name)
-    @@county_tracts.dig(county_name, election_year, precinct_name)
-    # TODO keep looking for every year?
+    found = @@county_tracts.dig(county_name, election_year, precinct_name)
+    return found if found
+
+    @@county_tracts.dig(county_name).each do |year, precincts|
+      found = precincts.dig(precinct_name)
+      return found if found
+    end
+
+    nil # no match
   end
 
   def tracts_for(county_name)

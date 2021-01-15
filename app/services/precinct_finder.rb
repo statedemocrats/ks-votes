@@ -122,10 +122,11 @@ class PrecinctFinder
     )
   end
 
-  def do_fuzzy_match(county_name, precinct_name, election_year)
-    possible_precincts = county_tract_matcher.tracts_for(county_name).dig(election_year)
+  def do_fuzzy_match(county_name, precinct_name, _election_year)
+    # ignore year for now, TODO bias toward it later?
+    possible_precincts = county_tract_matcher.tracts_for(county_name).map { |year, names| names }.reduce({}, :merge)
     if !possible_precincts
-      fail "Found no possible precincts for #{county_name} in #{election_year}: #{county_tract_matcher.tracts_for(county_name).inspect}"
+      fail "Found no possible precincts for #{county_name}"
     end
     county_precincts = possible_precincts.keys
     simple_name = precinct_name

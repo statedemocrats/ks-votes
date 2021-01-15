@@ -172,6 +172,8 @@ var colors = {
   'purple' : '#c242f4',
   'green'  : '#01c128',
   'unknown': '#f4e242',
+  'grey'   : '#eeeeee',
+  'orange' : '#ffa500',
 };
 
 var getPrecinctColor = function(feature) {
@@ -203,8 +205,11 @@ var getPrecinctColor = function(feature) {
     else if (winner == 'd') {
       color = 'light_b';
     }
-    else {
+    else if (winner == 'in') {
       color = 'green';
+    }
+    else {
+      color = 'grey';
     }
   }
   else if (winner == 'r') {
@@ -213,9 +218,15 @@ var getPrecinctColor = function(feature) {
   else if (winner == 'd') {
     color = 'solid_d';
   }
+  else if (winner == 'in') {
+    color = 'green';
+  }
+  else if (winner == 'lb') {
+    color = 'orange';
+  }
   else {
     console.log('unknown winner', results);
-    color = 'green';
+    color = 'grey';
   }
   return colors[color];
 };
@@ -349,9 +360,9 @@ var baseLayers = {
 
 var overlays = {
   "Counties": counties,
-  "2018 Congressional Districts": cong_distr,
-  "2018 State Senate": state_leg_upper,
-  "2018 State House": state_leg_lower,
+  "2020 Congressional Districts": cong_distr,
+  "2020 State Senate": state_leg_upper,
+  "2020 State House": state_leg_lower,
   "2020 Precincts": precincts
 };
 

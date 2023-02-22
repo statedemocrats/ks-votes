@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 
-gem 'rails', '>= 5.2.8.1'
+gem 'rails', '>= 6.1.7.1'
 gem 'pg'
 gem 'term-ansicolor'
 gem 'ansi'

@@ -130,7 +130,7 @@ GEM
     elasticsearch-transport (6.8.3)
       faraday (~> 1)
       multi_json
-    erb (5.0.2)
+    erb (6.0.1.1)
     erubi (1.13.1)
     faraday (1.10.5)
       faraday-em_http (~> 1.0)
